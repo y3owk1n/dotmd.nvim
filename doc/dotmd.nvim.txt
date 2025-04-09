@@ -4,6 +4,7 @@
 Table of Contents                               *dotmd.nvim-table-of-contents*
 
 1. dotmd                                                    |dotmd.nvim-dotmd|
+  - Features                                       |dotmd.nvim-dotmd-features|
   - Installation                               |dotmd.nvim-dotmd-installation|
   - Configuration                             |dotmd.nvim-dotmd-configuration|
   - How It Works                               |dotmd.nvim-dotmd-how-it-works|
@@ -17,7 +18,8 @@ Table of Contents                               *dotmd.nvim-table-of-contents*
 An opinionated, and fast Neovim plugin for managing markdown notes, todos, and
 journal entries — powered by Lua.
 
-Features
+
+FEATURES                                           *dotmd.nvim-dotmd-features*
 
 - **Structured Note Directories:** Organize your notes into notes/, todo/, journal/, and an inbox.md file — all configurable.
 - **Smart File Creation:** Easily create note files with optional templates and unique file naming.
