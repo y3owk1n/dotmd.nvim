@@ -1,5 +1,6 @@
 local M = {}
 
+--- Get the path to the previous todo file from today
 ---@param todo_dir string
 ---@param today string|osdate
 ---@return string|nil path
@@ -34,6 +35,7 @@ function M.get_previous_todo_file_from_today(todo_dir, today)
 	return candidates[1].path
 end
 
+--- Rollover nearest previous todo to today
 ---@param todo_dir string
 ---@param today string|osdate
 ---@return string[]|nil, string|nil

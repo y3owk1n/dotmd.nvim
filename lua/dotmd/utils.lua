@@ -1,5 +1,8 @@
 local M = {}
 
+--- Merge default create file options
+---@param opts? DotMd.CreateFileOpts
+---@return DotMd.CreateFileOpts
 function M.merge_default_create_file_opts(opts)
 	opts = opts or {}
 	opts.open = opts.open ~= false
@@ -9,24 +12,40 @@ function M.merge_default_create_file_opts(opts)
 	return opts
 end
 
+--- Sanitize a filename
+---@param name string The filename to sanitize
+---@return string The sanitized filename
 function M.sanitize_filename(name)
-	return name:gsub('[<>:"/\\|?*]', "-")
+	local sanitized = name:gsub('[<>:"/\\|?*]', "-")
+	return sanitized
 end
 
+--- Format a filename
+---@param name string The filename to format
+---@return string The formatted filename
 function M.format_filename(name)
 	local formatted = name:lower():gsub(" ", "-"):gsub("%.md$", "")
 	return M.sanitize_filename(formatted)
 end
 
+--- Deformat a filename
+---@param name string The filename to deformat
+---@return string The deformatted filename
 function M.deformat_filename(name)
 	local deformatted = name:gsub("[-_]", " "):gsub("^%l", string.upper)
 	return deformatted
 end
 
+--- Ensure a directory exists
+---@param dir string The directory to ensure
 function M.ensure_directory(dir)
 	vim.fn.mkdir(dir, "p")
 end
 
+--- Write a file safely
+---@param path string The path to the file
+---@param content string[] The content to write
+---@return boolean True if the file was written successfully, false otherwise
 function M.safe_writefile(content, path)
 	local ok, err = pcall(vim.fn.writefile, content, path)
 	if not ok then
@@ -49,6 +68,10 @@ function M.is_path_like(str)
 	) ~= nil
 end
 
+--- Get an unique filepath
+---@param base_path string The base path for the note
+---@param formatted_name string The formatted name of the note
+---@return string The unique filepath for the file
 function M.get_unique_filepath(base_path, formatted_name)
 	local note_path = base_path .. formatted_name .. ".md"
 	if vim.fn.filereadable(note_path) == 1 then
@@ -63,6 +86,9 @@ function M.get_unique_filepath(base_path, formatted_name)
 	return note_path
 end
 
+--- Open a file
+---@param note_path string The path to the file
+---@param opts DotMd.CreateFileOpts Options for creating the file
 function M.open_file(note_path, opts)
 	local cmd = ({
 		vertical = "vsplit",
@@ -73,6 +99,10 @@ function M.open_file(note_path, opts)
 	vim.cmd(string.format("%s %s", cmd, vim.fn.fnameescape(note_path)))
 end
 
+--- Write a file
+---@param note_path string The path to the file
+---@param header string The header of the file
+---@param template_func? fun(header: string): string[] The template function
 function M.write_file(note_path, header, template_func)
 	local dir_path = vim.fn.fnamemodify(note_path, ":p:h")
 	M.ensure_directory(dir_path)

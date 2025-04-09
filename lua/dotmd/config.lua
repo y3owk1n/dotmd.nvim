@@ -72,6 +72,7 @@ local defaults = {
 	},
 }
 
+--- Setup the plugin
 ---@param user_config? DotMd.Config
 function M.setup(user_config)
 	M.config = vim.tbl_deep_extend("force", defaults, user_config or {})
