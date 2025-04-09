@@ -1,6 +1,8 @@
 local M = {}
 
----@param opts? DotMd.CreateFileOpts
+--- Create a new note
+---@param opts? DotMd.CreateFileOpts Options for creating the file
+---@return nil
 function M.create_note(opts)
 	local utils = require("dotmd.utils")
 	local directories = require("dotmd.directories")
@@ -39,7 +41,9 @@ function M.create_note(opts)
 	end)
 end
 
----@param opts? DotMd.CreateFileOpts
+--- Create a new todo for today
+---@param opts? DotMd.CreateFileOpts Options for creating the file
+---@return nil
 function M.create_todo_today(opts)
 	local utils = require("dotmd.utils")
 	local todos = require("dotmd.todos")
@@ -81,7 +85,9 @@ function M.create_todo_today(opts)
 	end
 end
 
----@param opts? DotMd.CreateFileOpts
+--- Create a new journal entry
+---@param opts? DotMd.CreateFileOpts Options for creating the file
+---@return nil
 function M.create_journal(opts)
 	local utils = require("dotmd.utils")
 	local directories = require("dotmd.directories")
@@ -108,7 +114,9 @@ function M.create_journal(opts)
 	end
 end
 
----@param opts? DotMd.CreateFileOpts
+--- Create or open inbox
+---@param opts? DotMd.CreateFileOpts Options for creating the file
+---@return nil
 function M.inbox(opts)
 	local utils = require("dotmd.utils")
 	local config = require("dotmd.config").config
@@ -126,7 +134,9 @@ function M.inbox(opts)
 	end
 end
 
----@param opts? DotMd.PickOpts
+--- Pick a file from a list of directories
+---@param opts? DotMd.PickOpts Options for picking the file
+---@return nil
 function M.pick(opts)
 	local directories = require("dotmd.directories")
 	local config = require("dotmd.config").config
@@ -217,6 +227,7 @@ end
 
 ---Navigate to previous/next todo file
 ---@param direction "previous"|"next"
+---@return nil
 function M.todo_navigate(direction)
 	local directories = require("dotmd.directories")
 
