@@ -1,6 +1,6 @@
 ---@class DotMd.Config
 ---@field root_dir? string Root directory of dotmd, default is `~/notes/`
----@field default_split? "vertical" | "horizontal" | "none" Split direction for new or existing files, default is `vertical`
+---@field default_split? "vertical" | "horizontal" | "none" Split direction for new or existing files, default is `none`
 ---@field dir_names? DotMd.Config.DirNames
 ---@field templates? Dotmd.Config.Templates
 
