@@ -62,6 +62,9 @@ require("dotmd").setup({
 
 ## ⚙️ Configuration
 
+> [!important]
+> Make sure to run `:checkhealth dotmd` if something isn't working properly.
+
 **dotmd.nvim** is highly configurable. And the default configurations are as below.
 
 ### Default Options
