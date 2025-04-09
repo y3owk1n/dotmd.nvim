@@ -318,17 +318,35 @@ dotmd/
 
 When you create a new note, **dotmd.nvim**:
 
-1. Prompts for a file name or path.
+1. Prompts for a file name or path. (See [Input patterns](#input-patterns))
 2. Generates a file path inside the configured notes folder.
 3. Optionally applies a notes template.
 4. Opens the file in a vertical/horizontal split or current window.
+
+#### Input patterns
+
+- If the file name is not a path, it will be transformed and used as a file name and title.
+  - Input: `Amazing Idea`
+  - Output path: `amazing-idea.md`
+  - Output h1 heading: `# Amazing Idea`
+- If the file name is a path, it will be used as a file path and the title will be transformed from the file name.
+  - Input: `amazing-idea.md`
+  - Output path: `amazing-idea.md`
+  - Output h1 heading: `# Amazing Idea`
+- Support also nested directories during file creation (e.g. `project/idea.md`)
+  - Input: `project/idea.md`
+  - Output path: `project/idea.md`
+  - Output h1 heading: `# Idea`
+- Weird enough, something like this will work too
+  - `project/Amazing Idea` -> `project/amazing-idea.md`
+  - `project/amazing-idea` -> `project/amazing-idea.md`
 
 ### Todo Files
 
 When you create a new todo file, **dotmd.nvim**:
 
 1. Checks if today's todo file exists (e.g. todo/2025-04-09.md).
-2. If not, rolls over unfinished `- [ ] tasks from the previous file` (if any).
+2. If not, rolls over unfinished `- [ ] tasks from the previous file` from the nearest previous todo file (if any).
 3. Applies the todo template.
 4. Opens the file for editing.
 
