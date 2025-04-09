@@ -36,12 +36,17 @@ function M.safe_writefile(content, path)
 	return true
 end
 
+--- Check if a string is a path-like string
+---@param str string The string to check
+---@return boolean|nil True if the string is a path-like string, false otherwise
 function M.is_path_like(str)
-	return str:find("[/\\]")
+	return (
+		str:find("[/\\]")
 		or str:match("^%a:[/\\]")
 		or str:match("^%.?/")
 		or str:match("^~")
 		or str:match("%.%w+$")
+	) ~= nil
 end
 
 function M.get_unique_filepath(base_path, formatted_name)
