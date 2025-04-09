@@ -2,7 +2,7 @@
 
 An opinionated, and fast Neovim plugin for managing markdown notes, todos, and journal entries — powered by Lua.
 
-✨ Features
+## ✨ Features
 
 - 📁 **Structured Note Directories:** Organize your notes into notes/, todo/, journal/, and an inbox.md file — all configurable.
 - 📄 **Smart File Creation:** Easily create note files with optional templates and unique file naming.
