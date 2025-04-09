@@ -5,7 +5,7 @@ M.config = {}
 ---@type DotMd.Config
 local defaults = {
 	root_dir = "~/notes/",
-	default_split = "vertical",
+	default_split = "none",
 	dir_names = {
 		notes = "notes",
 		todo = "todo",
