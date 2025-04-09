@@ -175,7 +175,7 @@ See the example below for how to configure **dotmd.nvim**.
     {
      "y3owk1n/dotmd.nvim",
      event = { "VeryLazy" },
-     ---@type Dotmd.Config
+     ---@type DotMd.Config
      opts = {},
      keys = {
       {
