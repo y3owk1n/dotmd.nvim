@@ -53,7 +53,12 @@ function M.check()
 	separator("dotmd - Root Directory Check")
 	-- Check the configured root directory
 	local ok, config = pcall(require, "dotmd.config")
-	local root_dir = (ok and config and config.root_dir) or "~/notes"
+	local root_dir = (
+		ok
+		and config
+		and config.config
+		and config.config.root_dir
+	) or "~/notes"
 	root_dir = vim.fn.expand(root_dir)
 	if vim.fn.isdirectory(root_dir) == 1 then
 		report_status("ok", "Configured root directory exists: " .. root_dir)
