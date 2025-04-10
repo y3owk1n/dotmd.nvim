@@ -34,6 +34,17 @@ function M.get_journal_dir()
 	return M.get_subdir("journal")
 end
 
+--- Get the root directory
+---@return string path The path to the root directory
+function M.get_root_dir()
+	local config = require("dotmd.config").config
+	local root_dir = vim.fn.expand(config.root_dir)
+
+	root_dir = vim.fn.fnamemodify(root_dir, ":p")
+
+	return root_dir .. "/"
+end
+
 --- Get directories for picker
 ---@param opts DotMd.PickOpts Options for picking the file
 ---@return string[] dirs The directories to pick from

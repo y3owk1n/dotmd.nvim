@@ -168,10 +168,11 @@ end
 function M.inbox(opts)
 	local utils = require("dotmd.utils")
 	local config = require("dotmd.config").config
+	local directories = require("dotmd.directories")
 
 	opts = utils.merge_default_create_file_opts(opts)
 
-	local inbox_path = vim.fn.expand(config.root_dir) .. "inbox.md"
+	local inbox_path = directories.get_root_dir() .. "inbox.md"
 
 	if vim.fn.filereadable(inbox_path) == 0 then
 		utils.write_file(inbox_path, "Inbox", config.templates.inbox)
