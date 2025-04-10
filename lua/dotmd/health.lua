@@ -39,12 +39,6 @@ function M.check()
 		)
 	end
 
-	if vim.fn.executable("grep") == 1 then
-		report_status("ok", "'grep' command found.")
-	else
-		report_status("error", "'grep' command not found. Please install grep.")
-	end
-
 	separator("dotmd - Optional Dependencies")
 	-- Check for optional dependency: snacks.nvim
 	if pcall(require, "snacks") then
