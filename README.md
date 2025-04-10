@@ -83,7 +83,7 @@ require("dotmd").setup({
 
 ```lua
 ---@class DotMd.Config
----@field root_dir? string Root directory of dotmd, default is `~/dotmd/`
+---@field root_dir? string Root directory of dotmd, default is `~/dotmd`
 ---@field default_split? "vertical" | "horizontal" | "none" Split direction for new or existing files, default is `none`
 ---@field dir_names? DotMd.Config.DirNames
 ---@field templates? Dotmd.Config.Templates
@@ -99,7 +99,7 @@ require("dotmd").setup({
 ---@field journal? fun(date: string): string[]
 ---@field inbox? fun(date: string): string[]
 {
- root_dir = "~/dotmd/",
+ root_dir = "~/dotmd",
  default_split = "none",
  dir_names = {
   notes = "notes",

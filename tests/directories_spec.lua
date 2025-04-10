@@ -16,7 +16,7 @@ local test_config = {
 
 describe("dotmd.directories module", function()
 	-- Override the config for testing
-	setup(function()
+	before_each(function()
 		config.config = test_config
 	end)
 
