@@ -1,22 +1,8 @@
 ---@module 'luassert'
 
-local utils = require("dotmd.utils") -- adjust this as needed
+local utils = require("dotmd.utils")
 local config = require("dotmd.config").config
-
-local uv = vim.loop
-local fn = vim.fn
-
--- helper: create a temporary directory to hold test files
-local function tmp_dir()
-	local dir = fn.tempname()
-	fn.mkdir(dir, "p")
-	return dir
-end
-
--- helper: remove directory recursively
-local function remove_dir(dir)
-	os.execute("rm -rf " .. dir)
-end
+local test_utils = require("dotmd.test-utils")
 
 describe("dotmd.utils module", function()
 	describe("merge_default_create_file_opts", function()
@@ -50,7 +36,6 @@ describe("dotmd.utils module", function()
 			"should lower-case, replace spaces with dashes, remove .md extension, then sanitize",
 			function()
 				local input = "My Test File.md"
-				-- First lower and space conversion: "my-test-file", then remove .md gives "my-test-file"
 				local expected = "my-test-file"
 				local formatted = utils.format_filename(input)
 				assert.are.equal(expected, formatted)
@@ -59,7 +44,7 @@ describe("dotmd.utils module", function()
 
 		it("should sanitize any residual forbidden characters", function()
 			local input = "Another Test: File.md"
-			local expected = "another-test--file" -- colon is replaced
+			local expected = "another-test--file"
 			local formatted = utils.format_filename(input)
 			assert.are.equal(expected, formatted)
 		end)
@@ -79,11 +64,11 @@ describe("dotmd.utils module", function()
 
 	describe("ensure_directory", function()
 		it("should create the directory recursively", function()
-			local dir = fn.tempname() .. "/nested/dir"
+			local dir = vim.fn.tempname() .. "/nested/dir"
 			utils.ensure_directory(dir)
-			local stat = uv.fs_stat(dir)
+			local stat = vim.uv.fs_stat(dir)
 			assert.is_not_nil(stat)
-			remove_dir(fn.fnamemodify(dir, ":h"))
+			test_utils.remove_dir(vim.fn.fnamemodify(dir, ":h"))
 		end)
 	end)
 
@@ -93,8 +78,6 @@ describe("dotmd.utils module", function()
 		before_each(function()
 			original_notify = vim.notify
 			vim.notify = function(msg, level)
-				-- Optionally, capture the message in a global (or upvalue) variable for further assertions,
-				-- or simply do nothing to silence output.
 				_G.last_notify = msg
 			end
 		end)
@@ -105,18 +88,17 @@ describe("dotmd.utils module", function()
 		end)
 
 		it("should write the file and return true", function()
-			local tmp = tmp_dir()
+			local tmp = test_utils.tmp_dir()
 			local file = tmp .. "/test.txt"
 			local content = { "line1", "line2" }
 			local ok = utils.safe_writefile(content, file)
 			assert.is_true(ok)
-			local read = fn.readfile(file)
+			local read = vim.fn.readfile(file)
 			assert.are.same(content, read)
-			remove_dir(tmp)
+			test_utils.remove_dir(tmp)
 		end)
 
 		it("should catch errors and return false", function()
-			-- try writing to an illegal file path
 			local illegal_path = "/illegal/path/to/file.txt"
 			local ok = utils.safe_writefile({ "dummy" }, illegal_path)
 			assert.is_false(ok)
@@ -145,42 +127,38 @@ describe("dotmd.utils module", function()
 
 	describe("get_unique_filepath", function()
 		it("should return a file path if no existing file", function()
-			local tmp = tmp_dir() .. "/"
+			local tmp = test_utils.tmp_dir() .. "/"
 			local formatted_name = "testfile"
 			local unique_path = utils.get_unique_filepath(tmp, formatted_name)
 			assert.are.equal(tmp .. formatted_name .. ".md", unique_path)
-			remove_dir(fn.fnamemodify(tmp, ":h"))
+			test_utils.remove_dir(vim.fn.fnamemodify(tmp, ":h"))
 		end)
 
 		it("should return an incremented file path if file exists", function()
-			local tmp = tmp_dir() .. "/"
+			local tmp = test_utils.tmp_dir() .. "/"
 			local formatted_name = "duplicate"
 			local file_path = tmp .. formatted_name .. ".md"
-			-- create a dummy file
-			fn.writefile({ "dummy" }, file_path)
+			vim.fn.writefile({ "dummy" }, file_path)
 			local unique_path = utils.get_unique_filepath(tmp, formatted_name)
-			-- first alternative should end with "-1.md"
 			assert.are.equal(tmp .. formatted_name .. "-1.md", unique_path)
-			remove_dir(fn.fnamemodify(tmp, ":h"))
+			test_utils.remove_dir(vim.fn.fnamemodify(tmp, ":h"))
 		end)
 	end)
 
 	describe("open_file", function()
 		it("should open file using the provided split option", function()
-			-- Create a temporary file to open
-			local tmp = tmp_dir() .. "/"
-			fn.mkdir(tmp, "p")
+			local tmp = test_utils.tmp_dir() .. "/"
+			vim.fn.mkdir(tmp, "p")
 			local file_path = tmp .. "open_test.md"
-			fn.writefile({ "# header" }, file_path)
+			vim.fn.writefile({ "# header" }, file_path)
 
-			-- Choose split command based on opts.split
 			local opts = { split = "vertical" }
 			utils.open_file(file_path, opts)
-			-- Verify that the current window's buffer name is the same as the file path
-			local bufname = fn.expand("%:p")
-			assert.are.equal(fn.fnamemodify(file_path, ":p"), bufname)
 
-			remove_dir(fn.fnamemodify(tmp, ":h"))
+			local bufname = vim.fn.expand("%:p")
+			assert.are.equal(vim.fn.fnamemodify(file_path, ":p"), bufname)
+
+			test_utils.remove_dir(vim.fn.fnamemodify(tmp, ":h"))
 		end)
 	end)
 
@@ -188,8 +166,8 @@ describe("dotmd.utils module", function()
 		it(
 			"should create the file with header using provided template function",
 			function()
-				local tmp = tmp_dir() .. "/"
-				fn.mkdir(tmp, "p")
+				local tmp = test_utils.tmp_dir() .. "/"
+				vim.fn.mkdir(tmp, "p")
 				local file_path = tmp .. "write_test.md"
 				local header = "Test Header"
 				local template = function(h)
@@ -197,26 +175,26 @@ describe("dotmd.utils module", function()
 				end
 
 				utils.write_file(file_path, header, template)
-				local content = fn.readfile(file_path)
+				local content = vim.fn.readfile(file_path)
 				assert.are.same(
 					{ "# " .. header, "", "Extra content" },
 					content
 				)
-				remove_dir(fn.fnamemodify(tmp, ":h"))
+				test_utils.remove_dir(vim.fn.fnamemodify(tmp, ":h"))
 			end
 		)
 
 		it(
 			"should create the file with default header when no template provided",
 			function()
-				local tmp = tmp_dir() .. "/"
-				fn.mkdir(tmp, "p")
+				local tmp = test_utils.tmp_dir() .. "/"
+				vim.fn.mkdir(tmp, "p")
 				local file_path = tmp .. "write_default.md"
 				local header = "Default Header"
 				utils.write_file(file_path, header)
-				local content = fn.readfile(file_path)
+				local content = vim.fn.readfile(file_path)
 				assert.are.same({ "# " .. header }, content)
-				remove_dir(fn.fnamemodify(tmp, ":h"))
+				test_utils.remove_dir(vim.fn.fnamemodify(tmp, ":h"))
 			end
 		)
 	end)
