@@ -4,9 +4,16 @@ local M = {}
 ---@param subdir_name DotMd.Config.DirNameKeys The name of the subdirectory
 ---@return string path The path to the subdirectory
 function M.get_subdir(subdir_name)
-	return vim.fn.expand(require("dotmd.config").config.root_dir)
-		.. require("dotmd.config").config.dir_names[subdir_name]
-		.. "/"
+	local config = require("dotmd.config").config
+	local root_dir = vim.fn.expand(config.root_dir)
+
+	root_dir = vim.fn.fnamemodify(root_dir, ":p")
+
+	local subdir = config.dir_names[subdir_name]
+
+	local full_path = root_dir .. subdir .. "/"
+
+	return vim.fn.fnamemodify(full_path, ":p") -- Normalize again
 end
 
 --- Get the directory for notes
