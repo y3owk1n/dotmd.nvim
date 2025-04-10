@@ -329,10 +329,11 @@ dotmd/
 
 When you create a new note, **dotmd.nvim**:
 
-1. Prompts for a file name or path. (See [Input patterns](#input-patterns))
-2. Generates a file path inside the configured notes folder.
-3. Optionally applies a notes template.
-4. Opens the file in a vertical/horizontal split or current window.
+1. Prompts for select/create a subdirectory or use the base directory.
+2. Prompts for a file name or path. (See [Input patterns](#input-patterns))
+3. Generates a file path inside the configured notes folder.
+4. Optionally applies a notes template.
+5. Opens the file in a vertical/horizontal split or current window.
 
 #### Input patterns
 

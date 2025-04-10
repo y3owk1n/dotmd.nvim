@@ -6,37 +6,44 @@ local M = {}
 function M.create_note(opts)
 	local utils = require("dotmd.utils")
 	local directories = require("dotmd.directories")
-	local config = require("dotmd.config").config
+	local prompt = require("dotmd.prompt")
 
 	opts = utils.merge_default_create_file_opts(opts)
 
-	vim.ui.input({
-		prompt = "Note name/path: ",
-		default = "",
-	}, function(name_or_path)
-		if not name_or_path or name_or_path == "" then
+	local base_notes_dir = directories.get_notes_dir()
+
+	local subdirs = directories.get_subdirs_recursive(base_notes_dir)
+
+	vim.ui.select(subdirs, {
+		prompt = "Select a subdirectory to create the note in: ",
+	}, function(selected)
+		if not selected or selected == "" then
 			return
 		end
 
-		local base_path = directories.get_notes_dir()
-		local subdir = vim.fn.fnamemodify(name_or_path, ":h")
-		local filename = vim.fn.fnamemodify(name_or_path, ":t")
+		local base_path
 
-		if subdir ~= "." then
-			base_path = base_path .. subdir .. "/"
-			utils.ensure_directory(base_path)
-		end
+		if selected == "[Create new subdirectory]" then
+			vim.ui.input(
+				{ prompt = "Enter new subdirectory name: ", default = "" },
+				function(new_subdir)
+					if not new_subdir or new_subdir == "" then
+						return
+					end
 
-		local formatted_name = utils.format_filename(filename)
-		local note_path = utils.get_unique_filepath(base_path, formatted_name)
-		local display_name = utils.is_path_like(name_or_path)
-				and utils.deformat_filename(filename)
-			or name_or_path
+					local new_base_path = base_notes_dir .. new_subdir .. "/"
 
-		utils.write_file(note_path, display_name, config.templates.notes)
+					prompt.input_note_name(new_base_path, opts)
+				end
+			)
+		else
+			if selected == "[base directory]" then
+				base_path = base_notes_dir
+			else
+				base_path = base_notes_dir .. selected .. "/"
+			end
 
-		if opts.open then
-			utils.open_file(note_path, opts)
+			prompt.input_note_name(base_path, opts)
 		end
 	end)
 end
