@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.0.1](https://github.com/y3owk1n/dotmd.nvim/compare/v1.0.0...v1.0.1) (2025-04-10)
+
+
+### Bug Fixes
+
+* **commands.todo_navigate:** get nearest prev or next todos instead of just +/- 1 day ([#15](https://github.com/y3owk1n/dotmd.nvim/issues/15)) ([df08f58](https://github.com/y3owk1n/dotmd.nvim/commit/df08f58bf6931fd57d8fecf6d14477dbbde6614e))
+* **health:** properly check the `root_dir` from config ([#19](https://github.com/y3owk1n/dotmd.nvim/issues/19)) ([15c4ded](https://github.com/y3owk1n/dotmd.nvim/commit/15c4ded2168aa933dbaf5b5ef883b460360824dc))
+* **health:** remove grep checks from healthcheck ([#17](https://github.com/y3owk1n/dotmd.nvim/issues/17)) ([6b77563](https://github.com/y3owk1n/dotmd.nvim/commit/6b77563d22cdeac0812b69d633e00e036ae99246))
+
 ## 1.0.0 (2025-04-09)
 
 
