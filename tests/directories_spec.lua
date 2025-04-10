@@ -1,9 +1,9 @@
 ---@module 'luassert'
 
-local directories = require("dotmd.directories") -- adjust the module name/path as needed
+local directories = require("dotmd.directories")
 local config = require("dotmd.config")
+local test_utils = require("dotmd.test-utils")
 
--- Setup a known test configuration
 local test_config = {
 	root_dir = "/tmp/test_root/",
 	dir_names = {
@@ -14,20 +14,7 @@ local test_config = {
 	default_split = "vertical",
 }
 
--- Helper: create a temporary directory for our test files.
-local function tmp_dir()
-	local dir = vim.fn.tempname()
-	vim.fn.mkdir(dir, "p")
-	return dir
-end
-
--- Helper: remove the given directory (recursively)
-local function remove_dir(dir)
-	os.execute("rm -rf " .. dir)
-end
-
 describe("dotmd.directories module", function()
-	-- Override the config for testing
 	before_each(function()
 		config.config = test_config
 	end)
@@ -129,40 +116,29 @@ describe("dotmd.directories module", function()
 	end)
 
 	describe("get_subdirs_recursive", function()
-		local tmp_dir = nil
+		local tempdir
 
-		-- Create a temporary directory structure for testing.
 		before_each(function()
-			-- Create a unique temporary directory.
-			tmp_dir = vim.fn.tempname()
-			vim.fn.mkdir(tmp_dir, "p")
+			tempdir = test_utils.tmp_dir() .. "/"
+			vim.fn.mkdir(tempdir, "p")
 
-			-- Create subdirectories:
-			-- tmp_dir/sub1
-			-- tmp_dir/sub1/nested
-			-- tmp_dir/sub2
-			vim.fn.mkdir(tmp_dir .. "/sub1", "p")
-			vim.fn.mkdir(tmp_dir .. "/sub1/nested", "p")
-			vim.fn.mkdir(tmp_dir .. "/sub2", "p")
+			vim.fn.mkdir(tempdir .. "/sub1", "p")
+			vim.fn.mkdir(tempdir .. "/sub1/nested", "p")
+			vim.fn.mkdir(tempdir .. "/sub2", "p")
 		end)
 
-		-- Clean up the temporary directory after each test.
 		after_each(function()
-			-- Recursively remove the temporary directory.
-			os.execute("rm -rf " .. tmp_dir)
+			test_utils.remove_dir(vim.fn.fnamemodify(tempdir, ":h"))
 		end)
 
 		it(
 			"returns subdirectories recursively with expected headers",
 			function()
-				local subdirs = directories.get_subdirs_recursive(tmp_dir)
+				local subdirs = directories.get_subdirs_recursive(tempdir)
 
-				-- Verify that the two header strings are the first two items.
 				assert.equals("[Create new subdirectory]", subdirs[1])
 				assert.equals("[base directory]", subdirs[2])
 
-				-- Since the order of subdirectories from the filesystem might not be guaranteed,
-				-- check that the expected paths are present in the returned list.
 				local found = {}
 				for i = 3, #subdirs do
 					found[subdirs[i]] = true
@@ -176,7 +152,6 @@ describe("dotmd.directories module", function()
 	end)
 
 	describe("get_current_folder", function()
-		-- Save the original vim.fn functions to restore after the test.
 		local original_expand = vim.fn.expand
 		local original_fnamemodify = vim.fn.fnamemodify
 
@@ -192,7 +167,6 @@ describe("dotmd.directories module", function()
 			-- Override vim.fn.fnamemodify to simulate extracting the tail of a path.
 			vim.fn.fnamemodify = function(path, modifier)
 				if modifier == ":t" then
-					-- Assume path "/home/user/project" returns "project"
 					return "project"
 				end
 				return path
@@ -200,7 +174,6 @@ describe("dotmd.directories module", function()
 		end)
 
 		after_each(function()
-			-- Restore the original vim.fn functions.
 			vim.fn.expand = original_expand
 			vim.fn.fnamemodify = original_fnamemodify
 		end)
@@ -215,23 +188,21 @@ describe("dotmd.directories module", function()
 		local tempdir
 
 		before_each(function()
-			tempdir = tmp_dir() .. "/" -- ensure trailing slash for concatenation
+			tempdir = test_utils.tmp_dir() .. "/"
 		end)
 
 		after_each(function()
-			remove_dir(vim.fn.fnamemodify(tempdir, ":h"))
+			test_utils.remove_dir(vim.fn.fnamemodify(tempdir, ":h"))
 		end)
 
 		it("should return nil if no markdown files exist", function()
 			local today = "2025-04-15"
-			-- Ensure no md files exist in tempdir
 			local ret =
 				directories.get_nearest_previous_from_date(tempdir, today)
 			assert.is_nil(ret)
 		end)
 
 		it("should return nil if no files match the date pattern", function()
-			-- Create a file that does not match the pattern
 			local bad_file = tempdir .. "notadate.txt"
 			vim.fn.writefile({ "dummy content" }, bad_file)
 			local today = "2025-04-15"
@@ -247,7 +218,7 @@ describe("dotmd.directories module", function()
 					{ name = "2025-04-10.md", content = { "File A" } },
 					{ name = "2025-04-12.md", content = { "File B" } },
 					{ name = "2025-04-14.md", content = { "File C" } },
-					{ name = "2025-04-15.md", content = { "File D" } }, -- should not qualify: equal to today.
+					{ name = "2025-04-15.md", content = { "File D" } },
 				}
 				for _, f in ipairs(files) do
 					vim.fn.writefile(f.content, tempdir .. f.name)
@@ -265,22 +236,20 @@ describe("dotmd.directories module", function()
 		local tempdir
 
 		before_each(function()
-			tempdir = tmp_dir() .. "/" -- ensure trailing slash for concatenation
+			tempdir = test_utils.tmp_dir() .. "/"
 		end)
 
 		after_each(function()
-			remove_dir(vim.fn.fnamemodify(tempdir, ":h"))
+			test_utils.remove_dir(vim.fn.fnamemodify(tempdir, ":h"))
 		end)
 
 		it("should return nil if no markdown files exist", function()
 			local today = "2025-04-15"
-			-- Ensure no md files exist in tempdir
 			local ret = directories.get_nearest_next_from_date(tempdir, today)
 			assert.is_nil(ret)
 		end)
 
 		it("should return nil if no files match the date pattern", function()
-			-- Create a file that does not match the pattern
 			local bad_file = tempdir .. "notadate.txt"
 			vim.fn.writefile({ "dummy content" }, bad_file)
 			local today = "2025-04-15"
@@ -295,7 +264,7 @@ describe("dotmd.directories module", function()
 					{ name = "2025-04-15.md", content = { "File A" } },
 					{ name = "2025-04-16.md", content = { "File B" } },
 					{ name = "2025-04-17.md", content = { "File C" } },
-					{ name = "2025-04-18.md", content = { "File D" } }, -- should not qualify: equal to today.
+					{ name = "2025-04-18.md", content = { "File D" } },
 				}
 				for _, f in ipairs(files) do
 					vim.fn.writefile(f.content, tempdir .. f.name)
