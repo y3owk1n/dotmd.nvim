@@ -1,6 +1,7 @@
 ---@module 'luassert'
 
 local utils = require("dotmd.utils") -- adjust this as needed
+local config = require("dotmd.config").config
 
 local uv = vim.loop
 local fn = vim.fn
@@ -218,5 +219,64 @@ describe("dotmd.utils module", function()
 				remove_dir(fn.fnamemodify(tmp, ":h"))
 			end
 		)
+	end)
+
+	describe("contains", function()
+		it("should return true if exists", function()
+			local arr = { "a", "b", "c" }
+			local target = "b"
+			assert.is_true(utils.contains(arr, target))
+		end)
+
+		it("should return false if not exists", function()
+			local arr = { "a", "b", "c" }
+			local target = "d"
+			assert.is_false(utils.contains(arr, target))
+		end)
+
+		it("should return false if empty array", function()
+			local arr = {}
+			local target = "b"
+			assert.is_false(utils.contains(arr, target))
+		end)
+	end)
+
+	describe("is_date_based_directory", function()
+		before_each(function()
+			config.dir_names.journal = "journal"
+			config.dir_names.todo = "todo"
+			config.dir_names.notes = "notes"
+		end)
+
+		it("should return true if current folder is journal", function()
+			local current_folder_name = "journal"
+			local is_date_based =
+				utils.is_date_based_directory(current_folder_name)
+			assert.is_true(is_date_based)
+		end)
+
+		it("should return false if current folder is todo", function()
+			local current_folder_name = "todo"
+			local is_date_based =
+				utils.is_date_based_directory(current_folder_name)
+			assert.is_false(is_date_based)
+		end)
+
+		it(
+			"should return false if current folder is not journal or todo",
+			function()
+				local current_folder_name = "notes"
+				local is_date_based =
+					utils.is_date_based_directory(current_folder_name)
+				assert.is_false(is_date_based)
+			end
+		)
+
+		it("should return false if current folder is empty", function()
+			local current_folder_name = ""
+			local is_date_based =
+				utils.is_date_based_directory(current_folder_name)
+			assert.is_false(is_date_based)
+		end)
 	end)
 end)

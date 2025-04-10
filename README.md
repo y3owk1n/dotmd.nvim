@@ -218,19 +218,19 @@ See the example below for how to configure **dotmd.nvim**.
   {
    "<leader>np",
    function()
-    require("dotmd").todo_navigate("previous")
+    require("dotmd").navigate("previous")
    end,
    mode = "n",
-   desc = "[DotMd] Navigate to previous todo",
+   desc = "[DotMd] Navigate to previous date-based file",
    noremap = true,
   },
   {
    "<leader>nn",
    function()
-    require("dotmd").todo_navigate("next")
+    require("dotmd").navigate("next")
    end,
    mode = "n",
-   desc = "[DotMd] Navigate to next todo",
+   desc = "[DotMd] Navigate to next date-based file",
    noremap = true,
   },
   {
@@ -492,13 +492,13 @@ require("dotmd").pick(opts)
 
 Since I am exclusively using `snacks.nvim`, if you need some other picker to be integrated, feel free to help out and send in a PR for it.
 
-### Navigate to Previous/Next Nearest Todo File
+### Navigate to Previous/Next Nearest `journal` or `todo` File
 
-Go to nearest previous/next todo file.
+Go to nearest previous/next date-based file.
 
 ```lua
 ---@param direction "previous"|"next"
-require("dotmd").pick(direction)
+require("dotmd").navigate(direction)
 ```
 
 ## 🤝 Contributing

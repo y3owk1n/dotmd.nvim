@@ -96,4 +96,77 @@ function M.get_subdirs_recursive(base_path)
 	return subdirs
 end
 
+--- Get current folder name
+---@return string folder_name
+function M.get_current_folder_name()
+	return vim.fn.fnamemodify(vim.fn.expand("%:p:h"), ":t")
+end
+
+--- Get the path to the previous file from today
+---@param dir string
+---@param date string|osdate
+---@return string|nil path
+function M.get_nearest_previous_from_date(dir, date)
+	local find_cmd =
+		string.format([[find %s -type f -name "*.md"]], vim.fn.shellescape(dir))
+
+	local results = vim.fn.systemlist(find_cmd)
+	if vim.v.shell_error ~= 0 or #results == 0 then
+		return nil
+	end
+
+	local candidates = {}
+	for _, file in ipairs(results) do
+		local base = vim.fn.fnamemodify(file, ":t")
+		local y, m, d = base:match("(%d%d%d%d)%-(%d%d)%-(%d%d)%.md$")
+		if y and m and d then
+			local file_date = string.format("%s-%s-%s", y, m, d)
+			if file_date < date then
+				table.insert(candidates, { path = file, date = file_date })
+			end
+		end
+	end
+
+	if #candidates == 0 then
+		return nil
+	end
+	table.sort(candidates, function(a, b)
+		return a.date > b.date
+	end)
+	return candidates[1].path
+end
+
+--- Get the path to the next todo file from today
+---@param dir string
+---@param date string|osdate
+---@return string|nil path
+function M.get_nearest_next_from_date(dir, date)
+	local find_cmd =
+		string.format([[find %s -type f -name "*.md"]], vim.fn.shellescape(dir))
+	local results = vim.fn.systemlist(find_cmd)
+	if vim.v.shell_error ~= 0 or #results == 0 then
+		return nil
+	end
+
+	local candidates = {}
+	for _, file in ipairs(results) do
+		local base = vim.fn.fnamemodify(file, ":t")
+		local y, m, d = base:match("(%d%d%d%d)%-(%d%d)%-(%d%d)%.md$")
+		if y and m and d then
+			local file_date = string.format("%s-%s-%s", y, m, d)
+			if file_date > date then
+				table.insert(candidates, { path = file, date = file_date })
+			end
+		end
+	end
+
+	if #candidates == 0 then
+		return nil
+	end
+	table.sort(candidates, function(a, b)
+		return a.date < b.date
+	end)
+	return candidates[1].path
+end
+
 return M

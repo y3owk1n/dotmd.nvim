@@ -274,16 +274,27 @@ function M.pick(opts)
 	end)
 end
 
----Navigate to the nearest previous/next todo file
+---Navigate to the nearest previous/next date-based file
 ---@param direction "previous"|"next"
 ---@return nil
-function M.todo_navigate(direction)
+function M.navigate(direction)
 	local directories = require("dotmd.directories")
-	local todos = require("dotmd.todos")
+	local utils = require("dotmd.utils")
 
-	local todo_dir = directories.get_todo_dir()
 	local current_file = vim.fn.expand("%:t")
+
+	local current_folder = vim.fn.expand("%:p:h")
+	local current_folder_name = directories.get_current_folder_name()
+
 	local current_date = current_file:match("^(%d%d%d%d%-%d%d%-%d%d)%.md$")
+
+	if not utils.is_date_based_directory(current_folder_name) then
+		vim.notify(
+			"Aborted... This function can only be run in `journal` or `todo`",
+			vim.log.levels.WARN
+		)
+		return
+	end
 
 	if not current_date then
 		vim.notify("Current file is not a todo file", vim.log.levels.WARN)
@@ -302,20 +313,22 @@ function M.todo_navigate(direction)
 	local to_navigate_path
 
 	if direction == "previous" then
-		to_navigate_path = todos.get_nearest_previous_todo_from_date(
-			todo_dir,
+		to_navigate_path = directories.get_nearest_previous_from_date(
+			current_folder,
 			parsed_current_date
 		)
 	elseif direction == "next" then
-		to_navigate_path =
-			todos.get_nearest_next_todo_from_date(todo_dir, parsed_current_date)
+		to_navigate_path = directories.get_nearest_next_from_date(
+			current_folder,
+			parsed_current_date
+		)
 	end
 
 	if to_navigate_path and vim.fn.filereadable(to_navigate_path) == 1 then
 		vim.cmd("edit " .. vim.fn.fnameescape(to_navigate_path))
 	else
 		vim.notify(
-			"No more " .. direction .. " todo found",
+			string.format("No %s %s found", direction, current_folder_name),
 			vim.log.levels.INFO
 		)
 	end
