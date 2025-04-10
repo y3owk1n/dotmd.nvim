@@ -1,4 +1,4 @@
-*dotmd.nvim.txt*        For Neovim >= 0.10.0        Last change: 2025 April 09
+*dotmd.nvim.txt*        For Neovim >= 0.10.0        Last change: 2025 April 10
 
 ==============================================================================
 Table of Contents                               *dotmd.nvim-table-of-contents*
@@ -433,9 +433,9 @@ own keybindings:
 
   pick({ type, grep })                Pick or search notes by type
 
-  todo_navigate("next")               Go to next day’s todo
+  todo_navigate("next")               Go to nearest next day’s todo
 
-  todo_navigate("previous")           Go to previous day’s todo
+  todo_navigate("previous")           Go to nearest previous day’s todo
   -----------------------------------------------------------------------
 
 CONTRIBUTING                                   *dotmd.nvim-dotmd-contributing*
