@@ -63,6 +63,14 @@ describe("dotmd.directories module", function()
 		end)
 	end)
 
+	describe("get_root_dir", function()
+		it("should return the root directory", function()
+			local root_dir = directories.get_root_dir()
+			local expected = test_config.root_dir .. "/"
+			assert.are.equal(expected, root_dir)
+		end)
+	end)
+
 	describe("get_picker_dirs", function()
 		it("should return all directories when type is 'all'", function()
 			local opts = { type = "all" }
