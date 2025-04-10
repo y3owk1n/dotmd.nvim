@@ -2,6 +2,8 @@
 
 An opinionated, and fast Neovim plugin for managing markdown notes, todos, and journal entries — powered by Lua.
 
+<!-- panvimdoc-ignore-start -->
+
 ## A little bit about why
 
 I’ve been using Apple Notes for a while — mostly because of how effortlessly it syncs across devices. But over time, I started to get frustrated with how mouse-dependent it is. I prefer staying in the keyboard as much as possible, especially when I'm just jotting down thoughts or todos.
@@ -9,6 +11,8 @@ I’ve been using Apple Notes for a while — mostly because of how effortlessly
 I tried [Obsidian](https://obsidian.md/) too. It’s a solid tool, no doubt — but I noticed I wasn’t really using most of its features. What stuck with me was just the simplicity of editing Markdown files.
 
 So I started building dotmd — something small and focused. I wanted a way to work with Markdown notes directly inside Neovim, where I already spend most of my time. Nothing fancy. Just fast navigation, basic organization, and plain files I can sync easily across devices. On iOS, I can still open them with any Markdown viewer if I need to. That’s enough for me.
+
+<!-- panvimdoc-ignore-end -->
 
 ## ✨ Features
 
