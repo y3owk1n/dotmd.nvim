@@ -2,9 +2,9 @@ local M = {}
 
 --- Get the path to the previous todo file from today
 ---@param todo_dir string
----@param today string|osdate
+---@param date string|osdate
 ---@return string|nil path
-function M.get_previous_todo_file_from_today(todo_dir, today)
+function M.get_nearest_previous_todo_from_date(todo_dir, date)
 	local find_cmd = string.format(
 		[[find %s -type f -name "*.md"]],
 		vim.fn.shellescape(todo_dir)
@@ -20,7 +20,7 @@ function M.get_previous_todo_file_from_today(todo_dir, today)
 		local y, m, d = base:match("(%d%d%d%d)%-(%d%d)%-(%d%d)%.md$")
 		if y and m and d then
 			local file_date = string.format("%s-%s-%s", y, m, d)
-			if file_date < today then
+			if file_date < date then
 				table.insert(candidates, { path = file, date = file_date })
 			end
 		end
@@ -35,13 +35,48 @@ function M.get_previous_todo_file_from_today(todo_dir, today)
 	return candidates[1].path
 end
 
+--- Get the path to the next todo file from today
+---@param todo_dir string
+---@param date string|osdate
+---@return string|nil path
+function M.get_nearest_next_todo_from_date(todo_dir, date)
+	local find_cmd = string.format(
+		[[find %s -type f -name "*.md"]],
+		vim.fn.shellescape(todo_dir)
+	)
+	local results = vim.fn.systemlist(find_cmd)
+	if vim.v.shell_error ~= 0 or #results == 0 then
+		return nil
+	end
+
+	local candidates = {}
+	for _, file in ipairs(results) do
+		local base = vim.fn.fnamemodify(file, ":t")
+		local y, m, d = base:match("(%d%d%d%d)%-(%d%d)%-(%d%d)%.md$")
+		if y and m and d then
+			local file_date = string.format("%s-%s-%s", y, m, d)
+			if file_date > date then
+				table.insert(candidates, { path = file, date = file_date })
+			end
+		end
+	end
+
+	if #candidates == 0 then
+		return nil
+	end
+	table.sort(candidates, function(a, b)
+		return a.date < b.date
+	end)
+	return candidates[1].path
+end
+
 --- Rollover nearest previous todo to today
 ---@param todo_dir string
 ---@param today string|osdate
 ---@return string[]|nil, string|nil
 function M.rollover_previous_todo_to_today(todo_dir, today)
 	local previous_todo_file =
-		M.get_previous_todo_file_from_today(todo_dir, today)
+		M.get_nearest_previous_todo_from_date(todo_dir, today)
 	if not previous_todo_file then
 		return nil, nil
 	end

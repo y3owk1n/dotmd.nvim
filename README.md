@@ -399,8 +399,8 @@ end
 | `create_journal()`   | Open/create a journal entry for today   |
 | `inbox()`   | Open the central `inbox.md`   |
 | `pick({ type, grep })`   | Pick or search notes by type   |
-| `todo_navigate("next")`   | Go to next day's todo   |
-| `todo_navigate("previous")`   | Go to previous day's todo   |
+| `todo_navigate("next")`   | Go to nearest next day's todo   |
+| `todo_navigate("previous")`   | Go to nearest previous day's todo   |
 
 ## 🤝 Contributing
 
