@@ -23,4 +23,4 @@
 
 ---@class DotMd.PickOpts
 ---@field type? "notes" | "todos" | "journal" | "all" Pick type, default is `notes`
----@field grep? boolean Grep the notes directory for a string, default is false
+---@field grep? boolean Grep the selected type directory for a string, default is false

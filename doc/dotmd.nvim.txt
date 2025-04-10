@@ -3,36 +3,36 @@
 ==============================================================================
 Table of Contents                               *dotmd.nvim-table-of-contents*
 
-1. dotmd                                                    |dotmd.nvim-dotmd|
-  - Features                                       |dotmd.nvim-dotmd-features|
-  - Installation                               |dotmd.nvim-dotmd-installation|
-  - Configuration                             |dotmd.nvim-dotmd-configuration|
-  - Quick Start                                 |dotmd.nvim-dotmd-quick-start|
-  - How It Works                               |dotmd.nvim-dotmd-how-it-works|
-  - Template Example                       |dotmd.nvim-dotmd-template-example|
-  - Commands                                       |dotmd.nvim-dotmd-commands|
-  - Contributing                               |dotmd.nvim-dotmd-contributing|
+1. dotmd.nvim                                          |dotmd.nvim-dotmd.nvim|
+  - Features                                  |dotmd.nvim-dotmd.nvim-features|
+  - Installation                          |dotmd.nvim-dotmd.nvim-installation|
+  - Configuration                        |dotmd.nvim-dotmd.nvim-configuration|
+  - Quick Start                            |dotmd.nvim-dotmd.nvim-quick-start|
+  - How It Works                          |dotmd.nvim-dotmd.nvim-how-it-works|
+  - Template Example                  |dotmd.nvim-dotmd.nvim-template-example|
+  - API                                            |dotmd.nvim-dotmd.nvim-api|
+  - Contributing                          |dotmd.nvim-dotmd.nvim-contributing|
 
 ==============================================================================
-1. dotmd                                                    *dotmd.nvim-dotmd*
+1. dotmd.nvim                                          *dotmd.nvim-dotmd.nvim*
 
 An opinionated, and fast Neovim plugin for managing markdown notes, todos, and
 journal entries — powered by Lua.
 
 
-FEATURES                                           *dotmd.nvim-dotmd-features*
+FEATURES                                      *dotmd.nvim-dotmd.nvim-features*
 
-- **Structured Note Directories:** Organize your notes into notes/, todo/, journal/, and an inbox.md file — all configurable.
-- **Smart File Creation:** Easily create note files with optional templates and unique file naming.
-- **Daily Todos:** Auto-generate daily todo files and rollover unchecked tasks from the previous day.
+- **Structured Note Directories:** Organize your notes into `notes/`, `todo/`, `journal/`, and an `inbox.md` file — all configurable.
+- **Smart File Creation:** Easily create files with optional templates and unique file naming.
+- **Daily Todos:** Auto-generate daily todo files and rollover unchecked tasks from the nearest previous day.
 - **Daily Journals:** Quickly generate a markdown journal entry for the current date.
-- **Note Picker:** Search or grep your notes across all categories using vim.ui.select or the snacks.nvim plugin if available.
+- **Note Picker:** Search or grep your notes across all categories using `vim.ui.select` or the `snacks.nvim` plugin if available.
 - **Inbox:** Quick dump zone for thoughts, tasks, and references.
-- **Todo Navigation:** Move to the previous/next daily todo entry.
+- **Todo Navigation:** Move to the nearest previous/next daily todo entry.
 - **Fully Configurable:** Customize directories, templates, and behavior.
 
 
-INSTALLATION                                   *dotmd.nvim-dotmd-installation*
+INSTALLATION                              *dotmd.nvim-dotmd.nvim-installation*
 
 Using lazy.nvim <https://github.com/folke/lazy.nvim>
 
@@ -63,12 +63,11 @@ REQUIREMENTS ~
 - Neovim0.9+ with Lua support
 - The following CLI tools must be available in your $PATH:
     - `find`for listing files across note directories
-    - `grep`for searching content (used in pick({ grep = true }))
 - Optional but recommended:
     - snacks.nvim <https://github.com/folke/snacks.nvim>For better note picking and grepping
 
 
-CONFIGURATION                                 *dotmd.nvim-dotmd-configuration*
+CONFIGURATION                            *dotmd.nvim-dotmd.nvim-configuration*
 
 
   [!important] Make sure to run `:checkhealth dotmd` if something isn’t working
@@ -167,7 +166,7 @@ DEFAULT OPTIONS ~
 <
 
 
-QUICK START                                     *dotmd.nvim-dotmd-quick-start*
+QUICK START                                *dotmd.nvim-dotmd.nvim-quick-start*
 
 See the example below for how to configure **dotmd.nvim**.
 
@@ -306,7 +305,7 @@ See the example below for how to configure **dotmd.nvim**.
 <
 
 
-HOW IT WORKS                                   *dotmd.nvim-dotmd-how-it-works*
+HOW IT WORKS                              *dotmd.nvim-dotmd.nvim-how-it-works*
 
 **dotmd.nvim** is built around the idea of managing lightweight Markdown files
 organized by category. Here’s how each feature works:
@@ -362,7 +361,7 @@ TODO FILES ~
 
 When you create a new todo file, **dotmd.nvim**
 
-1. Checksif today’s todo file exists (e.g. todo/2025-04-09.md).
+1. Checksif today’s todo file exists (e.g. `todo/2025-04-09.md`).
 2. If not, rolls over unfinished `- [ ] tasks from the previous file` from the nearest previous todo file (if any).
 3. Applies the todo template.
 4. Opens the file for editing.
@@ -378,7 +377,7 @@ JOURNAL FILES ~
 
 When you create a new journal file, **dotmd.nvim**
 
-1. Buildstoday’s journal path (e.g. journal/2025-04-09.md).
+1. Buildstoday’s journal path (e.g. `journal/2025-04-09.md`).
 2. If the file doesn’t exist, creates it using the journal template.
 3. Opens it for editing.
 
@@ -386,11 +385,11 @@ When you create a new journal file, **dotmd.nvim**
 PICKER ~
 
 1. Uses `vim.ui.select` for file list or grep.
-2. If `snacks.nvim` is installed, uses snacks.picker() or snacks.grep() for enhanced UX.
+2. If `snacks.nvim` is installed, uses `snacks.picker.grep()` or `snacks.picker.files()` for enhanced UX.
 3. Can filter by file type (notes, todo, journal, or all).
 
 
-TEMPLATE EXAMPLE                           *dotmd.nvim-dotmd-template-example*
+TEMPLATE EXAMPLE                      *dotmd.nvim-dotmd.nvim-template-example*
 
 To create a template, just concatenate the template strings into a function
 that returns a list of strings.
@@ -412,33 +411,113 @@ that returns a list of strings.
 <
 
 
-COMMANDS                                           *dotmd.nvim-dotmd-commands*
+API                                                *dotmd.nvim-dotmd.nvim-api*
 
-**dotmd.nvim** provides the following commands that you can use to map to your
-own keybindings:
+**dotmd.nvim** provides the following api functions that you can use to map to
+your own keybindings:
 
-  -----------------------------------------------------------------------
-  Functions                           Description
-  ----------------------------------- -----------------------------------
-  create_note()                       Prompt to create and open a new
-                                      markdown note
 
-  create_todo_today()                 Open/create today’s todo and roll
-                                      over tasks
+CREATE NOTE ~
 
-  create_journal()                    Open/create a journal entry for
-                                      today
+Prompt to create and open a new markdown note.
 
-  inbox()                             Open the central inbox.md
 
-  pick({ type, grep })                Pick or search notes by type
+  [!note] This cannot be used to open a note, it will create a new file with
+  prefix if the file exists. To open a note, use the `pick` command instead.
+>lua
+    ---@class DotMd.CreateFileOpts
+    ---@field open? boolean Open the file after creation, default is true
+    ---@field split? "vertical" | "horizontal" | "none" Split direction for new or existing files, default is `vertical`
+    
+    ---@param opts? DotMd.CreateFileOpts
+    require("dotmd").create_note(opts)
+<
 
-  todo_navigate("next")               Go to nearest next day’s todo
 
-  todo_navigate("previous")           Go to nearest previous day’s todo
-  -----------------------------------------------------------------------
+CREATE TODO FOR TODAY DATE ~
 
-CONTRIBUTING                                   *dotmd.nvim-dotmd-contributing*
+Open/create today’s todo and roll over tasks.
+
+
+  [!note] Can be used to open the current todo file, if it exists, else it
+  creates a new one.
+>lua
+    ---@class DotMd.CreateFileOpts
+    ---@field open? boolean Open the file after creation, default is true
+    ---@field split? "vertical" | "horizontal" | "none" Split direction for new or existing files, default is `vertical`
+    
+    ---@param opts? DotMd.CreateFileOpts
+    require("dotmd").create_todo_today(opts)
+<
+
+
+CREATE JOURNAL FOR TODAY DATE ~
+
+Open/create a journal entry for today.
+
+
+  [!note] Can be used to open the current todo file, if it exists, else it
+  creates a new one.
+>lua
+    ---@class DotMd.CreateFileOpts
+    ---@field open? boolean Open the file after creation, default is true
+    ---@field split? "vertical" | "horizontal" | "none" Split direction for new or existing files, default is `vertical`
+    
+    ---@param opts? DotMd.CreateFileOpts
+    require("dotmd").create_journal(opts)
+<
+
+
+OPEN INBOX ~
+
+Open the central `inbox.md`.
+
+
+  [!note] Inbox is a single file that won’t be recreated if exists and meant to
+  just be there for you to dump thoughts, tasks, and references.
+>lua
+    ---@class DotMd.CreateFileOpts
+    ---@field open? boolean Open the file after creation, default is true
+    ---@field split? "vertical" | "horizontal" | "none" Split direction for new or existing files, default is `vertical`
+    
+    ---@param opts? DotMd.CreateFileOpts
+    require("dotmd").create_journal(opts)
+<
+
+
+PICK ~
+
+Pick or search files in **dotmd.nvim** directories by `type`.
+
+
+  [!note] Recommended to use `snacks.nvim` for enhanced UX, else will fallback to
+  `vim.ui.select`.
+
+  [!warning] `grep` option is not supported and will do nothing for the fallback.
+>lua
+    ---@class DotMd.PickOpts
+    ---@field type? "notes" | "todos" | "journal" | "all" Pick type, default is `notes`
+    ---@field grep? boolean Grep the selected type directory for a string, default is false
+    
+    ---@param opts? DotMd.PickOpts
+    require("dotmd").pick(opts)
+<
+
+Since I am exclusively using `snacks.nvim`, if you need some other picker to be
+integrated, feel free to help out and send in a PR for it.
+
+
+NAVIGATE TO PREVIOUS/NEXT NEAREST TODO FILE ~
+
+Go to nearest previous/next todo file.
+
+>lua
+    ---@param direction "previous"|"next"
+    require("dotmd").pick(direction)
+<
+
+
+CONTRIBUTING                              *dotmd.nvim-dotmd.nvim-contributing*
 
 Read the documentation carefully before submitting any issue.
 
