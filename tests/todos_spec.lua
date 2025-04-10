@@ -33,7 +33,8 @@ describe("dotmd.todos module", function()
 		it("should return nil if no markdown files exist", function()
 			local today = "2025-04-15"
 			-- Ensure no md files exist in tempdir
-			local ret = todos.get_previous_todo_file_from_today(tempdir, today)
+			local ret =
+				todos.get_nearest_previous_todo_from_date(tempdir, today)
 			assert.is_nil(ret)
 		end)
 
@@ -42,7 +43,8 @@ describe("dotmd.todos module", function()
 			local bad_file = tempdir .. "notadate.txt"
 			fn.writefile({ "dummy content" }, bad_file)
 			local today = "2025-04-15"
-			local ret = todos.get_previous_todo_file_from_today(tempdir, today)
+			local ret =
+				todos.get_nearest_previous_todo_from_date(tempdir, today)
 			assert.is_nil(ret)
 		end)
 
@@ -62,7 +64,7 @@ describe("dotmd.todos module", function()
 
 				local today = "2025-04-15"
 				local ret =
-					todos.get_previous_todo_file_from_today(tempdir, today)
+					todos.get_nearest_previous_todo_from_date(tempdir, today)
 				-- Candidates are those with dates strictly less than today:
 				-- "2025-04-10.md", "2025-04-12.md", and "2025-04-14.md".
 				-- The function should return the one with the highest date, i.e. "2025-04-14.md".
