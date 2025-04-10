@@ -403,11 +403,6 @@ end
 
 **dotmd.nvim** provides the following api functions that you can use to map to your own keybindings:
 
-| Functions   | Description    |
-|--------------- | --------------- |
-| `todo_navigate("next")`   | Go to nearest next day's todo   |
-| `todo_navigate("previous")`   | Go to nearest previous day's todo   |
-
 ### Create Note
 
 Prompt to create and open a new markdown note.
