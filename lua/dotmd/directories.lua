@@ -46,4 +46,36 @@ function M.get_picker_dirs(opts)
 	return dirs
 end
 
+--- Get subdirectories from a base path
+---@param base_path string The base path to get subdirectories from
+---@return string[] subdirs The subdirectories
+function M.get_subdirs_recursive(base_path)
+	local subdirs = {}
+
+	local function scan_dir(current_path, prefix)
+		prefix = prefix or ""
+		local scandir = vim.uv.fs_scandir(current_path)
+		if scandir then
+			while true do
+				local name, type = vim.uv.fs_scandir_next(scandir)
+				if not name then
+					break
+				end
+				if type == "directory" then
+					local relative_dir = prefix .. name
+					table.insert(subdirs, relative_dir)
+					scan_dir(current_path .. "/" .. name, relative_dir .. "/")
+				end
+			end
+		end
+	end
+
+	scan_dir(base_path, "")
+
+	table.insert(subdirs, 1, "[Create new subdirectory]")
+	table.insert(subdirs, 2, "[base directory]")
+
+	return subdirs
+end
+
 return M

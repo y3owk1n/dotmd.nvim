@@ -107,4 +107,51 @@ describe("dotmd.directories module", function()
 			end
 		)
 	end)
+
+	describe("get_subdirs_recursive", function()
+		local tmp_dir = nil
+
+		-- Create a temporary directory structure for testing.
+		before_each(function()
+			-- Create a unique temporary directory.
+			tmp_dir = vim.fn.tempname()
+			vim.fn.mkdir(tmp_dir, "p")
+
+			-- Create subdirectories:
+			-- tmp_dir/sub1
+			-- tmp_dir/sub1/nested
+			-- tmp_dir/sub2
+			vim.fn.mkdir(tmp_dir .. "/sub1", "p")
+			vim.fn.mkdir(tmp_dir .. "/sub1/nested", "p")
+			vim.fn.mkdir(tmp_dir .. "/sub2", "p")
+		end)
+
+		-- Clean up the temporary directory after each test.
+		after_each(function()
+			-- Recursively remove the temporary directory.
+			os.execute("rm -rf " .. tmp_dir)
+		end)
+
+		it(
+			"returns subdirectories recursively with expected headers",
+			function()
+				local subdirs = directories.get_subdirs_recursive(tmp_dir)
+
+				-- Verify that the two header strings are the first two items.
+				assert.equals("[Create new subdirectory]", subdirs[1])
+				assert.equals("[base directory]", subdirs[2])
+
+				-- Since the order of subdirectories from the filesystem might not be guaranteed,
+				-- check that the expected paths are present in the returned list.
+				local found = {}
+				for i = 3, #subdirs do
+					found[subdirs[i]] = true
+				end
+
+				assert.is_true(found["sub1"])
+				assert.is_true(found["sub1/nested"])
+				assert.is_true(found["sub2"])
+			end
+		)
+	end)
 end)
