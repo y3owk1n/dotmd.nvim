@@ -363,9 +363,10 @@ TODO FILES ~
 When you create a new todo file, **dotmd.nvim**
 
 1. Checksif today’s todo file exists (e.g. `todo/2025-04-09.md`).
-2. If not, rolls over unfinished `- [ ] tasks from the previous file` from the nearest previous todo file (if any).
-3. Applies the todo template.
-4. Opens the file for editing.
+2. If the file doesn’t exist, prompt for create confirmation.
+3. If confirm, rolls over unfinished `- [ ] tasks from the previous file` from the nearest previous todo file (if any).
+4. Applies the todo template.
+5. Opens the file for editing.
 
 
 INBOX ~
@@ -378,9 +379,10 @@ JOURNAL FILES ~
 
 When you create a new journal file, **dotmd.nvim**
 
-1. Buildstoday’s journal path (e.g. `journal/2025-04-09.md`).
-2. If the file doesn’t exist, creates it using the journal template.
-3. Opens it for editing.
+1. Checksif today’s journal file exists (e.g. `journal/2025-04-09.md`).
+2. If the file doesn’t exist, prompt for create confirmation.
+3. If confirm, creates it using the journal template.
+4. Opens it for editing.
 
 
 PICKER ~

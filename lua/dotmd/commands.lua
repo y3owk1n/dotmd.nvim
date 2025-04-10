@@ -66,29 +66,50 @@ function M.create_todo_today(opts)
 	local todo_path = todo_dir .. today .. ".md"
 
 	if vim.fn.filereadable(todo_path) == 0 then
-		utils.write_file(todo_path, "Todo for " .. today, config.templates.todo)
-
-		local unchecked_tasks, source_path =
-			todos.rollover_previous_todo_to_today(todo_dir, today)
-		if unchecked_tasks and source_path then
-			local today_lines = vim.fn.readfile(todo_path)
-			if #today_lines > 0 and today_lines[#today_lines] ~= "" then
-				table.insert(today_lines, "")
+		vim.ui.select({ "yes", "no" }, {
+			prompt = "Create todo for today?",
+		}, function(input)
+			if not input or input == "" then
+				return
 			end
-			vim.list_extend(today_lines, unchecked_tasks)
-			utils.safe_writefile(today_lines, todo_path)
-			vim.notify(
-				string.format(
-					"Rolled over %d unchecked todo(s) from %s",
-					#unchecked_tasks,
-					vim.fn.fnamemodify(source_path, ":t")
-				)
-			)
-		end
-	end
 
-	if opts.open then
-		utils.open_file(todo_path, opts)
+			if input == "no" then
+				vim.notify("Aborted todo creation", vim.log.levels.INFO)
+				return
+			end
+
+			utils.write_file(
+				todo_path,
+				"Todo for " .. today,
+				config.templates.todo
+			)
+
+			local unchecked_tasks, source_path =
+				todos.rollover_previous_todo_to_today(todo_dir, today)
+			if unchecked_tasks and source_path then
+				local today_lines = vim.fn.readfile(todo_path)
+				if #today_lines > 0 and today_lines[#today_lines] ~= "" then
+					table.insert(today_lines, "")
+				end
+				vim.list_extend(today_lines, unchecked_tasks)
+				utils.safe_writefile(today_lines, todo_path)
+				vim.notify(
+					string.format(
+						"Rolled over %d unchecked todo(s) from %s",
+						#unchecked_tasks,
+						vim.fn.fnamemodify(source_path, ":t")
+					)
+				)
+			end
+
+			if opts.open then
+				utils.open_file(todo_path, opts)
+			end
+		end)
+	else
+		if opts.open then
+			utils.open_file(todo_path, opts)
+		end
 	end
 end
 
@@ -109,15 +130,35 @@ function M.create_journal(opts)
 	local journal_path = journal_dir .. today .. ".md"
 
 	if vim.fn.filereadable(journal_path) == 0 then
-		utils.write_file(
-			journal_path,
-			"Journal Entry for " .. today,
-			config.templates.journal
-		)
-	end
+		vim.ui.select({ "yes", "no" }, {
+			prompt = "Create journal entry for today?",
+		}, function(input)
+			if not input or input == "" then
+				return
+			end
 
-	if opts.open then
-		utils.open_file(journal_path, opts)
+			if input == "no" then
+				vim.notify(
+					"Aborted journal entry creation",
+					vim.log.levels.INFO
+				)
+				return
+			end
+
+			utils.write_file(
+				journal_path,
+				"Journal Entry for " .. today,
+				config.templates.journal
+			)
+
+			if opts.open then
+				utils.open_file(journal_path, opts)
+			end
+		end)
+	else
+		if opts.open then
+			utils.open_file(journal_path, opts)
+		end
 	end
 end
 

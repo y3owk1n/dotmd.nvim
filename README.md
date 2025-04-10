@@ -358,9 +358,10 @@ When you create a new note, **dotmd.nvim**:
 When you create a new todo file, **dotmd.nvim**:
 
 1. Checks if today's todo file exists (e.g. `todo/2025-04-09.md`).
-2. If not, rolls over unfinished `- [ ] tasks from the previous file` from the nearest previous todo file (if any).
-3. Applies the todo template.
-4. Opens the file for editing.
+2. If the file doesn't exist, prompt for create confirmation.
+3. If confirm, rolls over unfinished `- [ ] tasks from the previous file` from the nearest previous todo file (if any).
+4. Applies the todo template.
+5. Opens the file for editing.
 
 ### Inbox
 
@@ -370,8 +371,9 @@ The inbox is a special file that is used to dump thoughts, tasks, and references
 
 When you create a new journal file, **dotmd.nvim**:
 
-1. Builds today's journal path (e.g. `journal/2025-04-09.md`).
-2. If the file doesn’t exist, creates it using the journal template.
+1. Checks if today's journal file exists (e.g. `journal/2025-04-09.md`).
+2. If the file doesn't exist, prompt for create confirmation.
+2. If confirm, creates it using the journal template.
 3. Opens it for editing.
 
 ### Picker
