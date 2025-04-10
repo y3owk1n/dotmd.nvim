@@ -112,4 +112,31 @@ function M.write_file(note_path, header, template_func)
 	M.safe_writefile(content, note_path)
 end
 
+--- Function to check if a given array contains a string
+---@param arr string[] The array to check
+---@param target string The string to check for
+---@return boolean is_contained if the array contains the string, false otherwise
+function M.contains(arr, target)
+	for _, value in ipairs(arr) do
+		if value == target then
+			return true
+		end
+	end
+	return false
+end
+
+--- Check if the current directory is a date-based directory
+---@param current_folder string The name of the current directory
+---@return boolean is_date_based Whether the current directory is a date-based directory
+function M.is_date_based_directory(current_folder)
+	local config = require("dotmd.config").config
+
+	local allowed_dirs = {
+		config.dir_names.journal,
+		config.dir_names.todo,
+	}
+
+	return M.contains(allowed_dirs, current_folder)
+end
+
 return M

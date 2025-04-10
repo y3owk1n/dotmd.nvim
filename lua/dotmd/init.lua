@@ -46,12 +46,12 @@ function M.pick(opts)
 	return commands.pick(opts)
 end
 
---- Navigate to previous/next todo file
+---Navigate to the nearest previous/next date-based file
 ---@param direction "previous"|"next"
 ---@return nil
-function M.todo_navigate(direction)
+function M.navigate(direction)
 	local commands = require("dotmd.commands")
-	return commands.todo_navigate(direction)
+	return commands.navigate(direction)
 end
 
 return M
