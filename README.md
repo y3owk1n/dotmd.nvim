@@ -22,7 +22,7 @@ So I started building dotmd — something small and focused. I wanted a way to w
 - 📅 **Daily Journals:** Quickly generate a markdown journal entry for the current date.
 - 🔍 **Note Picker:** Search or grep your notes across all categories using `vim.ui.select` or the `snacks.nvim` plugin if available.
 - 📌 **Inbox:** Quick dump zone for thoughts, tasks, and references.
-- 🧭 **Todo Navigation:** Move to the nearest previous/next daily todo entry.
+- 🧭 **Smart Navigation:** Move to the nearest previous/next `todo` or `journal` entry automagically.
 - 🔧 **Fully Configurable:** Customize directories, templates, and behavior.
 
 <!-- panvimdoc-ignore-start -->
