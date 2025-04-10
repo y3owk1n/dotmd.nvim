@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.0.3](https://github.com/y3owk1n/dotmd.nvim/compare/v1.0.2...v1.0.3) (2025-04-10)
+
+
+### Bug Fixes
+
+* add confirmation prompt to prevent accidental creation ([#24](https://github.com/y3owk1n/dotmd.nvim/issues/24)) ([2d313df](https://github.com/y3owk1n/dotmd.nvim/commit/2d313df5130da827fa50e4dc25c178452638553b))
+* **commands.inbox:** use `get_root_dir` function instead of just expanding the rootdir ([#25](https://github.com/y3owk1n/dotmd.nvim/issues/25)) ([d34d476](https://github.com/y3owk1n/dotmd.nvim/commit/d34d47636cf403da6a99d890857d7dbc6c500aa6))
+* **commands.navigate:** support `journal` and `todo` navigation automagically ([#26](https://github.com/y3owk1n/dotmd.nvim/issues/26)) ([a588dfc](https://github.com/y3owk1n/dotmd.nvim/commit/a588dfce8a3d0db4a3bfebe2405f2f0e3c5796f8))
+* **directories.get_subdir:** make sure handling trailing slashes correctly ([#22](https://github.com/y3owk1n/dotmd.nvim/issues/22)) ([107861a](https://github.com/y3owk1n/dotmd.nvim/commit/107861ac0d21596d42398fdd772c07b619ef6e94))
+
 ## [1.0.2](https://github.com/y3owk1n/dotmd.nvim/compare/v1.0.1...v1.0.2) (2025-04-10)
 
 
