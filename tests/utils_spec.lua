@@ -12,7 +12,6 @@ describe("dotmd.utils module", function()
 			assert.is_true(opts.open)
 			-- opts.split should be set to either dotmd.config default_split or "vertical"
 			local expected = require("dotmd.config").config.default_split
-				or "vertical"
 			assert.are.equal(expected, opts.split)
 		end)
 

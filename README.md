@@ -425,7 +425,7 @@ Prompt to create and open a new markdown note.
 ```lua
 ---@class DotMd.CreateFileOpts
 ---@field open? boolean Open the file after creation, default is true
----@field split? "vertical" | "horizontal" | "none" Split direction for new or existing files, default is `vertical`
+---@field split? "vertical" | "horizontal" | "none" Split direction for new or existing files, default is based on `default_split` in config
 
 ---@param opts? DotMd.CreateFileOpts
 require("dotmd").create_note(opts)
@@ -443,7 +443,7 @@ Open/create today’s todo and roll over tasks.
 ```lua
 ---@class DotMd.CreateFileOpts
 ---@field open? boolean Open the file after creation, default is true
----@field split? "vertical" | "horizontal" | "none" Split direction for new or existing files, default is `vertical`
+---@field split? "vertical" | "horizontal" | "none" Split direction for new or existing files, default is based on `default_split` in config
 
 ---@param opts? DotMd.CreateFileOpts
 require("dotmd").create_todo_today(opts)
@@ -461,7 +461,7 @@ Open/create a journal entry for today.
 ```lua
 ---@class DotMd.CreateFileOpts
 ---@field open? boolean Open the file after creation, default is true
----@field split? "vertical" | "horizontal" | "none" Split direction for new or existing files, default is `vertical`
+---@field split? "vertical" | "horizontal" | "none" Split direction for new or existing files, default is based on `default_split` in config
 
 ---@param opts? DotMd.CreateFileOpts
 require("dotmd").create_journal(opts)
@@ -479,7 +479,7 @@ Open the central `inbox.md`.
 ```lua
 ---@class DotMd.CreateFileOpts
 ---@field open? boolean Open the file after creation, default is true
----@field split? "vertical" | "horizontal" | "none" Split direction for new or existing files, default is `vertical`
+---@field split? "vertical" | "horizontal" | "none" Split direction for new or existing files, default is based on `default_split` in config
 
 ---@param opts? DotMd.CreateFileOpts
 require("dotmd").create_journal(opts)
