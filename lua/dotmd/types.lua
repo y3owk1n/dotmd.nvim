@@ -19,7 +19,7 @@
 
 ---@class DotMd.CreateFileOpts
 ---@field open? boolean Open the file after creation, default is true
----@field split? "vertical" | "horizontal" | "none" Split direction for new or existing files, default is `vertical`
+---@field split? "vertical" | "horizontal" | "none" Split direction for new or existing files, default is based on `default_split` in config
 
 ---@class DotMd.PickOpts
 ---@field type? "notes" | "todos" | "journal" | "all" Pick type, default is `notes`
