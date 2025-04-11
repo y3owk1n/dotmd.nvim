@@ -35,6 +35,7 @@ So I started building dotmd — something small and focused. I wanted a way to w
 - [How It Works](#-how-it-works)
 - [Template Example](#-template-example)
 - [API](#-api)
+- [Goodies](#-goodies)
 - [Contributing](#-contributing)
 
 <!-- panvimdoc-ignore-end -->
@@ -516,6 +517,41 @@ require("dotmd").navigate(direction)
 ```
 
 You can also use the command `:DotMdNavigate` to navigate to the nearest previous/next date-based file. And it supports the same options.
+
+## 🎁 Goodies
+
+### Summon your notes anywhere within a tmux session
+
+You can summon your notes anywhere within a tmux session in a floating pane by adding the following to your `~/.tmux.conf`:
+
+> [!note]
+> Change `~/dotmd` to your dotmd root directory.
+
+```bash
+# create a new tmux keytable for dotmd
+bind-key C-n switch-client -T dotmd
+
+# bind keys with dotmd commands in popup
+bind-key -T dotmd t run-shell "tmux popup -E -w 90% -h 80% -T 'Dotmd Todo' 'sh -c \"cd ~/dotmd && nvim +\\\"DotMdCreateTodoToday split=none\\\"\"'"
+bind-key -T dotmd n run-shell "tmux popup -E -w 90% -h 80% -T 'Dotmd Note' 'sh -c \"cd ~/dotmd && nvim +\\\"DotMdCreateNote split=none\\\"\"'"
+bind-key -T dotmd i run-shell "tmux popup -E -w 90% -h 80% -T 'Dotmd Inbox' 'sh -c \"cd ~/dotmd && nvim +\\\"DotMdInbox split=none\\\"\"'"
+bind-key -T dotmd j run-shell "tmux popup -E -w 90% -h 80% -T 'Dotmd Jornal' 'sh -c \"cd ~/dotmd && nvim +\\\"DotMdCreateJournal split=none\\\"\"'"
+bind-key -T dotmd r run-shell "tmux popup -E -w 90% -h 80% -T 'Dotmd Root' 'sh -c \"cd ~/dotmd && nvim\"'"
+
+# switch back to root keytable with escape
+bind-key -T dotmd Escape switch-client -T root
+```
+
+1. Press your tmux prefix key and then `ctrl-n` to switch to the `dotmd` keytable. And then followed by:
+
+- Press `t` to create a new or open existing todo file for today.
+- Press `n` to create a note.
+- Press `i` to open the inbox for quick thoughts dumping.
+- Press `j` to create a new or open existing journal file for today.
+- Press `r` to open the root directory, and you can do anything just like you would in a regular vim session.
+
+2. Do whatever you want to do in the popup pane.
+3. Quit with just `:wq` just like you would in a regular vim session.
 
 ## 🤝 Contributing
 
