@@ -184,7 +184,6 @@ See the example below for how to configure **dotmd.nvim**.
       "DotMdNavigate",
       "DotMdPick",
      },
-     event = { "VeryLazy" },
      ---@type DotMd.Config
      opts = {},
      keys = {
