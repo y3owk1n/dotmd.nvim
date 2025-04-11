@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.1.0](https://github.com/y3owk1n/dotmd.nvim/compare/v1.0.3...v1.1.0) (2025-04-11)
+
+
+### Features
+
+* **setup:** add user command with `DotMd` prefix during setup ([#29](https://github.com/y3owk1n/dotmd.nvim/issues/29)) ([4b6f4b3](https://github.com/y3owk1n/dotmd.nvim/commit/4b6f4b3df12ff2f89aedebc56e601e48b2732e10))
+
+
+### Bug Fixes
+
+* **commands:** remove `open_file` opts and always open the file ([#32](https://github.com/y3owk1n/dotmd.nvim/issues/32)) ([526f526](https://github.com/y3owk1n/dotmd.nvim/commit/526f52697f755f1694fc6ae41ad60a6ac8abc55d))
+* **config:** add configurable `rollover_todo` for config ([#34](https://github.com/y3owk1n/dotmd.nvim/issues/34)) ([07f8520](https://github.com/y3owk1n/dotmd.nvim/commit/07f8520fac44d18ae909394fef823090309e0ee2))
+* **utils.merge_default_create_file_opts:** remove hardcoded `vertical` for `opts.split` ([#31](https://github.com/y3owk1n/dotmd.nvim/issues/31)) ([5c8f84a](https://github.com/y3owk1n/dotmd.nvim/commit/5c8f84ac7d958214260062156de3d949994f8cfd))
+
 ## [1.0.3](https://github.com/y3owk1n/dotmd.nvim/compare/v1.0.2...v1.0.3) (2025-04-10)
 
 
