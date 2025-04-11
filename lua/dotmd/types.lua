@@ -18,7 +18,6 @@
 ---@field inbox? fun(date: string): string[]
 
 ---@class DotMd.CreateFileOpts
----@field open? boolean Open the file after creation, default is true
 ---@field split? "vertical" | "horizontal" | "none" Split direction for new or existing files, default is based on `default_split` in config
 
 ---@class DotMd.PickOpts

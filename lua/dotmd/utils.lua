@@ -5,7 +5,6 @@ local M = {}
 ---@return DotMd.CreateFileOpts
 function M.merge_default_create_file_opts(opts)
 	opts = opts or {}
-	opts.open = opts.open ~= false
 	opts.split = opts.split or require("dotmd.config").config.default_split
 	return opts
 end
