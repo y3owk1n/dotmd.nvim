@@ -1,6 +1,7 @@
 ---@class DotMd.Config
 ---@field root_dir? string Root directory of dotmd, default is `~/dotmd`
 ---@field default_split? "vertical" | "horizontal" | "none" Split direction for new or existing files, default is `none`
+---@field rollover_todo? boolean Rollover the nearest previous unchecked todos to today's date, default is `true`
 ---@field dir_names? DotMd.Config.DirNames
 ---@field templates? Dotmd.Config.Templates
 

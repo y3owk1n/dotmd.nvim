@@ -83,6 +83,7 @@ DEFAULT OPTIONS ~
     ---@class DotMd.Config
     ---@field root_dir? string Root directory of dotmd, default is `~/dotmd`
     ---@field default_split? "vertical" | "horizontal" | "none" Split direction for new or existing files, default is `none`
+    ---@field rollover_todo? boolean Rollover the nearest previous unchecked todos to today's date, default is `true`
     ---@field dir_names? DotMd.Config.DirNames
     ---@field templates? Dotmd.Config.Templates
     
@@ -99,6 +100,7 @@ DEFAULT OPTIONS ~
     {
      root_dir = "~/dotmd",
      default_split = "none",
+     rollover_todo = true,
      dir_names = {
       notes = "notes",
       todo = "todo",
@@ -373,7 +375,7 @@ When you create a new todo file, **dotmd.nvim**
 
 1. Checksif today’s todo file exists (e.g. `todo/2025-04-09.md`).
 2. If the file doesn’t exist, prompt for create confirmation.
-3. If confirm, rolls over unfinished `- [ ] tasks from the previous file` from the nearest previous todo file (if any).
+3. If confirm, rolls over unfinished `- [ ] tasks from the previous file` from the nearest previous todo file (if any and enabled).
 4. Applies the todo template.
 5. Opens the file for editing.
 
