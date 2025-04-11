@@ -6,6 +6,7 @@ M.config = {}
 local defaults = {
 	root_dir = "~/dotmd",
 	default_split = "none",
+	rollover_todo = true,
 	dir_names = {
 		notes = "notes",
 		todo = "todo",
