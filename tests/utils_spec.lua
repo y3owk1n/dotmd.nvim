@@ -8,16 +8,9 @@ describe("dotmd.utils module", function()
 	describe("merge_default_create_file_opts", function()
 		it("should set default values when no opts provided", function()
 			local opts = utils.merge_default_create_file_opts()
-			-- by default opts.open is true if not explicitly false
-			assert.is_true(opts.open)
 			-- opts.split should be set to either dotmd.config default_split or "vertical"
 			local expected = require("dotmd.config").config.default_split
 			assert.are.equal(expected, opts.split)
-		end)
-
-		it("should keep opts.open false if provided as false", function()
-			local opts = utils.merge_default_create_file_opts({ open = false })
-			assert.is_false(opts.open)
 		end)
 	end)
 

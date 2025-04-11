@@ -32,9 +32,7 @@ function M.input_note_name(base_path, opts)
 
 		utils.write_file(note_path, display_name, config.templates.notes)
 
-		if opts.open then
-			utils.open_file(note_path, opts)
-		end
+		utils.open_file(note_path, opts)
 	end)
 end
 

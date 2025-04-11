@@ -424,7 +424,6 @@ Prompt to create and open a new markdown note.
 
 ```lua
 ---@class DotMd.CreateFileOpts
----@field open? boolean Open the file after creation, default is true
 ---@field split? "vertical" | "horizontal" | "none" Split direction for new or existing files, default is based on `default_split` in config
 
 ---@param opts? DotMd.CreateFileOpts
@@ -433,7 +432,7 @@ require("dotmd").create_note(opts)
 
 You can also use the command `:DotMdCreateNote` to create a new note. And it supports the same options.
 
-### Create Todo for Today Date
+### Create or open Todo for Today Date
 
 Open/create today’s todo and roll over tasks.
 
@@ -442,7 +441,6 @@ Open/create today’s todo and roll over tasks.
 
 ```lua
 ---@class DotMd.CreateFileOpts
----@field open? boolean Open the file after creation, default is true
 ---@field split? "vertical" | "horizontal" | "none" Split direction for new or existing files, default is based on `default_split` in config
 
 ---@param opts? DotMd.CreateFileOpts
@@ -451,7 +449,7 @@ require("dotmd").create_todo_today(opts)
 
 You can also use the command `:DotMdCreateTodoToday` to create a new todo for today. And it supports the same options.
 
-### Create Journal for Today Date
+### Create or open Journal for Today Date
 
 Open/create a journal entry for today.
 
@@ -460,7 +458,6 @@ Open/create a journal entry for today.
 
 ```lua
 ---@class DotMd.CreateFileOpts
----@field open? boolean Open the file after creation, default is true
 ---@field split? "vertical" | "horizontal" | "none" Split direction for new or existing files, default is based on `default_split` in config
 
 ---@param opts? DotMd.CreateFileOpts
@@ -478,7 +475,6 @@ Open the central `inbox.md`.
 
 ```lua
 ---@class DotMd.CreateFileOpts
----@field open? boolean Open the file after creation, default is true
 ---@field split? "vertical" | "horizontal" | "none" Split direction for new or existing files, default is based on `default_split` in config
 
 ---@param opts? DotMd.CreateFileOpts
