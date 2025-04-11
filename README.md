@@ -175,6 +175,14 @@ See the example below for how to configure **dotmd.nvim**.
 ```lua
 {
  "y3owk1n/dotmd.nvim",
+ cmd = {
+  "DotMdCreateNote",
+  "DotMdCreateTodoToday",
+  "DotMdCreateJournal",
+  "DotMdInbox",
+  "DotMdNavigate",
+  "DotMdPick",
+ },
  event = { "VeryLazy" },
  ---@type DotMd.Config
  opts = {},
@@ -221,7 +229,7 @@ See the example below for how to configure **dotmd.nvim**.
     require("dotmd").navigate("previous")
    end,
    mode = "n",
-   desc = "[DotMd] Navigate to previous date-based file",
+   desc = "[DotMd] Navigate to previous todo",
    noremap = true,
   },
   {
@@ -230,7 +238,7 @@ See the example below for how to configure **dotmd.nvim**.
     require("dotmd").navigate("next")
    end,
    mode = "n",
-   desc = "[DotMd] Navigate to next date-based file",
+   desc = "[DotMd] Navigate to next todo",
    noremap = true,
   },
   {
@@ -423,6 +431,8 @@ Prompt to create and open a new markdown note.
 require("dotmd").create_note(opts)
 ```
 
+You can also use the command `:DotMdCreateNote` to create a new note. And it supports the same options.
+
 ### Create Todo for Today Date
 
 Open/create today’s todo and roll over tasks.
@@ -438,6 +448,8 @@ Open/create today’s todo and roll over tasks.
 ---@param opts? DotMd.CreateFileOpts
 require("dotmd").create_todo_today(opts)
 ```
+
+You can also use the command `:DotMdCreateTodoToday` to create a new todo for today. And it supports the same options.
 
 ### Create Journal for Today Date
 
@@ -455,6 +467,8 @@ Open/create a journal entry for today.
 require("dotmd").create_journal(opts)
 ```
 
+You can also use the command `:DotMdCreateJournal` to create a new journal entry. And it supports the same options.
+
 ### Open Inbox
 
 Open the central `inbox.md`.
@@ -470,6 +484,8 @@ Open the central `inbox.md`.
 ---@param opts? DotMd.CreateFileOpts
 require("dotmd").create_journal(opts)
 ```
+
+You can also use the command `:DotMdInbox` to open the central `inbox.md`. And it supports the same options.
 
 ### Pick
 
@@ -490,6 +506,8 @@ Pick or search files in **dotmd.nvim** directories by `type`.
 require("dotmd").pick(opts)
 ```
 
+You can also use the command `:DotMdPick` to pick or search files in **dotmd.nvim** directories by `type`. And it supports the same options.
+
 Since I am exclusively using `snacks.nvim`, if you need some other picker to be integrated, feel free to help out and send in a PR for it.
 
 ### Navigate to Previous/Next Nearest `journal` or `todo` File
@@ -500,6 +518,8 @@ Go to nearest previous/next date-based file.
 ---@param direction "previous"|"next"
 require("dotmd").navigate(direction)
 ```
+
+You can also use the command `:DotMdNavigate` to navigate to the nearest previous/next date-based file. And it supports the same options.
 
 ## 🤝 Contributing
 

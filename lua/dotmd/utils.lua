@@ -139,4 +139,31 @@ function M.is_date_based_directory(current_folder)
 	return M.contains(allowed_dirs, current_folder)
 end
 
+--- Parse user command arguments
+---@param arg_str string The string to parse
+---@return table args The parsed arguments
+function M.parse_user_command_args(arg_str)
+	local args = {}
+	for _, token in ipairs(vim.split(arg_str, "%s+")) do
+		local key, value = token:match("^(%w+)%=(%w+)$")
+		if key and value then
+			args[key] = value
+		end
+	end
+	return args
+end
+
+--- Prepare user command arguments
+---@param args string? The string to parse
+---@return table? args The parsed arguments
+function M.prepare_user_command_args(args)
+	local file_args = nil
+
+	if args and args ~= "" then
+		file_args = M.parse_user_command_args(args)
+	end
+
+	return file_args
+end
+
 return M
