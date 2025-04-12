@@ -104,10 +104,10 @@ function M.create_todo_today(opts)
 				end
 			end
 
-			utils.open_file(todo_path, opts)
+			utils.open_file(todo_path, opts.split)
 		end)
 	else
-		utils.open_file(todo_path, opts)
+		utils.open_file(todo_path, opts.split)
 	end
 end
 
@@ -149,10 +149,10 @@ function M.create_journal(opts)
 				config.templates.journal
 			)
 
-			utils.open_file(journal_path, opts)
+			utils.open_file(journal_path, opts.split)
 		end)
 	else
-		utils.open_file(journal_path, opts)
+		utils.open_file(journal_path, opts.split)
 	end
 end
 
@@ -172,7 +172,7 @@ function M.inbox(opts)
 		utils.write_file(inbox_path, "Inbox", config.templates.inbox)
 	end
 
-	utils.open_file(inbox_path, opts)
+	utils.open_file(inbox_path, opts.split)
 end
 
 --- Pick a file from a list of directories

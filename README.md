@@ -83,9 +83,11 @@ require("dotmd").setup({
 ### Default Options
 
 ```lua
+---@alias DotMd.Split "vertical" | "horizontal" | "none" Split direction
+
 ---@class DotMd.Config
 ---@field root_dir? string Root directory of dotmd, default is `~/dotmd`
----@field default_split? "vertical" | "horizontal" | "none" Split direction for new or existing files, default is `none`
+---@field default_split? DotMd.Split Split direction for new or existing files, default is `none`
 ---@field rollover_todo? boolean Rollover the nearest previous unchecked todos to today's date, default is `true`
 ---@field dir_names? DotMd.Config.DirNames
 ---@field templates? Dotmd.Config.Templates
@@ -425,8 +427,10 @@ Prompt to create and open a new markdown note.
 > To open a note, use the `pick` command instead.
 
 ```lua
+---@alias DotMd.Split "vertical" | "horizontal" | "none" Split direction
+
 ---@class DotMd.CreateFileOpts
----@field split? "vertical" | "horizontal" | "none" Split direction for new or existing files, default is based on `default_split` in config
+---@field split? DotMd.Split Split direction for new or existing files, default is based on `default_split` in config
 
 ---@param opts? DotMd.CreateFileOpts
 require("dotmd").create_note(opts)
@@ -442,8 +446,10 @@ Open/create today’s todo and roll over tasks.
 > Can be used to open the current todo file, if it exists, else it creates a new one.
 
 ```lua
+---@alias DotMd.Split "vertical" | "horizontal" | "none" Split direction
+
 ---@class DotMd.CreateFileOpts
----@field split? "vertical" | "horizontal" | "none" Split direction for new or existing files, default is based on `default_split` in config
+---@field split? DotMd.Split Split direction for new or existing files, default is based on `default_split` in config
 
 ---@param opts? DotMd.CreateFileOpts
 require("dotmd").create_todo_today(opts)
@@ -459,8 +465,10 @@ Open/create a journal entry for today.
 > Can be used to open the current todo file, if it exists, else it creates a new one.
 
 ```lua
+---@alias DotMd.Split "vertical" | "horizontal" | "none" Split direction
+
 ---@class DotMd.CreateFileOpts
----@field split? "vertical" | "horizontal" | "none" Split direction for new or existing files, default is based on `default_split` in config
+---@field split? DotMd.Split Split direction for new or existing files, default is based on `default_split` in config
 
 ---@param opts? DotMd.CreateFileOpts
 require("dotmd").create_journal(opts)
@@ -476,8 +484,10 @@ Open the central `inbox.md`.
 > Inbox is a single file that won't be recreated if exists and meant to just be there for you to dump thoughts, tasks, and references.
 
 ```lua
+---@alias DotMd.Split "vertical" | "horizontal" | "none" Split direction
+
 ---@class DotMd.CreateFileOpts
----@field split? "vertical" | "horizontal" | "none" Split direction for new or existing files, default is based on `default_split` in config
+---@field split? DotMd.Split Split direction for new or existing files, default is based on `default_split` in config
 
 ---@param opts? DotMd.CreateFileOpts
 require("dotmd").create_journal(opts)
