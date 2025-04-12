@@ -15,6 +15,8 @@ function M.input_note_name(base_path, opts)
 			return
 		end
 
+		name_or_path = utils.trim(name_or_path)
+
 		local subdir = vim.fn.fnamemodify(name_or_path, ":h")
 		local filename = vim.fn.fnamemodify(name_or_path, ":t")
 

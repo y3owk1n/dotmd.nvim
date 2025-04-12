@@ -51,7 +51,23 @@ describe("dotmd.utils module", function()
 		end)
 	end)
 
+	describe("trim", function()
+		it("should trim left and right", function()
+			local input = "  My Test File  "
+			local expected = "My Test File"
+			local trimmed = utils.trim(input)
+			assert.are.equal(expected, trimmed)
+		end)
+	end)
+
 	describe("format_filename", function()
+		it("should trim left and right", function()
+			local input = "  My Test File  "
+			local expected = "my-test-file"
+			local formatted = utils.format_filename(input)
+			assert.are.equal(expected, formatted)
+		end)
+
 		it(
 			"should lower-case, replace spaces with dashes, remove .md extension, then sanitize",
 			function()
@@ -80,6 +96,13 @@ describe("dotmd.utils module", function()
 				assert.are.equal(expected, deformatted)
 			end
 		)
+
+		it("should also remove .md extension", function()
+			local input = "my-test_file.md"
+			local expected = "My test file"
+			local deformatted = utils.deformat_filename(input)
+			assert.are.equal(expected, deformatted)
+		end)
 	end)
 
 	describe("ensure_directory", function()

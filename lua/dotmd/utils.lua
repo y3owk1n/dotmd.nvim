@@ -17,11 +17,21 @@ function M.sanitize_filename(name)
 	return sanitized
 end
 
+--- Trim a string left and right
+---@param string string The string to trim
+---@return string The trimmed string
+function M.trim(string)
+	local trimmed = string:gsub("^%s*(.-)%s*$", "%1")
+	return trimmed
+end
+
 --- Format a filename
 ---@param name string The filename to format
 ---@return string The formatted filename
 function M.format_filename(name)
-	local formatted = name:lower():gsub(" ", "-"):gsub("%.md$", "")
+	local trimmed = M.trim(name)
+
+	local formatted = trimmed:lower():gsub(" ", "-"):gsub("%.md$", "")
 	return M.sanitize_filename(formatted)
 end
 
@@ -29,7 +39,8 @@ end
 ---@param name string The filename to deformat
 ---@return string The deformatted filename
 function M.deformat_filename(name)
-	local deformatted = name:gsub("[-_]", " "):gsub("^%l", string.upper)
+	local deformatted =
+		name:gsub("[-_]", " "):gsub("^%l", string.upper):gsub("%.md$", "")
 	return deformatted
 end
 
