@@ -54,4 +54,12 @@ function M.navigate(direction)
 	return commands.navigate(direction)
 end
 
+--- Open a file from a list of directories
+---@param opts? DotMd.OpenOpts
+---@return nil
+function M.open(opts)
+	local commands = require("dotmd.commands")
+	return commands.open(opts)
+end
+
 return M
