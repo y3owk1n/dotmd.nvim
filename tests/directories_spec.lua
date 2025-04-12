@@ -73,7 +73,7 @@ describe("dotmd.directories module", function()
 	describe("get_picker_dirs", function()
 		it("should return all directories when type is 'all'", function()
 			local opts = { type = "all" }
-			local dirs = directories.get_picker_dirs(opts)
+			local dirs = directories.get_picker_dirs(opts.type)
 			local expected = {
 				test_config.root_dir .. test_config.dir_names["notes"] .. "/",
 				test_config.root_dir .. test_config.dir_names["todo"] .. "/",
@@ -84,7 +84,7 @@ describe("dotmd.directories module", function()
 
 		it("should return only notes directory when type is 'notes'", function()
 			local opts = { type = "notes" }
-			local dirs = directories.get_picker_dirs(opts)
+			local dirs = directories.get_picker_dirs(opts.type)
 			local expected = {
 				test_config.root_dir .. test_config.dir_names["notes"] .. "/",
 			}
@@ -93,7 +93,7 @@ describe("dotmd.directories module", function()
 
 		it("should return only todos directory when type is 'todos'", function()
 			local opts = { type = "todos" }
-			local dirs = directories.get_picker_dirs(opts)
+			local dirs = directories.get_picker_dirs(opts.type)
 			local expected = {
 				test_config.root_dir .. test_config.dir_names["todo"] .. "/",
 			}
@@ -104,7 +104,7 @@ describe("dotmd.directories module", function()
 			"should return only journal directory when type is 'journal'",
 			function()
 				local opts = { type = "journal" }
-				local dirs = directories.get_picker_dirs(opts)
+				local dirs = directories.get_picker_dirs(opts.type)
 				local expected = {
 					test_config.root_dir
 						.. test_config.dir_names["journal"]
