@@ -186,7 +186,7 @@ function M.pick(opts)
 	opts.type = opts.type or "notes"
 	opts.grep = opts.grep or false
 
-	local dirs = directories.get_picker_dirs(opts)
+	local dirs = directories.get_picker_dirs(opts.type)
 
 	local prompt_name_type = opts.type == "all" and " "
 		or " " .. opts.type .. " "

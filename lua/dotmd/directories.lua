@@ -46,19 +46,19 @@ function M.get_root_dir()
 end
 
 --- Get directories for picker
----@param opts DotMd.PickOpts Options for picking the file
+---@param type DotMd.PickType Options for picking the file
 ---@return string[] dirs The directories to pick from
-function M.get_picker_dirs(opts)
+function M.get_picker_dirs(type)
 	local dirs = {}
-	if opts.type == "all" then
+	if type == "all" then
 		table.insert(dirs, M.get_notes_dir())
 		table.insert(dirs, M.get_todo_dir())
 		table.insert(dirs, M.get_journal_dir())
-	elseif opts.type == "notes" then
+	elseif type == "notes" then
 		table.insert(dirs, M.get_notes_dir())
-	elseif opts.type == "todos" then
+	elseif type == "todos" then
 		table.insert(dirs, M.get_todo_dir())
-	elseif opts.type == "journal" then
+	elseif type == "journal" then
 		table.insert(dirs, M.get_journal_dir())
 	end
 	return dirs
