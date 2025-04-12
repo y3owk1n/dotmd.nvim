@@ -4,6 +4,8 @@ An opinionated, and fast Neovim plugin for managing markdown notes, todos, and j
 
 <!-- panvimdoc-ignore-start -->
 
+https://github.com/user-attachments/assets/509f19d9-4172-4708-ad48-6a31735e6a6b
+
 ## A little bit about why
 
 I’ve been using Apple Notes for a while — mostly because of how effortlessly it syncs across devices. But over time, I started to get frustrated with how mouse-dependent it is. I prefer staying in the keyboard as much as possible, especially when I'm just jotting down thoughts or todos.
