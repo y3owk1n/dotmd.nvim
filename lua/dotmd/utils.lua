@@ -85,13 +85,13 @@ end
 
 --- Open a file
 ---@param note_path string The path to the file
----@param opts DotMd.CreateFileOpts Options for creating the file
-function M.open_file(note_path, opts)
+---@param split? DotMd.Split Split direction for new or existing files, default is based on `default_split` in config
+function M.open_file(note_path, split)
 	local cmd = ({
 		vertical = "vsplit",
 		horizontal = "split",
 		none = "edit",
-	})[opts.split] or "edit"
+	})[split] or "edit"
 
 	vim.cmd(string.format("%s %s", cmd, vim.fn.fnameescape(note_path)))
 end

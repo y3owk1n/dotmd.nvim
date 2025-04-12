@@ -145,7 +145,7 @@ describe("dotmd.utils module", function()
 			vim.fn.writefile({ "# header" }, file_path)
 
 			local opts = { split = "vertical" }
-			utils.open_file(file_path, opts)
+			utils.open_file(file_path, opts.split)
 
 			local bufname = vim.fn.expand("%:p")
 			assert.are.equal(vim.fn.fnamemodify(file_path, ":p"), bufname)
