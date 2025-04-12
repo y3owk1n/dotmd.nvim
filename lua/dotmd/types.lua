@@ -31,3 +31,4 @@
 ---@field type? DotMd.PickType Open type, default is `all`
 ---@field query? string Query to filter the files
 ---@field split? DotMd.Split Split direction for new or existing files, default is based on `default_split` in config
+---@field pluralise_query? boolean Pluralise the query, default is `false`
