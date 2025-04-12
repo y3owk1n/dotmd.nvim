@@ -10,8 +10,8 @@ local defaults = {
 	picker = nil,
 	dir_names = {
 		notes = "notes",
-		todo = "todo",
-		journal = "journal",
+		todos = "todos",
+		journals = "journals",
 	},
 	templates = {
 		notes = function(title)
@@ -25,7 +25,7 @@ local defaults = {
 				"",
 			}
 		end,
-		todo = function(date)
+		todos = function(date)
 			return {
 				"---",
 				"type: todo",
@@ -38,7 +38,7 @@ local defaults = {
 				"",
 			}
 		end,
-		journal = function(date)
+		journals = function(date)
 			return {
 				"---",
 				"type: journal",

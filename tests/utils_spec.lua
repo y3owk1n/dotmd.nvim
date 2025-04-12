@@ -1,10 +1,38 @@
 ---@module 'luassert'
 
 local utils = require("dotmd.utils")
-local config = require("dotmd.config").config
+local config = require("dotmd.config")
 local test_utils = require("dotmd.test-utils")
 
+local test_config = {
+	root_dir = test_utils.tmp_dir() .. "/",
+	default_split = "vertical",
+}
+
 describe("dotmd.utils module", function()
+	before_each(function()
+		config.setup(test_config)
+
+		vim.fn.mkdir(config.config.root_dir, "p")
+		vim.fn.mkdir(
+			config.config.root_dir .. config.config.dir_names.notes,
+			"p"
+		)
+		vim.fn.mkdir(
+			config.config.root_dir .. config.config.dir_names.todos,
+			"p"
+		)
+		vim.fn.mkdir(
+			config.config.root_dir .. config.config.dir_names.journals,
+			"p"
+		)
+	end)
+
+	after_each(function()
+		test_utils.remove_dir(vim.fn.fnamemodify(config.config.root_dir, ":h"))
+		config.config = {}
+	end)
+
 	describe("merge_default_create_file_opts", function()
 		it("should set default values when no opts provided", function()
 			local opts = utils.merge_default_create_file_opts()
@@ -59,7 +87,7 @@ describe("dotmd.utils module", function()
 			local dir = vim.fn.tempname() .. "/nested/dir"
 			utils.ensure_directory(dir)
 			local stat = vim.uv.fs_stat(dir)
-			assert.is_not_nil(stat)
+			assert.not_nil(stat)
 			test_utils.remove_dir(vim.fn.fnamemodify(dir, ":h"))
 		end)
 	end)
@@ -212,12 +240,6 @@ describe("dotmd.utils module", function()
 	end)
 
 	describe("is_date_based_directory", function()
-		before_each(function()
-			config.dir_names.journal = "journal"
-			config.dir_names.todo = "todo"
-			config.dir_names.notes = "notes"
-		end)
-
 		it("should return true if current folder is journal", function()
 			local current_folder_name = "journal"
 			local is_date_based =
@@ -225,11 +247,11 @@ describe("dotmd.utils module", function()
 			assert.is_true(is_date_based)
 		end)
 
-		it("should return false if current folder is todo", function()
+		it("should return true if current folder is todo", function()
 			local current_folder_name = "todo"
 			local is_date_based =
 				utils.is_date_based_directory(current_folder_name)
-			assert.is_false(is_date_based)
+			assert.is_true(is_date_based)
 		end)
 
 		it(

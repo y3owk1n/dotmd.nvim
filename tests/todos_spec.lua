@@ -2,25 +2,46 @@
 
 local todos = require("dotmd.todos")
 local test_utils = require("dotmd.test-utils")
+local config = require("dotmd.config")
+
+local test_config = {
+	root_dir = test_utils.tmp_dir() .. "/",
+	default_split = "vertical",
+}
 
 describe("dotmd.todos module", function()
+	before_each(function()
+		config.setup(test_config)
+
+		vim.fn.mkdir(config.config.root_dir, "p")
+		vim.fn.mkdir(
+			config.config.root_dir .. config.config.dir_names.notes,
+			"p"
+		)
+		vim.fn.mkdir(
+			config.config.root_dir .. config.config.dir_names.todos,
+			"p"
+		)
+		vim.fn.mkdir(
+			config.config.root_dir .. config.config.dir_names.journals,
+			"p"
+		)
+	end)
+
+	after_each(function()
+		test_utils.remove_dir(vim.fn.fnamemodify(config.config.root_dir, ":h"))
+		config.config = {}
+	end)
+
 	describe("rollover_previous_todo_to_today", function()
-		local tempdir
-
-		before_each(function()
-			tempdir = test_utils.tmp_dir() .. "/"
-		end)
-
-		after_each(function()
-			test_utils.remove_dir(vim.fn.fnamemodify(tempdir, ":h"))
-		end)
-
 		it(
 			"should do nothing and return nil,nil if no previous todo file exists",
 			function()
 				local today = "2025-04-20"
-				local unchecked, path =
-					todos.rollover_previous_todo_to_today(tempdir, today)
+				local unchecked, path = todos.rollover_previous_todo_to_today(
+					config.config.root_dir,
+					today
+				)
 				assert.is_nil(unchecked)
 				assert.is_nil(path)
 			end
@@ -30,7 +51,7 @@ describe("dotmd.todos module", function()
 			"should update the file and return unchecked tasks when tasks exist",
 			function()
 				local file_date = "2025-04-18"
-				local filename = tempdir .. file_date .. ".md"
+				local filename = config.config.root_dir .. file_date .. ".md"
 				local lines = {
 					"# Todo for " .. file_date,
 					"",
@@ -46,15 +67,17 @@ describe("dotmd.todos module", function()
 				vim.fn.writefile(lines, filename)
 
 				-- Create another file that should not be picked up because it is on/after today.
-				local later_filename = tempdir .. "2025-04-20.md"
+				local later_filename = config.config.root_dir .. "2025-04-20.md"
 				vim.fn.writefile(
 					{ "# Todo for 2025-04-20", "## Tasks", "- [ ] Irrelevant" },
 					later_filename
 				)
 
 				local today = "2025-04-20"
-				local unchecked, path =
-					todos.rollover_previous_todo_to_today(tempdir, today)
+				local unchecked, path = todos.rollover_previous_todo_to_today(
+					config.config.root_dir,
+					today
+				)
 
 				-- Expect unchecked tasks to be those that match the pattern inside the tasks section.
 				local expected_unchecked =
@@ -75,7 +98,7 @@ describe("dotmd.todos module", function()
 			"should return nil,nil if there are no unchecked tasks in the tasks section",
 			function()
 				local file_date = "2025-04-17"
-				local filename = tempdir .. file_date .. ".md"
+				local filename = config.config.root_dir .. file_date .. ".md"
 				local lines = {
 					"# Todo for " .. file_date,
 					"",
@@ -88,8 +111,10 @@ describe("dotmd.todos module", function()
 				vim.fn.writefile(lines, filename)
 
 				local today = "2025-04-18"
-				local unchecked, path =
-					todos.rollover_previous_todo_to_today(tempdir, today)
+				local unchecked, path = todos.rollover_previous_todo_to_today(
+					config.config.root_dir,
+					today
+				)
 				assert.is_nil(unchecked)
 				assert.is_nil(path)
 			end

@@ -25,13 +25,13 @@ end
 --- Get the directory for todos
 ---@return string path The path to the todos directory
 function M.get_todo_dir()
-	return M.get_subdir("todo")
+	return M.get_subdir("todos")
 end
 
 --- Get the directory for journal
 ---@return string path The path to the journal directory
 function M.get_journal_dir()
-	return M.get_subdir("journal")
+	return M.get_subdir("journals")
 end
 
 --- Get the root directory
@@ -58,7 +58,7 @@ function M.get_picker_dirs(type)
 		table.insert(dirs, M.get_notes_dir())
 	elseif type == "todos" then
 		table.insert(dirs, M.get_todo_dir())
-	elseif type == "journal" then
+	elseif type == "journals" then
 		table.insert(dirs, M.get_journal_dir())
 	end
 	return dirs

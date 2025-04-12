@@ -1,6 +1,6 @@
----@alias DotMd.Config.DirNameKeys "notes" | "todo" | "journal"
+---@alias DotMd.Config.DirNameKeys "notes" | "todos" | "journals"
 ---@alias DotMd.Split "vertical" | "horizontal" | "none" Split direction
----@alias DotMd.PickType "notes" | "todos" | "journal" | "all" Pick type
+---@alias DotMd.PickType "notes" | "todos" | "journals" | "all" Pick type
 ---@alias DotMd.PickerType "telescope" | "fzf" | "snacks" Picker type
 
 ---@class DotMd.Config
@@ -13,13 +13,13 @@
 
 ---@class DotMd.Config.DirNames
 ---@field notes? string Directory name for notes, default is "notes"
----@field todo? string Todo directory name, default is "todo"
----@field journal? string Journal directory name, default is "journal"
+---@field todos? string Todo directory name, default is "todos"
+---@field journals? string Journal directory name, default is "journals"
 
 ---@class Dotmd.Config.Templates
 ---@field notes? fun(name: string): string[]
----@field todo? fun(date: string): string[]
----@field journal? fun(date: string): string[]
+---@field todos? fun(date: string): string[]
+---@field journals? fun(date: string): string[]
 ---@field inbox? fun(date: string): string[]
 
 ---@class DotMd.CreateFileOpts

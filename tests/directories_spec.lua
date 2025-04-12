@@ -5,18 +5,32 @@ local config = require("dotmd.config")
 local test_utils = require("dotmd.test-utils")
 
 local test_config = {
-	root_dir = "/tmp/test_root/",
-	dir_names = {
-		notes = "notes",
-		todo = "todos",
-		journal = "journal",
-	},
+	root_dir = test_utils.tmp_dir() .. "/",
 	default_split = "vertical",
 }
 
 describe("dotmd.directories module", function()
 	before_each(function()
-		config.config = test_config
+		config.setup(test_config)
+
+		vim.fn.mkdir(config.config.root_dir, "p")
+		vim.fn.mkdir(
+			config.config.root_dir .. config.config.dir_names.notes,
+			"p"
+		)
+		vim.fn.mkdir(
+			config.config.root_dir .. config.config.dir_names.todos,
+			"p"
+		)
+		vim.fn.mkdir(
+			config.config.root_dir .. config.config.dir_names.journals,
+			"p"
+		)
+	end)
+
+	after_each(function()
+		test_utils.remove_dir(vim.fn.fnamemodify(config.config.root_dir, ":h"))
+		config.config = {}
 	end)
 
 	describe("get_subdir", function()
@@ -24,8 +38,8 @@ describe("dotmd.directories module", function()
 			"should return the full path for a given subdirectory key",
 			function()
 				local subdir_path = directories.get_subdir("notes")
-				local expected = test_config.root_dir
-					.. test_config.dir_names["notes"]
+				local expected = config.config.root_dir
+					.. config.config.dir_names["notes"]
 					.. "/"
 				assert.are.equal(expected, subdir_path)
 			end
@@ -35,8 +49,8 @@ describe("dotmd.directories module", function()
 	describe("get_notes_dir", function()
 		it("should return the notes directory", function()
 			local notes_dir = directories.get_notes_dir()
-			local expected = test_config.root_dir
-				.. test_config.dir_names["notes"]
+			local expected = config.config.root_dir
+				.. config.config.dir_names["notes"]
 				.. "/"
 			assert.are.equal(expected, notes_dir)
 		end)
@@ -45,8 +59,8 @@ describe("dotmd.directories module", function()
 	describe("get_todo_dir", function()
 		it("should return the todo directory", function()
 			local todo_dir = directories.get_todo_dir()
-			local expected = test_config.root_dir
-				.. test_config.dir_names["todo"]
+			local expected = config.config.root_dir
+				.. config.config.dir_names["todos"]
 				.. "/"
 			assert.are.equal(expected, todo_dir)
 		end)
@@ -55,8 +69,8 @@ describe("dotmd.directories module", function()
 	describe("get_journal_dir", function()
 		it("should return the journal directory", function()
 			local journal_dir = directories.get_journal_dir()
-			local expected = test_config.root_dir
-				.. test_config.dir_names["journal"]
+			local expected = config.config.root_dir
+				.. config.config.dir_names["journals"]
 				.. "/"
 			assert.are.equal(expected, journal_dir)
 		end)
@@ -65,7 +79,7 @@ describe("dotmd.directories module", function()
 	describe("get_root_dir", function()
 		it("should return the root directory", function()
 			local root_dir = directories.get_root_dir()
-			local expected = test_config.root_dir .. "/"
+			local expected = config.config.root_dir .. "/"
 			assert.are.equal(expected, root_dir)
 		end)
 	end)
@@ -75,9 +89,15 @@ describe("dotmd.directories module", function()
 			local opts = { type = "all" }
 			local dirs = directories.get_picker_dirs(opts.type)
 			local expected = {
-				test_config.root_dir .. test_config.dir_names["notes"] .. "/",
-				test_config.root_dir .. test_config.dir_names["todo"] .. "/",
-				test_config.root_dir .. test_config.dir_names["journal"] .. "/",
+				config.config.root_dir
+					.. config.config.dir_names["notes"]
+					.. "/",
+				config.config.root_dir
+					.. config.config.dir_names["todos"]
+					.. "/",
+				config.config.root_dir
+					.. config.config.dir_names["journals"]
+					.. "/",
 			}
 			assert.are.same(expected, dirs)
 		end)
@@ -86,7 +106,9 @@ describe("dotmd.directories module", function()
 			local opts = { type = "notes" }
 			local dirs = directories.get_picker_dirs(opts.type)
 			local expected = {
-				test_config.root_dir .. test_config.dir_names["notes"] .. "/",
+				config.config.root_dir
+					.. config.config.dir_names["notes"]
+					.. "/",
 			}
 			assert.are.same(expected, dirs)
 		end)
@@ -95,7 +117,9 @@ describe("dotmd.directories module", function()
 			local opts = { type = "todos" }
 			local dirs = directories.get_picker_dirs(opts.type)
 			local expected = {
-				test_config.root_dir .. test_config.dir_names["todo"] .. "/",
+				config.config.root_dir
+					.. config.config.dir_names["todos"]
+					.. "/",
 			}
 			assert.are.same(expected, dirs)
 		end)
@@ -103,11 +127,11 @@ describe("dotmd.directories module", function()
 		it(
 			"should return only journal directory when type is 'journal'",
 			function()
-				local opts = { type = "journal" }
+				local opts = { type = "journals" }
 				local dirs = directories.get_picker_dirs(opts.type)
 				local expected = {
-					test_config.root_dir
-						.. test_config.dir_names["journal"]
+					config.config.root_dir
+						.. config.config.dir_names["journals"]
 						.. "/",
 				}
 				assert.are.same(expected, dirs)
@@ -116,25 +140,17 @@ describe("dotmd.directories module", function()
 	end)
 
 	describe("get_subdirs_recursive", function()
-		local tempdir
-
 		before_each(function()
-			tempdir = test_utils.tmp_dir() .. "/"
-			vim.fn.mkdir(tempdir, "p")
-
-			vim.fn.mkdir(tempdir .. "/sub1", "p")
-			vim.fn.mkdir(tempdir .. "/sub1/nested", "p")
-			vim.fn.mkdir(tempdir .. "/sub2", "p")
-		end)
-
-		after_each(function()
-			test_utils.remove_dir(vim.fn.fnamemodify(tempdir, ":h"))
+			vim.fn.mkdir(config.config.root_dir .. "/sub1", "p")
+			vim.fn.mkdir(config.config.root_dir .. "/sub1/nested", "p")
+			vim.fn.mkdir(config.config.root_dir .. "/sub2", "p")
 		end)
 
 		it(
 			"returns subdirectories recursively with expected headers",
 			function()
-				local subdirs = directories.get_subdirs_recursive(tempdir)
+				local subdirs =
+					directories.get_subdirs_recursive(config.config.root_dir)
 
 				assert.equals("[Create new subdirectory]", subdirs[1])
 				assert.equals("[base directory]", subdirs[2])
@@ -185,29 +201,23 @@ describe("dotmd.directories module", function()
 	end)
 
 	describe("get_nearest_previous_from_date", function()
-		local tempdir
-
-		before_each(function()
-			tempdir = test_utils.tmp_dir() .. "/"
-		end)
-
-		after_each(function()
-			test_utils.remove_dir(vim.fn.fnamemodify(tempdir, ":h"))
-		end)
-
 		it("should return nil if no markdown files exist", function()
 			local today = "2025-04-15"
-			local ret =
-				directories.get_nearest_previous_from_date(tempdir, today)
+			local ret = directories.get_nearest_previous_from_date(
+				config.config.root_dir,
+				today
+			)
 			assert.is_nil(ret)
 		end)
 
 		it("should return nil if no files match the date pattern", function()
-			local bad_file = tempdir .. "notadate.txt"
+			local bad_file = config.config.root_dir .. "notadate.txt"
 			vim.fn.writefile({ "dummy content" }, bad_file)
 			local today = "2025-04-15"
-			local ret =
-				directories.get_nearest_previous_from_date(tempdir, today)
+			local ret = directories.get_nearest_previous_from_date(
+				config.config.root_dir,
+				today
+			)
 			assert.is_nil(ret)
 		end)
 
@@ -221,39 +231,40 @@ describe("dotmd.directories module", function()
 					{ name = "2025-04-15.md", content = { "File D" } },
 				}
 				for _, f in ipairs(files) do
-					vim.fn.writefile(f.content, tempdir .. f.name)
+					vim.fn.writefile(
+						f.content,
+						config.config.root_dir .. f.name
+					)
 				end
 
 				local today = "2025-04-15"
-				local ret =
-					directories.get_nearest_previous_from_date(tempdir, today)
-				assert.are.equal(tempdir .. "2025-04-14.md", ret)
+				local ret = directories.get_nearest_previous_from_date(
+					config.config.root_dir,
+					today
+				)
+				assert.are.equal(config.config.root_dir .. "2025-04-14.md", ret)
 			end
 		)
 	end)
 
 	describe("get_nearest_next_from_date", function()
-		local tempdir
-
-		before_each(function()
-			tempdir = test_utils.tmp_dir() .. "/"
-		end)
-
-		after_each(function()
-			test_utils.remove_dir(vim.fn.fnamemodify(tempdir, ":h"))
-		end)
-
 		it("should return nil if no markdown files exist", function()
 			local today = "2025-04-15"
-			local ret = directories.get_nearest_next_from_date(tempdir, today)
+			local ret = directories.get_nearest_next_from_date(
+				config.config.root_dir,
+				today
+			)
 			assert.is_nil(ret)
 		end)
 
 		it("should return nil if no files match the date pattern", function()
-			local bad_file = tempdir .. "notadate.txt"
+			local bad_file = config.config.root_dir .. "notadate.txt"
 			vim.fn.writefile({ "dummy content" }, bad_file)
 			local today = "2025-04-15"
-			local ret = directories.get_nearest_next_from_date(tempdir, today)
+			local ret = directories.get_nearest_next_from_date(
+				config.config.root_dir,
+				today
+			)
 			assert.is_nil(ret)
 		end)
 
@@ -267,103 +278,105 @@ describe("dotmd.directories module", function()
 					{ name = "2025-04-18.md", content = { "File D" } },
 				}
 				for _, f in ipairs(files) do
-					vim.fn.writefile(f.content, tempdir .. f.name)
+					vim.fn.writefile(
+						f.content,
+						config.config.root_dir .. f.name
+					)
 				end
 
 				local today = "2025-04-15"
-				local ret =
-					directories.get_nearest_next_from_date(tempdir, today)
-				assert.are.equal(tempdir .. "2025-04-16.md", ret)
+				local ret = directories.get_nearest_next_from_date(
+					config.config.root_dir,
+					today
+				)
+				assert.are.equal(config.config.root_dir .. "2025-04-16.md", ret)
 			end
 		)
 	end)
 
 	describe("get_files_recursive", function()
-		local tempdir
-
 		before_each(function()
-			tempdir = test_utils.tmp_dir() .. "/"
+			vim.fn.mkdir(config.config.root_dir, "p")
 
-			vim.fn.mkdir(tempdir, "p")
+			vim.fn.mkdir(config.config.root_dir .. "/sub1", "p")
+			vim.fn.mkdir(config.config.root_dir .. "/sub1/nested", "p")
+			vim.fn.mkdir(config.config.root_dir .. "/sub2", "p")
 
-			vim.fn.mkdir(tempdir .. "/sub1", "p")
-			vim.fn.mkdir(tempdir .. "/sub1/nested", "p")
-			vim.fn.mkdir(tempdir .. "/sub2", "p")
-
-			vim.fn.writefile({ "dummy content" }, tempdir .. "dummy.md")
-			vim.fn.writefile({ "dummy content" }, tempdir .. "sub1/dummy.md")
 			vim.fn.writefile(
 				{ "dummy content" },
-				tempdir .. "sub1/nested/dummy.md"
+				config.config.root_dir .. "dummy.md"
 			)
-			vim.fn.writefile({ "dummy content" }, tempdir .. "sub2/dummy.md")
-		end)
-
-		after_each(function()
-			test_utils.remove_dir(vim.fn.fnamemodify(tempdir, ":h"))
+			vim.fn.writefile(
+				{ "dummy content" },
+				config.config.root_dir .. "sub1/dummy.md"
+			)
+			vim.fn.writefile(
+				{ "dummy content" },
+				config.config.root_dir .. "sub1/nested/dummy.md"
+			)
+			vim.fn.writefile(
+				{ "dummy content" },
+				config.config.root_dir .. "sub2/dummy.md"
+			)
 		end)
 
 		it("recursively gets .md files", function()
-			local files = directories.get_files_recursive(tempdir)
+			local files =
+				directories.get_files_recursive(config.config.root_dir)
 			local expected = {
-				tempdir .. "dummy.md",
-				tempdir .. "sub1/dummy.md",
-				tempdir .. "sub1/nested/dummy.md",
-				tempdir .. "sub2/dummy.md",
+				config.config.root_dir .. "dummy.md",
+				config.config.root_dir .. "sub1/dummy.md",
+				config.config.root_dir .. "sub1/nested/dummy.md",
+				config.config.root_dir .. "sub2/dummy.md",
 			}
 			assert.are.same(expected, files)
 		end)
 	end)
 
 	describe("prepare_items_for_select", function()
-		local tempdir
-
 		before_each(function()
-			tempdir = test_utils.tmp_dir() .. "/"
+			vim.fn.mkdir(config.config.root_dir, "p")
 
-			config.config = {
-				root_dir = tempdir,
-				dir_names = {
-					notes = "notes",
-					todo = "todos",
-					journal = "journal",
-				},
-				default_split = "vertical",
-			}
+			vim.fn.mkdir(config.config.root_dir .. "/sub1", "p")
+			vim.fn.mkdir(config.config.root_dir .. "/sub1/nested", "p")
+			vim.fn.mkdir(config.config.root_dir .. "/sub2", "p")
 
-			vim.fn.mkdir(tempdir, "p")
-
-			vim.fn.mkdir(tempdir .. "/sub1", "p")
-			vim.fn.mkdir(tempdir .. "/sub1/nested", "p")
-			vim.fn.mkdir(tempdir .. "/sub2", "p")
-
-			vim.fn.writefile({ "dummy content" }, tempdir .. "dummy.md")
-			vim.fn.writefile({ "dummy content" }, tempdir .. "sub1/dummy.md")
 			vim.fn.writefile(
 				{ "dummy content" },
-				tempdir .. "sub1/nested/dummy.md"
+				config.config.root_dir .. "dummy.md"
 			)
-			vim.fn.writefile({ "dummy content" }, tempdir .. "sub2/dummy.md")
-		end)
-
-		after_each(function()
-			test_utils.remove_dir(vim.fn.fnamemodify(tempdir, ":h"))
+			vim.fn.writefile(
+				{ "dummy content" },
+				config.config.root_dir .. "sub1/dummy.md"
+			)
+			vim.fn.writefile(
+				{ "dummy content" },
+				config.config.root_dir .. "sub1/nested/dummy.md"
+			)
+			vim.fn.writefile(
+				{ "dummy content" },
+				config.config.root_dir .. "sub2/dummy.md"
+			)
 		end)
 
 		it("converts paths to display format", function()
-			local items = directories.prepare_items_for_select({ tempdir })
+			local items =
+				directories.prepare_items_for_select({ config.config.root_dir })
 			local expected = {
-				{ value = tempdir .. "dummy.md", display = "dummy.md" },
 				{
-					value = tempdir .. "sub1/dummy.md",
+					value = config.config.root_dir .. "dummy.md",
+					display = "dummy.md",
+				},
+				{
+					value = config.config.root_dir .. "sub1/dummy.md",
 					display = "sub1/dummy.md",
 				},
 				{
-					value = tempdir .. "sub1/nested/dummy.md",
+					value = config.config.root_dir .. "sub1/nested/dummy.md",
 					display = "sub1/nested/dummy.md",
 				},
 				{
-					value = tempdir .. "sub2/dummy.md",
+					value = config.config.root_dir .. "sub2/dummy.md",
 					display = "sub2/dummy.md",
 				},
 			}
