@@ -277,4 +277,97 @@ describe("dotmd.directories module", function()
 			end
 		)
 	end)
+
+	describe("get_files_recursive", function()
+		local tempdir
+
+		before_each(function()
+			tempdir = test_utils.tmp_dir() .. "/"
+
+			vim.fn.mkdir(tempdir, "p")
+
+			vim.fn.mkdir(tempdir .. "/sub1", "p")
+			vim.fn.mkdir(tempdir .. "/sub1/nested", "p")
+			vim.fn.mkdir(tempdir .. "/sub2", "p")
+
+			vim.fn.writefile({ "dummy content" }, tempdir .. "dummy.md")
+			vim.fn.writefile({ "dummy content" }, tempdir .. "sub1/dummy.md")
+			vim.fn.writefile(
+				{ "dummy content" },
+				tempdir .. "sub1/nested/dummy.md"
+			)
+			vim.fn.writefile({ "dummy content" }, tempdir .. "sub2/dummy.md")
+		end)
+
+		after_each(function()
+			test_utils.remove_dir(vim.fn.fnamemodify(tempdir, ":h"))
+		end)
+
+		it("recursively gets .md files", function()
+			local files = directories.get_files_recursive(tempdir)
+			local expected = {
+				tempdir .. "dummy.md",
+				tempdir .. "sub1/dummy.md",
+				tempdir .. "sub1/nested/dummy.md",
+				tempdir .. "sub2/dummy.md",
+			}
+			assert.are.same(expected, files)
+		end)
+	end)
+
+	describe("prepare_items_for_select", function()
+		local tempdir
+
+		before_each(function()
+			tempdir = test_utils.tmp_dir() .. "/"
+
+			config.config = {
+				root_dir = tempdir,
+				dir_names = {
+					notes = "notes",
+					todo = "todos",
+					journal = "journal",
+				},
+				default_split = "vertical",
+			}
+
+			vim.fn.mkdir(tempdir, "p")
+
+			vim.fn.mkdir(tempdir .. "/sub1", "p")
+			vim.fn.mkdir(tempdir .. "/sub1/nested", "p")
+			vim.fn.mkdir(tempdir .. "/sub2", "p")
+
+			vim.fn.writefile({ "dummy content" }, tempdir .. "dummy.md")
+			vim.fn.writefile({ "dummy content" }, tempdir .. "sub1/dummy.md")
+			vim.fn.writefile(
+				{ "dummy content" },
+				tempdir .. "sub1/nested/dummy.md"
+			)
+			vim.fn.writefile({ "dummy content" }, tempdir .. "sub2/dummy.md")
+		end)
+
+		after_each(function()
+			test_utils.remove_dir(vim.fn.fnamemodify(tempdir, ":h"))
+		end)
+
+		it("converts paths to display format", function()
+			local items = directories.prepare_items_for_select({ tempdir })
+			local expected = {
+				{ value = tempdir .. "dummy.md", display = "dummy.md" },
+				{
+					value = tempdir .. "sub1/dummy.md",
+					display = "sub1/dummy.md",
+				},
+				{
+					value = tempdir .. "sub1/nested/dummy.md",
+					display = "sub1/nested/dummy.md",
+				},
+				{
+					value = tempdir .. "sub2/dummy.md",
+					display = "sub2/dummy.md",
+				},
+			}
+			assert.are.same(expected, items)
+		end)
+	end)
 end)

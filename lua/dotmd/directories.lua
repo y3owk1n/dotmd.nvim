@@ -169,4 +169,41 @@ function M.get_nearest_next_from_date(dir, date)
 	return candidates[1].path
 end
 
+--- Get files recursively from a directory
+---@param directory string The directory to get files from
+---@return string[] files
+function M.get_files_recursive(directory)
+	local files = {}
+	local scan = vim.fn.readdir(directory)
+	for _, entry in ipairs(scan) do
+		local full_path = directory .. entry
+		if vim.fn.isdirectory(full_path) == 1 then
+			vim.list_extend(files, M.get_files_recursive(full_path .. "/"))
+		elseif entry:match("%.md$") then
+			table.insert(files, full_path)
+		end
+	end
+	return files
+end
+
+---@param dirs string[]
+---@return string[]
+function M.prepare_items_for_select(dirs)
+	local config = require("dotmd.config").config
+
+	local items = {}
+	for _, dir in ipairs(dirs) do
+		vim.list_extend(items, M.get_files_recursive(dir))
+	end
+
+	-- Convert to display format
+	return vim.tbl_map(function(path)
+		local display_path = path:gsub(vim.fn.expand(config.root_dir), "")
+		return {
+			value = path,
+			display = display_path,
+		}
+	end, items)
+end
+
 return M

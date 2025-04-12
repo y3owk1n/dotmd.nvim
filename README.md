@@ -506,8 +506,10 @@ Pick or search files in **dotmd.nvim** directories by `type`.
 > `grep` option is not supported and will do nothing for the fallback.
 
 ```lua
+---@alias DotMd.PickType "notes" | "todos" | "journal" | "all" Pick type
+
 ---@class DotMd.PickOpts
----@field type? "notes" | "todos" | "journal" | "all" Pick type, default is `notes`
+---@field type? DotMd.PickType Pick type, default is `notes`
 ---@field grep? boolean Grep the selected type directory for a string, default is false
 
 ---@param opts? DotMd.PickOpts
