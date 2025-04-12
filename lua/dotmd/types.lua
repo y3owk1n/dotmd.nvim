@@ -26,3 +26,8 @@
 ---@class DotMd.PickOpts
 ---@field type? DotMd.PickType Pick type, default is `notes`
 ---@field grep? boolean Grep the selected type directory for a string, default is false
+
+---@class DotMd.OpenOpts
+---@field type? DotMd.PickType Open type, default is `all`
+---@field query? string Query to filter the files
+---@field split? DotMd.Split Split direction for new or existing files, default is based on `default_split` in config

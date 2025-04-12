@@ -295,4 +295,98 @@ function M.navigate(direction)
 	end
 end
 
+--- Open a file based on a type and an intelligent search query.
+--- If a single file is found, it is opened; if multiple, the user is given a selection.
+---@param opts? DotMd.OpenOpts Options for opening the file
+function M.open(opts)
+	local directories = require("dotmd.directories")
+	local utils = require("dotmd.utils")
+
+	opts = opts or {}
+	opts.type = opts.type or "all"
+
+	local dirs = directories.get_picker_dirs(opts.type)
+
+	local all_items = directories.prepare_items_for_select(dirs)
+	if #all_items == 0 then
+		vim.notify(
+			"No "
+				.. opts.type
+				.. " Markdown files found in the specified directories.",
+			vim.log.levels.WARN
+		)
+		return
+	end
+
+	---@param _all_items string[] The items to search
+	---@param _query string The query to search for
+	---@return nil
+	local function perform_search(_all_items, _query)
+		local lower_query = _query:lower()
+
+		local query_words = {}
+		for word in lower_query:gmatch("%S+") do
+			table.insert(query_words, word)
+		end
+
+		local function normalize(s)
+			-- Lowercase and replace non-word characters with spaces
+			return s:lower():gsub("[%-_%.]", " ")
+		end
+
+		local function fuzzy_filter(item)
+			local normalized_display = normalize(item.display)
+
+			for _, word in ipairs(query_words) do
+				if
+					not normalized_display:find("%f[%w]" .. word .. "%f[%W]")
+				then
+					return false
+				end
+			end
+			return true
+		end
+
+		local filtered_items = vim.tbl_filter(fuzzy_filter, _all_items)
+
+		if #filtered_items == 0 then
+			vim.notify(
+				"No matching "
+					.. opts.type
+					.. " files found for query: "
+					.. _query,
+				vim.log.levels.INFO
+			)
+			return
+		elseif #filtered_items == 1 then
+			-- Only one file was found; open it directly.
+			utils.open_file(filtered_items[1].value, opts.split)
+		else
+			-- More than one matching file; let the user pick.
+			vim.ui.select(filtered_items, {
+				prompt = "Select a " .. opts.type .. " file:",
+				format_item = function(item)
+					return item.display
+				end,
+			}, function(selected)
+				if selected then
+					utils.open_file(selected.value, opts.split)
+				end
+			end)
+		end
+	end
+
+	if opts.query and opts.query ~= "" then
+		perform_search(all_items, opts.query)
+	else
+		vim.ui.input({ prompt = "Enter note search query: " }, function(query)
+			if not query or query == "" then
+				return
+			end
+
+			perform_search(all_items, query)
+		end)
+	end
+end
+
 return M

@@ -187,6 +187,7 @@ See the example below for how to configure **dotmd.nvim**.
   "DotMdInbox",
   "DotMdNavigate",
   "DotMdPick",
+  "DotMdOpen",
  },
  ---@type DotMd.Config
  opts = {},
@@ -243,6 +244,15 @@ See the example below for how to configure **dotmd.nvim**.
    end,
    mode = "n",
    desc = "[DotMd] Navigate to next todo",
+   noremap = true,
+  },
+  {
+   "<leader>no",
+   function()
+    require("dotmd").open()
+   end,
+   mode = "n",
+   desc = "[DotMd] Open",
    noremap = true,
   },
   {
@@ -394,6 +404,11 @@ When you create a new journal file, **dotmd.nvim**:
 2. If `snacks.nvim` is installed, uses `snacks.picker.grep()` or `snacks.picker.files()` for enhanced UX.
 3. Can filter by file type (notes, todo, journal, or all).
 
+### Open
+
+1. Smart fuzzy-match query and open if single match or prompt `vim.ui.select` for multiple matches.
+2. Can filter by file type (notes, todo, journal, or all).
+
 ## 🧠 Template Example
 
 To create a template, just concatenate the template strings into a function that returns a list of strings.
@@ -531,6 +546,27 @@ require("dotmd").navigate(direction)
 
 You can also use the command `:DotMdNavigate` to navigate to the nearest previous/next date-based file. And it supports the same options.
 
+### Open
+
+Open a files intelligently in **dotmd.nvim** directories by `type`. You can either provide a `query` or it will prompt for the search query.
+
+> [!note]
+> The query is a string and it will be fuzzy-matched.
+
+```lua
+---@alias DotMd.PickType "notes" | "todos" | "journal" | "all" Pick type
+
+---@class DotMd.OpenOpts
+---@field type? DotMd.PickType Open type, default is `all`
+---@field query? string Query to filter the files
+---@field split? DotMd.Split Split direction for new or existing files, default is based on `default_split` in config
+
+---@param opts? DotMd.OpenOpts Options for opening the file
+require("dotmd").open(opts)
+```
+
+You can also use the command `:DotMdOpen` to open files in **dotmd.nvim** directories.
+
 ## 🎁 Goodies
 
 ### Summon your notes anywhere within a tmux session
@@ -548,7 +584,8 @@ bind-key C-n switch-client -T dotmd
 bind-key -T dotmd t run-shell "tmux popup -E -w 90% -h 80% -T 'Dotmd Todo' 'sh -c \"cd ~/dotmd && nvim +\\\"DotMdCreateTodoToday split=none\\\"\"'"
 bind-key -T dotmd n run-shell "tmux popup -E -w 90% -h 80% -T 'Dotmd Note' 'sh -c \"cd ~/dotmd && nvim +\\\"DotMdCreateNote split=none\\\"\"'"
 bind-key -T dotmd i run-shell "tmux popup -E -w 90% -h 80% -T 'Dotmd Inbox' 'sh -c \"cd ~/dotmd && nvim +\\\"DotMdInbox split=none\\\"\"'"
-bind-key -T dotmd j run-shell "tmux popup -E -w 90% -h 80% -T 'Dotmd Jornal' 'sh -c \"cd ~/dotmd && nvim +\\\"DotMdCreateJournal split=none\\\"\"'"
+bind-key -T dotmd j run-shell "tmux popup -E -w 90% -h 80% -T 'Dotmd Journal' 'sh -c \"cd ~/dotmd && nvim +\\\"DotMdCreateJournal split=none\\\"\"'"
+bind-key -T dotmd o run-shell "tmux popup -E -w 90% -h 80% -T 'Dotmd Open' 'sh -c \"cd ~/dotmd && nvim +\\\"DotMdOpen split=none\\\"\"'"
 bind-key -T dotmd r run-shell "tmux popup -E -w 90% -h 80% -T 'Dotmd Root' 'sh -c \"cd ~/dotmd && nvim\"'"
 
 # switch back to root keytable with escape
@@ -561,6 +598,7 @@ bind-key -T dotmd Escape switch-client -T root
 - Press `n` to create a note.
 - Press `i` to open the inbox for quick thoughts dumping.
 - Press `j` to create a new or open existing journal file for today.
+- Press `o` to open a files intelligently.
 - Press `r` to open the root directory, and you can do anything just like you would in a regular vim session.
 
 2. Do whatever you want to do in the popup pane.

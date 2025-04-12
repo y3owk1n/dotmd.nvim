@@ -130,6 +130,15 @@ function M.setup_user_commands()
 		desc = "Pick a file from a list of directories",
 	})
 
+	vim.api.nvim_create_user_command("DotMdOpen", function(opts)
+		local args = opts.args
+		opts = utils.prepare_user_command_args(args)
+		commands.open(opts)
+	end, {
+		nargs = "?",
+		desc = "Open a file from a list of directories",
+	})
+
 	vim.api.nvim_create_user_command("DotMdNavigate", function(opts)
 		local direction = opts.args or "next"
 		commands.navigate(direction)
@@ -137,7 +146,7 @@ function M.setup_user_commands()
 		nargs = "?",
 		complete = function()
 			return { "previous", "next" }
-		end, -- provide argument completions
+		end,
 		desc = "Navigate to the nearest previous/next date-based file",
 	})
 end
