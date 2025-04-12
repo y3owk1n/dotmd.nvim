@@ -195,11 +195,26 @@ function M.pick(opts)
 	local prompt_prefix = opts.grep and "Grep for" or "Pick a"
 	local prompt = prompt_prefix .. prompt_name_type .. ": "
 
-	if opts.picker then
-		local picker_ok = picker[opts.picker](opts, dirs, prompt)
+	local allowed_pickers = {
+		fzf = true,
+		telescope = true,
+		snacks = true,
+	}
 
-		if picker_ok then
-			return
+	if opts.picker then
+		if not allowed_pickers[opts.picker] then
+			vim.notify(
+				"Aborted... Picker "
+					.. opts.picker
+					.. " is not supported, fallback to vim.ui.select",
+				vim.log.levels.WARN
+			)
+		else
+			local picker_ok = picker[opts.picker](opts, dirs, prompt)
+
+			if picker_ok then
+				return
+			end
 		end
 	end
 
