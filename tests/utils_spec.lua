@@ -241,14 +241,14 @@ describe("dotmd.utils module", function()
 
 	describe("is_date_based_directory", function()
 		it("should return true if current folder is journal", function()
-			local current_folder_name = "journal"
+			local current_folder_name = "journals"
 			local is_date_based =
 				utils.is_date_based_directory(current_folder_name)
 			assert.is_true(is_date_based)
 		end)
 
 		it("should return true if current folder is todo", function()
-			local current_folder_name = "todo"
+			local current_folder_name = "todos"
 			local is_date_based =
 				utils.is_date_based_directory(current_folder_name)
 			assert.is_true(is_date_based)
