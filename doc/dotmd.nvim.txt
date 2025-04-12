@@ -265,6 +265,26 @@ See the example below for how to configure **dotmd.nvim**.
        noremap = true,
       },
       {
+       "<leader>sna",
+       function()
+        require("dotmd").pick()
+       end,
+       mode = "n",
+       desc = "[DotMd] Everything",
+       noremap = true,
+      },
+      {
+       "<leader>snA",
+       function()
+        require("dotmd").pick({
+         grep = true,
+        })
+       end,
+       mode = "n",
+       desc = "[DotMd] Search everything grep",
+       noremap = true,
+      },
+      {
        "<leader>snn",
        function()
         require("dotmd").pick({
@@ -558,7 +578,7 @@ Pick or search files in **dotmd.nvim** directories by `type`.
     
     ---@class DotMd.PickOpts
     ---@field picker? DotMd.PickerType Picker type, default is based on `picker` in config
-    ---@field type? DotMd.PickType Pick type, default is `notes`
+    ---@field type? DotMd.PickType Pick type, default is `all`
     ---@field grep? boolean Grep the selected type directory for a string, default is false
     
     ---@param opts? DotMd.PickOpts
