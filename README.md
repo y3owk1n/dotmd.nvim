@@ -18,13 +18,13 @@ So I started building **dotmd.nvim** — something small and focused. I wanted a
 
 ## ✨ Features
 
-- 📁 **Structured Note Directories:** Organize your notes into `notes/`, `todo/`, `journal/`, and an `inbox.md` file — all configurable.
+- 📁 **Structured Note Directories:** Organize your notes into `notes/`, `todos/`, `journals/`, and an `inbox.md` file — all configurable.
 - 📄 **Smart File Creation:** Easily create files with optional templates and unique file naming.
 - 📝 **Daily Todos:** Auto-generate daily todo files and rollover unchecked tasks from the nearest previous day.
 - 📅 **Daily Journals:** Quickly generate a markdown journal entry for the current date.
 - 🔍 **Note Picker:** Search or grep your notes across all categories using `vim.ui.select` or the `snacks.nvim` or `fzf-lua` or `telescope.nvim` picker.
 - 📌 **Inbox:** Quick dump zone for thoughts, tasks, and references.
-- 🧭 **Smart Navigation:** Move to the nearest previous/next `todo` or `journal` entry automagically.
+- 🧭 **Smart Navigation:** Move to the nearest previous/next `todos` or `journals` entry automagically.
 - 🔧 **Fully Configurable:** Customize directories, templates, and behavior.
 
 <!-- panvimdoc-ignore-start -->
@@ -101,13 +101,13 @@ require("dotmd").setup({
 
 ---@class DotMd.Config.DirNames
 ---@field notes? string Directory name for notes, default is "notes"
----@field todo? string Todo directory name, default is "todo"
----@field journal? string Journal directory name, default is "journal"
+---@field todos? string Todo directory name, default is "todos"
+---@field journals? string Journal directory name, default is "journals"
 
 ---@class Dotmd.Config.Templates
 ---@field notes? fun(name: string): string[]
----@field todo? fun(date: string): string[]
----@field journal? fun(date: string): string[]
+---@field todos? fun(date: string): string[]
+---@field journals? fun(date: string): string[]
 ---@field inbox? fun(date: string): string[]
 {
  root_dir = "~/dotmd",
@@ -116,8 +116,8 @@ require("dotmd").setup({
  picker = nil,
  dir_names = {
   notes = "notes",
-  todo = "todo",
-  journal = "journal",
+  todos = "todos",
+  journals = "journals",
  },
  templates = {
   notes = function(title)
@@ -131,7 +131,7 @@ require("dotmd").setup({
     "",
    }
   end,
-  todo = function(date)
+  todos = function(date)
    return {
     "---",
     "type: todo",
@@ -144,7 +144,7 @@ require("dotmd").setup({
     "",
    }
   end,
-  journal = function(date)
+  journals = function(date)
    return {
     "---",
     "type: journal",
@@ -338,7 +338,7 @@ See the example below for how to configure **dotmd.nvim**.
    "<leader>snj",
    function()
     require("dotmd").pick({
-     type = "journal",
+     type = "journals",
     })
    end,
    mode = "n",
@@ -349,7 +349,7 @@ See the example below for how to configure **dotmd.nvim**.
    "<leader>snJ",
    function()
     require("dotmd").pick({
-     type = "journal",
+     type = "journals",
      grep = true,
     })
    end,
@@ -374,9 +374,9 @@ dotmd/
 ├── inbox.md
 ├── notes/
 │   └── project-idea.md
-├── todo/
+├── todos/
 │   └── 2025-04-09.md
-└── journal/
+└── journals/
     └── 2025-04-09.md
 ```
 
@@ -412,7 +412,7 @@ When you create a new note, **dotmd.nvim**:
 
 When you create a new todo file, **dotmd.nvim**:
 
-1. Checks if today's todo file exists (e.g. `todo/2025-04-09.md`).
+1. Checks if today's todo file exists (e.g. `todos/2025-04-09.md`).
 2. If the file doesn't exist, prompt for create confirmation.
 3. If confirm, rolls over unfinished `- [ ] tasks from the previous file` from the nearest previous todo file (if any and enabled).
 4. Applies the todo template.
@@ -426,7 +426,7 @@ The inbox is a special file that is used to dump thoughts, tasks, and references
 
 When you create a new journal file, **dotmd.nvim**:
 
-1. Checks if today's journal file exists (e.g. `journal/2025-04-09.md`).
+1. Checks if today's journal file exists (e.g. `journals/2025-04-09.md`).
 2. If the file doesn't exist, prompt for create confirmation.
 2. If confirm, creates it using the journal template.
 3. Opens it for editing.
@@ -447,7 +447,7 @@ When you create a new journal file, **dotmd.nvim**:
 To create a template, just concatenate the template strings into a function that returns a list of strings.
 
 ```lua
-journal = function(date)
+journals = function(date)
   return {
     "---",
     "type: journal",
@@ -554,7 +554,7 @@ Pick or search files in **dotmd.nvim** directories by `type`.
 > `grep` option is not supported and will do nothing for the fallback.
 
 ```lua
----@alias DotMd.PickType "notes" | "todos" | "journal" | "all" Pick type
+---@alias DotMd.PickType "notes" | "todos" | "journals" | "all" Pick type
 ---@alias DotMd.PickerType "telescope" | "fzf" | "snacks" Picker type
 
 ---@class DotMd.PickOpts
@@ -568,7 +568,7 @@ require("dotmd").pick(opts)
 
 You can also use the command `:DotMdPick` to pick or search files in **dotmd.nvim** directories by `type`. And it supports the same options.
 
-### Navigate to Previous/Next Nearest `journal` or `todo` File
+### Navigate to Previous/Next Nearest `journals` or `todos` File
 
 Go to nearest previous/next date-based file.
 
@@ -589,7 +589,7 @@ Open a files intelligently in **dotmd.nvim** directories by `type`. You can eith
 > For example, if you search for `todo` it will match `todos` and `todo`.
 
 ```lua
----@alias DotMd.PickType "notes" | "todos" | "journal" | "all" Pick type
+---@alias DotMd.PickType "notes" | "todos" | "journals" | "all" Pick type
 
 ---@class DotMd.OpenOpts
 ---@field type? DotMd.PickType Open type, default is `all`

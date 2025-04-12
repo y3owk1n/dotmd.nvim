@@ -129,8 +129,8 @@ function M.is_date_based_directory(current_folder)
 	local config = require("dotmd.config").config
 
 	local allowed_dirs = {
-		config.dir_names.journal,
-		config.dir_names.todo,
+		config.dir_names.journals,
+		config.dir_names.todos,
 	}
 
 	return M.contains(allowed_dirs, current_folder)

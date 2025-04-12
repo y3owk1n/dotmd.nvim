@@ -81,7 +81,7 @@ function M.create_todo_today(opts)
 			utils.write_file(
 				todo_path,
 				"Todo for " .. today,
-				config.templates.todo
+				config.templates.todos
 			)
 
 			if config.rollover_todo == true then
@@ -146,7 +146,7 @@ function M.create_journal(opts)
 			utils.write_file(
 				journal_path,
 				"Journal Entry for " .. today,
-				config.templates.journal
+				config.templates.journals
 			)
 
 			utils.open_file(journal_path, opts.split)
@@ -238,7 +238,7 @@ function M.navigate(direction)
 
 	if not utils.is_date_based_directory(current_folder_name) then
 		vim.notify(
-			"Aborted... This function can only be run in `journal` or `todo`",
+			"Aborted... This function can only be run in `journals` or `todos`",
 			vim.log.levels.WARN
 		)
 		return
