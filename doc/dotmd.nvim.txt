@@ -196,7 +196,9 @@ See the example below for how to configure **dotmd.nvim**.
      event = "VeryLazy",
      ---@type DotMd.Config
      opts = {
+      root_dir = "~/dotmd" -- set it to your desired directory or remain at it is
       picker = "snacks" -- or "fzf" or "telescope" based on your preference
+      default_split = "none" -- or "vertical" or "horizontal" based on your preference
      },
      keys = {
       {
