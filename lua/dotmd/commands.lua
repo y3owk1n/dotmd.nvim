@@ -184,7 +184,7 @@ function M.pick(opts)
 	local native_select_files = require("dotmd.prompt").native_select_files
 
 	opts = opts or {}
-	opts.type = opts.type or "notes"
+	opts.type = opts.type or "all"
 	opts.grep = opts.grep or false
 	opts.picker = opts.picker or require("dotmd.config").config.picker
 

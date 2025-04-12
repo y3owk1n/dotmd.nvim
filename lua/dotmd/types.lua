@@ -27,7 +27,7 @@
 
 ---@class DotMd.PickOpts
 ---@field picker? DotMd.PickerType Picker type, default is based on `picker` in config
----@field type? DotMd.PickType Pick type, default is `notes`
+---@field type? DotMd.PickType Pick type, default is `all`
 ---@field grep? boolean Grep the selected type directory for a string, default is false
 
 ---@class DotMd.OpenOpts
