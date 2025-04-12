@@ -7,6 +7,7 @@ local defaults = {
 	root_dir = "~/dotmd",
 	default_split = "none",
 	rollover_todo = true,
+	picker = nil,
 	dir_names = {
 		notes = "notes",
 		todo = "todo",

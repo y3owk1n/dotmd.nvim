@@ -39,14 +39,41 @@ function M.check()
 		)
 	end
 
+	if vim.fn.executable("grep") == 1 then
+		report_status("ok", "'grep' command found.")
+	else
+		report_status("error", "'grep' command not found. Please install grep.")
+	end
+
 	separator("dotmd - Optional Dependencies")
-	-- Check for optional dependency: snacks.nvim
+
 	if pcall(require, "snacks") then
 		report_status("ok", "snacks.nvim is installed (optional dependency).")
 	else
 		report_status(
 			"warn",
 			"snacks.nvim not found. It's optional, but recommended for enhanced fuzzy finding."
+		)
+	end
+
+	if pcall(require, "fzf-lua") then
+		report_status("ok", "fzf-lua is installed (optional dependency).")
+	else
+		report_status(
+			"warn",
+			"fzf-lua not found. It's optional, but recommended for enhanced fuzzy finding."
+		)
+	end
+
+	if pcall(require, "telescope") then
+		report_status(
+			"ok",
+			"telescope.nvim is installed (optional dependency)."
+		)
+	else
+		report_status(
+			"warn",
+			"telescope.nvim not found. It's optional, but recommended for enhanced fuzzy finding."
 		)
 	end
 
@@ -69,24 +96,6 @@ function M.check()
 				.. root_dir
 				.. ". It will be created on demand."
 		)
-	end
-
-	separator("dotmd - Module Load Checks")
-	-- List required dotmd modules to check if they load successfully.
-	local required_modules = {
-		"dotmd.commands",
-		"dotmd.config",
-		"dotmd.directories",
-		"dotmd.todos",
-		"dotmd.utils",
-	}
-	for _, mod in ipairs(required_modules) do
-		local mod_ok, _ = pcall(require, mod)
-		if mod_ok then
-			report_status("ok", "Module '" .. mod .. "' loaded successfully.")
-		else
-			report_status("error", "Module '" .. mod .. "' failed to load.")
-		end
 	end
 end
 
