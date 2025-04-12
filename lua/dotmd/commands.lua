@@ -304,6 +304,8 @@ function M.open(opts)
 
 	opts = opts or {}
 	opts.type = opts.type or "all"
+	opts.split = opts.split or require("dotmd.config").config.default_split
+	opts.pluralise_query = opts.pluralise_query or false
 
 	local dirs = directories.get_picker_dirs(opts.type)
 
@@ -330,7 +332,6 @@ function M.open(opts)
 		end
 
 		local function normalize(s)
-			-- Lowercase and replace non-word characters with spaces
 			return s:lower():gsub("[%-_%.]", " ")
 		end
 
@@ -338,9 +339,10 @@ function M.open(opts)
 			local normalized_display = normalize(item.display)
 
 			for _, word in ipairs(query_words) do
-				if
-					not normalized_display:find("%f[%w]" .. word .. "%f[%W]")
-				then
+				-- Also support optional "s" at the end of the word for plurals if configured
+				local plural_suffix = opts.pluralise_query and "s?" or ""
+				local pattern = "%f[%w]" .. word .. plural_suffix .. "%f[%W]"
+				if not normalized_display:find(pattern) then
 					return false
 				end
 			end

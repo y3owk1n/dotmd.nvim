@@ -249,7 +249,9 @@ See the example below for how to configure **dotmd.nvim**.
   {
    "<leader>no",
    function()
-    require("dotmd").open()
+    require("dotmd").open({
+     pluralise_query = true, -- recommended
+    })
    end,
    mode = "n",
    desc = "[DotMd] Open",
@@ -551,7 +553,9 @@ You can also use the command `:DotMdNavigate` to navigate to the nearest previou
 Open a files intelligently in **dotmd.nvim** directories by `type`. You can either provide a `query` or it will prompt for the search query.
 
 > [!note]
-> The query is a string and it will be fuzzy-matched.
+> The query are matched by splitted tokens in a case-insensitive way.
+> If you want to have the behavior to get matches by plurals, you can set `pluralise_query` to `true`.
+> For example, if you search for `todo` it will match `todos` and `todo`.
 
 ```lua
 ---@alias DotMd.PickType "notes" | "todos" | "journal" | "all" Pick type
@@ -560,6 +564,7 @@ Open a files intelligently in **dotmd.nvim** directories by `type`. You can eith
 ---@field type? DotMd.PickType Open type, default is `all`
 ---@field query? string Query to filter the files
 ---@field split? DotMd.Split Split direction for new or existing files, default is based on `default_split` in config
+---@field pluralise_query? boolean Pluralise the query, default is `false`
 
 ---@param opts? DotMd.OpenOpts Options for opening the file
 require("dotmd").open(opts)
@@ -585,7 +590,7 @@ bind-key -T dotmd t run-shell "tmux popup -E -w 90% -h 80% -T 'Dotmd Todo' 'sh -
 bind-key -T dotmd n run-shell "tmux popup -E -w 90% -h 80% -T 'Dotmd Note' 'sh -c \"cd ~/dotmd && nvim +\\\"DotMdCreateNote split=none\\\"\"'"
 bind-key -T dotmd i run-shell "tmux popup -E -w 90% -h 80% -T 'Dotmd Inbox' 'sh -c \"cd ~/dotmd && nvim +\\\"DotMdInbox split=none\\\"\"'"
 bind-key -T dotmd j run-shell "tmux popup -E -w 90% -h 80% -T 'Dotmd Journal' 'sh -c \"cd ~/dotmd && nvim +\\\"DotMdCreateJournal split=none\\\"\"'"
-bind-key -T dotmd o run-shell "tmux popup -E -w 90% -h 80% -T 'Dotmd Open' 'sh -c \"cd ~/dotmd && nvim +\\\"DotMdOpen split=none\\\"\"'"
+bind-key -T dotmd o run-shell "tmux popup -E -w 90% -h 80% -T 'Dotmd Open' 'sh -c \"cd ~/dotmd && nvim +\\\"DotMdOpen split=none pluralise_query=true\\\"\"'"
 bind-key -T dotmd r run-shell "tmux popup -E -w 90% -h 80% -T 'Dotmd Root' 'sh -c \"cd ~/dotmd && nvim\"'"
 
 # switch back to root keytable with escape
