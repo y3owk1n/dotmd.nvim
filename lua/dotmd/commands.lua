@@ -180,7 +180,6 @@ end
 ---@return nil
 function M.pick(opts)
 	local directories = require("dotmd.directories")
-	local config = require("dotmd.config").config
 
 	opts = opts or {}
 	opts.type = opts.type or "notes"
@@ -205,36 +204,6 @@ function M.pick(opts)
 	end
 
 	-- else use vim.ui.select
-	local function get_files_recursive(directory)
-		local files = {}
-		local scan = vim.fn.readdir(directory)
-		for _, entry in ipairs(scan) do
-			local full_path = directory .. entry
-			if vim.fn.isdirectory(full_path) == 1 then
-				vim.list_extend(files, get_files_recursive(full_path .. "/"))
-			elseif entry:match("%.md$") then
-				table.insert(files, full_path)
-			end
-		end
-		return files
-	end
-
-	local function prepare_items()
-		local items = {}
-		for _, dir in ipairs(dirs) do
-			vim.list_extend(items, get_files_recursive(dir))
-		end
-
-		-- Convert to display format
-		return vim.tbl_map(function(path)
-			local display_path = path:gsub(vim.fn.expand(config.root_dir), "")
-			return {
-				value = path,
-				display = display_path,
-			}
-		end, items)
-	end
-
 	local function fuzzy_filter(query, items)
 		query = query:lower()
 		return vim.tbl_filter(function(item)
@@ -242,7 +211,7 @@ function M.pick(opts)
 		end, items)
 	end
 
-	local items = prepare_items()
+	local items = directories.prepare_items_for_select(dirs)
 	if #items == 0 then
 		vim.notify(
 			"No" .. prompt_name_type .. "files found in specified directories",
