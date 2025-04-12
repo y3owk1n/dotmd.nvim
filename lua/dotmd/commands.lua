@@ -180,10 +180,13 @@ end
 ---@return nil
 function M.pick(opts)
 	local directories = require("dotmd.directories")
+	local picker = require("dotmd.picker")
+	local native_select_files = require("dotmd.prompt").native_select_files
 
 	opts = opts or {}
 	opts.type = opts.type or "notes"
 	opts.grep = opts.grep or false
+	opts.picker = opts.picker or require("dotmd.config").config.picker
 
 	local dirs = directories.get_picker_dirs(opts.type)
 
@@ -192,47 +195,16 @@ function M.pick(opts)
 	local prompt_prefix = opts.grep and "Grep for" or "Pick a"
 	local prompt = prompt_prefix .. prompt_name_type .. ": "
 
-	-- Use snacks picker if exists
-	local snacks_ok, snacks = pcall(require, "snacks")
-	if snacks_ok and snacks and snacks.picker then
-		if opts.grep then
-			snacks.picker.grep({ dirs = dirs, prompt = prompt })
-		else
-			snacks.picker.files({ dirs = dirs, prompt = prompt })
+	if opts.picker then
+		local picker_ok = picker[opts.picker](opts, dirs, prompt)
+
+		if picker_ok then
+			return
 		end
-		return
 	end
 
 	-- else use vim.ui.select
-	local function fuzzy_filter(query, items)
-		query = query:lower()
-		return vim.tbl_filter(function(item)
-			return item.display:lower():find(query, 1, true) ~= nil
-		end, items)
-	end
-
-	local items = directories.prepare_items_for_select(dirs)
-	if #items == 0 then
-		vim.notify(
-			"No" .. prompt_name_type .. "files found in specified directories",
-			vim.log.levels.WARN
-		)
-		return
-	end
-
-	vim.ui.select(items, {
-		prompt = prompt,
-		format_item = function(item)
-			return item.display
-		end,
-		kind = "note",
-		fuzzy = true,
-		filter = fuzzy_filter,
-	}, function(selected)
-		if selected then
-			vim.cmd("edit " .. vim.fn.fnameescape(selected.value))
-		end
-	end)
+	native_select_files(dirs, prompt_name_type, prompt)
 end
 
 ---Navigate to the nearest previous/next date-based file

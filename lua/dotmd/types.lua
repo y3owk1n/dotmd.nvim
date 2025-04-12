@@ -1,10 +1,12 @@
 ---@alias DotMd.Config.DirNameKeys "notes" | "todo" | "journal"
 ---@alias DotMd.Split "vertical" | "horizontal" | "none" Split direction
 ---@alias DotMd.PickType "notes" | "todos" | "journal" | "all" Pick type
+---@alias DotMd.PickerType "telescope" | "fzf" | "snacks" Picker type
 
 ---@class DotMd.Config
 ---@field root_dir? string Root directory of dotmd, default is `~/dotmd`
 ---@field default_split? DotMd.Split Split direction for new or existing files, default is `none`
+---@field picker? DotMd.PickerType Picker type, default is `nil`
 ---@field rollover_todo? boolean Rollover the nearest previous unchecked todos to today's date, default is `true`
 ---@field dir_names? DotMd.Config.DirNames
 ---@field templates? Dotmd.Config.Templates
@@ -24,6 +26,7 @@
 ---@field split? DotMd.Split Split direction for new or existing files, default is based on `default_split` in config
 
 ---@class DotMd.PickOpts
+---@field picker? DotMd.PickerType Picker type, default is based on `picker` in config
 ---@field type? DotMd.PickType Pick type, default is `notes`
 ---@field grep? boolean Grep the selected type directory for a string, default is false
 
