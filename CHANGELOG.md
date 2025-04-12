@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.0](https://github.com/y3owk1n/dotmd.nvim/compare/v1.2.0...v1.3.0) (2025-04-12)
+
+
+### Features
+
+* **config:** pluralise config for keys `notes`, `todos`, `journals` ([#46](https://github.com/y3owk1n/dotmd.nvim/issues/46)) ([b3d64f0](https://github.com/y3owk1n/dotmd.nvim/commit/b3d64f091ab2a33aad0decfd55704cb327e989c4))
+
+
+### Bug Fixes
+
+* add trimming to note creation input ([#49](https://github.com/y3owk1n/dotmd.nvim/issues/49)) ([c7980cf](https://github.com/y3owk1n/dotmd.nvim/commit/c7980cf8304313a6f046ad9cfc3d2f4c2de97647))
+
 ## [1.2.0](https://github.com/y3owk1n/dotmd.nvim/compare/v1.1.0...v1.2.0) (2025-04-12)
 
 
