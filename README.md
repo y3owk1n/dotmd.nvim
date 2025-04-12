@@ -10,7 +10,9 @@ I’ve been using Apple Notes for a while — mostly because of how effortlessly
 
 I tried [Obsidian](https://obsidian.md/) too. It’s a solid tool, no doubt — but I noticed I wasn’t really using most of its features. What stuck with me was just the simplicity of editing Markdown files.
 
-So I started building dotmd — something small and focused. I wanted a way to work with Markdown notes directly inside Neovim, where I already spend most of my time. Nothing fancy. Just fast navigation, basic organization, and plain files I can sync easily across devices. On iOS, I can still open them with any Markdown viewer if I need to. That’s enough for me.
+What about [Neorg](https://github.com/nvim-neorg/neorg)? In my opinion, it’s a bit too complex for my taste and need another learning curve to actually use it properly.
+
+So I started building **dotmd.nvim** — something small and focused. I wanted a way to work with Markdown notes directly inside Neovim, where I already spend most of my time. Nothing fancy. Just fast navigation, basic organization, and plain files I can sync easily across devices. On iOS, I can still open them with any Markdown viewer if I need to. That’s enough for me.
 
 <!-- panvimdoc-ignore-end -->
 
@@ -581,11 +583,14 @@ require("dotmd").open(opts)
 
 You can also use the command `:DotMdOpen` to open files in **dotmd.nvim** directories.
 
+> [!note]
+> I'm still not entirely sure about the existence of this API. After the supports for `snacks.nvim`, `fzf-lua`, and `telescope.nvim` are added, this API seems like not entirely useful anymore, but let's see.
+
 ## 🎁 Goodies
 
 ### Summon your notes anywhere within a tmux session
 
-You can summon your notes anywhere within a tmux session in a floating pane by adding the following to your `~/.tmux.conf`:
+You can summon your notes anywhere within a `tmux session` in a floating/popup pane by adding the following to your `~/.tmux.conf`:
 
 > [!note]
 > Change `~/dotmd` to your dotmd root directory.
@@ -600,6 +605,7 @@ bind-key -T dotmd n run-shell "tmux popup -E -w 90% -h 80% -T 'Dotmd Note' 'sh -
 bind-key -T dotmd i run-shell "tmux popup -E -w 90% -h 80% -T 'Dotmd Inbox' 'sh -c \"cd ~/dotmd && nvim +\\\"DotMdInbox split=none\\\"\"'"
 bind-key -T dotmd j run-shell "tmux popup -E -w 90% -h 80% -T 'Dotmd Journal' 'sh -c \"cd ~/dotmd && nvim +\\\"DotMdCreateJournal split=none\\\"\"'"
 bind-key -T dotmd o run-shell "tmux popup -E -w 90% -h 80% -T 'Dotmd Open' 'sh -c \"cd ~/dotmd && nvim +\\\"DotMdOpen split=none pluralise_query=true\\\"\"'"
+bind-key -T dotmd p run-shell "tmux popup -E -w 90% -h 80% -T 'Dotmd Pick' 'sh -c \"cd ~/dotmd && nvim +\\\"DotMdPick\\\"\"'"
 bind-key -T dotmd r run-shell "tmux popup -E -w 90% -h 80% -T 'Dotmd Root' 'sh -c \"cd ~/dotmd && nvim\"'"
 
 # switch back to root keytable with escape
@@ -613,6 +619,7 @@ bind-key -T dotmd Escape switch-client -T root
 - Press `i` to open the inbox for quick thoughts dumping.
 - Press `j` to create a new or open existing journal file for today.
 - Press `o` to open a files intelligently.
+- Press `p` to pick a file.
 - Press `r` to open the root directory, and you can do anything just like you would in a regular vim session.
 
 2. Do whatever you want to do in the popup pane.
