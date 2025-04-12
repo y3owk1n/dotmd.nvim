@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.2.0](https://github.com/y3owk1n/dotmd.nvim/compare/v1.1.0...v1.2.0) (2025-04-12)
+
+
+### Features
+
+* **commands.open:** add ability to `pluralised` the query ([#41](https://github.com/y3owk1n/dotmd.nvim/issues/41)) ([a6ddbaf](https://github.com/y3owk1n/dotmd.nvim/commit/a6ddbaf54c3ae90e383f1d2d73d8dda94d1c11ea))
+* **commands.picker:** add `snacks`, `telescope` and `fzf-lua` picker ([#42](https://github.com/y3owk1n/dotmd.nvim/issues/42)) ([3a12efb](https://github.com/y3owk1n/dotmd.nvim/commit/3a12efb691a73999637c7d27d2507779b46243bc))
+* **commands:** add `open` command ([#40](https://github.com/y3owk1n/dotmd.nvim/issues/40)) ([9ecf56f](https://github.com/y3owk1n/dotmd.nvim/commit/9ecf56f9fd3a9ed4d6e62f74c8adde607d5d59bd))
+
+
+### Bug Fixes
+
+* **commands.picker:** add checks for `allowed_pickers` to avoid hard error ([#43](https://github.com/y3owk1n/dotmd.nvim/issues/43)) ([b902a2e](https://github.com/y3owk1n/dotmd.nvim/commit/b902a2e3c82471efd20123bd510f62e04e7767e6))
+* **commands.picker:** make the type to default to `all` instead of `notes` ([#45](https://github.com/y3owk1n/dotmd.nvim/issues/45)) ([82e9572](https://github.com/y3owk1n/dotmd.nvim/commit/82e95724762a0c90ad27892f3162711d8301b119))
+* **commands.pick:** refactor select logic into utility functions ([#39](https://github.com/y3owk1n/dotmd.nvim/issues/39)) ([8e77063](https://github.com/y3owk1n/dotmd.nvim/commit/8e77063741071e625506c92b99b654e6c797da36))
+* **directories.get_picker_dirs:** only pass the `type` to picker instead of the whole `opts` ([#38](https://github.com/y3owk1n/dotmd.nvim/issues/38)) ([f888231](https://github.com/y3owk1n/dotmd.nvim/commit/f888231a183db9dcb85c119b7446442932246d1f))
+* **utils.open_file:** pass only `split` opts to `open_file` ([#36](https://github.com/y3owk1n/dotmd.nvim/issues/36)) ([6249116](https://github.com/y3owk1n/dotmd.nvim/commit/6249116f6b55135e0b8372be8f7409d464126cd6))
+
 ## [1.1.0](https://github.com/y3owk1n/dotmd.nvim/compare/v1.0.3...v1.1.0) (2025-04-11)
 
 
