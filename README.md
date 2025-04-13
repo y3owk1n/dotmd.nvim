@@ -1,12 +1,13 @@
 # 📓 dotmd.nvim
 
-Organize. Navigate. Create. Markdown. All without leaving your keyboard.
+Organize. Navigate. Create. Markdown.
+Keep all your notes, todos, and journals inside Neovim without ever leaving the editor.
 
 <!-- panvimdoc-ignore-start -->
 
 <https://github.com/user-attachments/assets/509f19d9-4172-4708-ad48-6a31735e6a6b>
 
-## Why **dotmd.nvim**?
+## 🤔 Why **dotmd.nvim**?
 
 > "I just want to write Markdown files... **fast**."
 
@@ -29,15 +30,13 @@ As a Neovim user, we spent most of our time in the editor. Yet everytime when we
 
 ## ✨ Features
 
-| Feature   | Description    |
-|--------------- | --------------- |
-| **🗂️ Effortless Organization**   | Auto-structured directories for `notes/`, `todos/`, `journals/` + `inbox`    |
-| **🎩 Smart File Creation**   | Templates that adapt to your needs   |
-| **🔄 Todo Time Machine**   | Unfinished tasks automatically roll over to today's list   |
-| **🧭 GPS for Notes**   | Jump between todo/journal entries easily   |
-| **🔍 Universal Search**   | Find anything instantly with integrated pickers (Telescope/fzf-lua/snacks/mini.pick)   |
-| **📦 Inbox Zero**   | Single-file brain dump with `inbox.md`   |
-| **⚙️ Fully Configurable**   | Change directories, templates, splits - make it yours   |
+- 🚀 **Zero Context-Switching:** Stay in Neovim.
+- 🗂 **Effortless Organization:** Auto-created directories for notes, todos, journals, plus an inbox file.
+- 🎩 **Smart File Creation:** Use adaptive templates.
+- ⏪ **Todo Time Machine:** Automatically roll over unfinished tasks.
+- 🧭 **Rapid Navigation:** Jump between entries with ease.
+- 🔍 **Universal Search:** Fuzzy-match files with Telescope, fzf-lua, snacks.nvim, or mini.pick.
+- ⚙️ **Complete Customizability:** Tweak directories, templates, split directions, and more.
 
 <!-- panvimdoc-ignore-start -->
 
@@ -233,54 +232,42 @@ See the example below for how to configure **dotmd.nvim**.
    function()
     require("dotmd").create_note()
    end,
-   mode = "n",
    desc = "[DotMd] Create new note",
-   noremap = true,
   },
   {
    "<leader>nt",
    function()
     require("dotmd").create_todo_today()
    end,
-   mode = "n",
    desc = "[DotMd] Create todo for today",
-   noremap = true,
   },
   {
    "<leader>ni",
    function()
     require("dotmd").inbox()
    end,
-   mode = "n",
    desc = "[DotMd] Inbox",
-   noremap = true,
   },
   {
    "<leader>nj",
    function()
     require("dotmd").create_journal()
    end,
-   mode = "n",
    desc = "[DotMd] Create journal",
-   noremap = true,
   },
   {
    "<leader>np",
    function()
     require("dotmd").navigate("previous")
    end,
-   mode = "n",
    desc = "[DotMd] Navigate to previous todo",
-   noremap = true,
   },
   {
    "<leader>nn",
    function()
     require("dotmd").navigate("next")
    end,
-   mode = "n",
    desc = "[DotMd] Navigate to next todo",
-   noremap = true,
   },
   {
    "<leader>no",
@@ -289,18 +276,14 @@ See the example below for how to configure **dotmd.nvim**.
      pluralise_query = true, -- recommended
     })
    end,
-   mode = "n",
    desc = "[DotMd] Open",
-   noremap = true,
   },
   {
    "<leader>sna",
    function()
     require("dotmd").pick()
    end,
-   mode = "n",
    desc = "[DotMd] Everything",
-   noremap = true,
   },
   {
    "<leader>snA",
@@ -309,9 +292,7 @@ See the example below for how to configure **dotmd.nvim**.
      grep = true,
     })
    end,
-   mode = "n",
    desc = "[DotMd] Search everything grep",
-   noremap = true,
   },
   {
    "<leader>snn",
@@ -320,9 +301,7 @@ See the example below for how to configure **dotmd.nvim**.
      type = "notes",
     })
    end,
-   mode = "n",
    desc = "[DotMd] Search notes",
-   noremap = true,
   },
   {
    "<leader>snN",
@@ -332,9 +311,7 @@ See the example below for how to configure **dotmd.nvim**.
      grep = true,
     })
    end,
-   mode = "n",
    desc = "[DotMd] Search notes grep",
-   noremap = true,
   },
   {
    "<leader>snt",
@@ -343,9 +320,7 @@ See the example below for how to configure **dotmd.nvim**.
      type = "todos",
     })
    end,
-   mode = "n",
    desc = "[DotMd] Search todos",
-   noremap = true,
   },
   {
    "<leader>snT",
@@ -355,9 +330,7 @@ See the example below for how to configure **dotmd.nvim**.
      grep = true,
     })
    end,
-   mode = "n",
    desc = "[DotMd] Search todos grep",
-   noremap = true,
   },
   {
    "<leader>snj",
@@ -366,9 +339,7 @@ See the example below for how to configure **dotmd.nvim**.
      type = "journals",
     })
    end,
-   mode = "n",
    desc = "[DotMd] Search journal",
-   noremap = true,
   },
   {
    "<leader>snJ",
@@ -378,9 +349,7 @@ See the example below for how to configure **dotmd.nvim**.
      grep = true,
     })
    end,
-   mode = "n",
    desc = "[DotMd] Search journal grep",
-   noremap = true,
   },
  },
 },
@@ -388,24 +357,14 @@ See the example below for how to configure **dotmd.nvim**.
 
 ## 📦 How It Works
 
-**dotmd.nvim** is built around the idea of managing lightweight Markdown files organized by category. Here's how each feature works:
-
-### Directory Structure
-
-**dotmd.nvim** uses a root directory with the following substructure (customizable):
+**dotmd.nvim** organizes your Markdown files as follows:
 
 ```bash
 dotmd/
-├── inbox.md # single file for brain dump
-├── notes/
-│   └── project-idea.md
-│   └── meetings
-│       └── 2025-04-08.md
-├── todos/
-│   └── 2025-04-08.md # yesterday
-│   └── 2025-04-09.md # today (auto-created when called)
-└── journals/
-    └── 2025-04-09.md # today's reflections
+├── inbox.md         # Brain dump file
+├── notes/           # Organized Markdown notes
+├── todos/           # Date-based todo files (with rollover support)
+└── journals/        # Date-based journal entries
 ```
 
 ### Note Creation
@@ -517,10 +476,8 @@ Prompt to create and open a new markdown note.
 ---@field split? DotMd.Split Split direction for new or existing files, default is based on `default_split` in config
 
 ---@param opts? DotMd.CreateFileOpts
-require("dotmd").create_note(opts)
+require("dotmd").create_note(opts) # or :DotMdCreateNote
 ```
-
-You can also use the command `:DotMdCreateNote` to create a new note. And it supports the same options.
 
 ### Create or open Todo for Today Date
 
@@ -536,10 +493,8 @@ Open/create today’s todo and roll over tasks.
 ---@field split? DotMd.Split Split direction for new or existing files, default is based on `default_split` in config
 
 ---@param opts? DotMd.CreateFileOpts
-require("dotmd").create_todo_today(opts)
+require("dotmd").create_todo_today(opts) # or :DotMdCreateTodoToday
 ```
-
-You can also use the command `:DotMdCreateTodoToday` to create a new todo for today. And it supports the same options.
 
 ### Create or open Journal for Today Date
 
@@ -555,10 +510,8 @@ Open/create a journal entry for today.
 ---@field split? DotMd.Split Split direction for new or existing files, default is based on `default_split` in config
 
 ---@param opts? DotMd.CreateFileOpts
-require("dotmd").create_journal(opts)
+require("dotmd").create_journal(opts) # or :DotMdCreateJournal
 ```
-
-You can also use the command `:DotMdCreateJournal` to create a new journal entry. And it supports the same options.
 
 ### Open Inbox
 
@@ -574,10 +527,8 @@ Open the central `inbox.md`.
 ---@field split? DotMd.Split Split direction for new or existing files, default is based on `default_split` in config
 
 ---@param opts? DotMd.CreateFileOpts
-require("dotmd").create_journal(opts)
+require("dotmd").create_journal(opts) # or :DotMdInbox
 ```
-
-You can also use the command `:DotMdInbox` to open the central `inbox.md`. And it supports the same options.
 
 ### Pick
 
@@ -599,10 +550,8 @@ Pick or search files in **dotmd.nvim** directories by `type`.
 ---@field grep? boolean Grep the selected type directory for a string, default is false
 
 ---@param opts? DotMd.PickOpts
-require("dotmd").pick(opts)
+require("dotmd").pick(opts) # or :DotMdPick
 ```
-
-You can also use the command `:DotMdPick` to pick or search files in **dotmd.nvim** directories by `type`. And it supports the same options.
 
 ### Navigate to Previous/Next Nearest `journals` or `todos` File
 
@@ -610,10 +559,8 @@ Go to nearest previous/next date-based file.
 
 ```lua
 ---@param direction "previous"|"next"
-require("dotmd").navigate(direction)
+require("dotmd").navigate(direction) # or :DotMdNavigate
 ```
-
-You can also use the command `:DotMdNavigate` to navigate to the nearest previous/next date-based file. And it supports the same options.
 
 ### Open
 
@@ -634,10 +581,8 @@ Open a files intelligently in **dotmd.nvim** directories by `type`. You can eith
 ---@field pluralise_query? boolean Pluralise the query, default is `false`
 
 ---@param opts? DotMd.OpenOpts Options for opening the file
-require("dotmd").open(opts)
+require("dotmd").open(opts) # or :DotMdOpen
 ```
-
-You can also use the command `:DotMdOpen` to open files in **dotmd.nvim** directories.
 
 > [!note]
 > I'm still not entirely sure about the existence of this API. After the supports for `snacks.nvim`, `fzf-lua`, and `telescope.nvim` are added, this API seems like not entirely useful anymore, but let's see.
