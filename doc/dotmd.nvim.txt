@@ -110,7 +110,7 @@ DEFAULT OPTIONS ~
     
     ---@class DotMd.Config.RolloverTodo
     ---@field enabled? boolean Rollover the nearest previous unchecked todos to today's date, default is `false`
-    ---@field heading? string Heading to search for in your todos template to rollover, default is "Tasks"
+    ---@field headings? string[] H2 Headings to search for in your todos template to rollover, default is { "Tasks" }
     
     ---@class DotMd.Config.DirNames
     ---@field notes? string Directory name for notes, default is "notes"
@@ -127,7 +127,7 @@ DEFAULT OPTIONS ~
      default_split = "none",
      rollover_todo = {
       enabled = false,
-      heading = "Tasks",
+      heading = { "Tasks" },
      },
      picker = nil,
      dir_names = {
@@ -450,6 +450,13 @@ When you create a new todo file, **dotmd.nvim**
 4. Applies the todo template.
 5. Opens the file for editing.
 
+
+  [!note]
+  - You can configure the headings to search for in your todos template to rollover by setting `rollover_todo.headings` in the config.
+  - Note that only `h2` or `##` is supported for now.
+  - Make sure it actually matches the headings in your template.
+  - If a heading does not exist in previous todo, it will get ignored.
+  - For today’s todo file, if a heading doesn’t exist in the template, it will append the section at the end of the file (if there’s any rollover).
 
 INBOX ~
 
