@@ -5,6 +5,7 @@ local M = {}
 ---@param today string|osdate
 ---@return string[]|nil, string|nil
 function M.rollover_previous_todo_to_today(todo_dir, today)
+	local config = require("dotmd.config").config
 	local previous_todo_file =
 		require("dotmd.directories").get_nearest_previous_from_date(
 			todo_dir,
@@ -21,7 +22,7 @@ function M.rollover_previous_todo_to_today(todo_dir, today)
 	-- Find the tasks section
 	local in_tasks = false
 	for _, line in ipairs(lines) do
-		if line:match("^##%s+Tasks") then
+		if line:match("^##%s+" .. config.rollover_todo.heading) then
 			in_tasks = true
 			table.insert(new_lines, line)
 		elseif in_tasks and line:match("^##") then

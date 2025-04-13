@@ -108,9 +108,13 @@ require("dotmd").setup({
 ---@field root_dir? string Root directory of dotmd, default is `~/dotmd`
 ---@field default_split? DotMd.Split Split direction for new or existing files, default is `none`
 ---@field picker? DotMd.PickerType Picker type, default is `nil`
----@field rollover_todo? boolean Rollover the nearest previous unchecked todos to today's date, default is `true`
+---@field rollover_todo? DotMd.Config.RolloverTodo
 ---@field dir_names? DotMd.Config.DirNames
 ---@field templates? Dotmd.Config.Templates
+
+---@class DotMd.Config.RolloverTodo
+---@field enabled? boolean Rollover the nearest previous unchecked todos to today's date, default is `true`
+---@field heading? string Heading to search for in your todos template, default is "Tasks"
 
 ---@class DotMd.Config.DirNames
 ---@field notes? string Directory name for notes, default is "notes"
@@ -125,7 +129,10 @@ require("dotmd").setup({
 {
  root_dir = "~/dotmd",
  default_split = "none",
- rollover_todo = true,
+ rollover_todo = {
+  enabled = false,
+  heading = "Tasks",
+ },
  picker = nil,
  dir_names = {
   notes = "notes",
@@ -214,8 +221,11 @@ See the example below for how to configure **dotmd.nvim**.
  ---@type DotMd.Config
  opts = {
   root_dir = "~/dotmd" -- set it to your desired directory or remain at it is
-  picker = "snacks" -- or "fzf" or "telescope" or "mini" based on your preference
   default_split = "none" -- or "vertical" or "horizontal" based on your preference
+  rollover_todo = {
+   enabled = true, -- enable rollover
+  },
+  picker = "snacks" -- or "fzf" or "telescope" or "mini" based on your preference
  },
  keys = {
   {

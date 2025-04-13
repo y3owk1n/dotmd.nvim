@@ -7,9 +7,13 @@
 ---@field root_dir? string Root directory of dotmd, default is `~/dotmd`
 ---@field default_split? DotMd.Split Split direction for new or existing files, default is `none`
 ---@field picker? DotMd.PickerType Picker type, default is `nil`
----@field rollover_todo? boolean Rollover the nearest previous unchecked todos to today's date, default is `true`
+---@field rollover_todo? DotMd.Config.RolloverTodo
 ---@field dir_names? DotMd.Config.DirNames
 ---@field templates? Dotmd.Config.Templates
+
+---@class DotMd.Config.RolloverTodo
+---@field enabled? boolean Rollover the nearest previous unchecked todos to today's date, default is `true`
+---@field heading? string Heading to search for in your todos template, default is "Tasks"
 
 ---@class DotMd.Config.DirNames
 ---@field notes? string Directory name for notes, default is "notes"

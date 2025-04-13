@@ -84,7 +84,7 @@ function M.create_todo_today(opts)
 				config.templates.todos
 			)
 
-			if config.rollover_todo == true then
+			if config.rollover_todo.enabled == true then
 				local unchecked_tasks, source_path =
 					todos.rollover_previous_todo_to_today(todo_dir, today)
 				if unchecked_tasks and source_path then
