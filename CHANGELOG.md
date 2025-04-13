@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.1](https://github.com/y3owk1n/dotmd.nvim/compare/v1.4.0...v1.4.1) (2025-04-13)
+
+
+### Bug Fixes
+
+* **commands.create_todo_today:** support rollover for multiple headings with configuration ([#57](https://github.com/y3owk1n/dotmd.nvim/issues/57)) ([dee260d](https://github.com/y3owk1n/dotmd.nvim/commit/dee260d96215b14235714218e44666f74fd02b83))
+
 ## [1.4.0](https://github.com/y3owk1n/dotmd.nvim/compare/v1.3.0...v1.4.0) (2025-04-13)
 
 
