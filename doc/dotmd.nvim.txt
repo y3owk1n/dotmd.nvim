@@ -9,7 +9,7 @@ Table of Contents                               *dotmd.nvim-table-of-contents*
   - Configuration                        |dotmd.nvim-dotmd.nvim-configuration|
   - Quick Start                            |dotmd.nvim-dotmd.nvim-quick-start|
   - How It Works                          |dotmd.nvim-dotmd.nvim-how-it-works|
-  - Template Example                  |dotmd.nvim-dotmd.nvim-template-example|
+  - Custom Template Example    |dotmd.nvim-dotmd.nvim-custom-template-example|
   - API                                            |dotmd.nvim-dotmd.nvim-api|
   - Goodies                                    |dotmd.nvim-dotmd.nvim-goodies|
   - Contributing                          |dotmd.nvim-dotmd.nvim-contributing|
@@ -17,21 +17,34 @@ Table of Contents                               *dotmd.nvim-table-of-contents*
 ==============================================================================
 1. dotmd.nvim                                          *dotmd.nvim-dotmd.nvim*
 
-An opinionated, and fast Neovim plugin for managing markdown notes, todos, and
-journal entries — powered by Lua.
+Organize. Navigate. Create. Markdown. All without leaving your keyboard.
 
 
 FEATURES                                      *dotmd.nvim-dotmd.nvim-features*
 
-- **Structured Note Directories:** Organize your notes into `notes/`, `todos/`, `journals/`, and an `inbox.md` file — all configurable.
-- **Smart File Creation:** Easily create files with optional templates and unique file naming.
-- **Daily Todos:** Auto-generate daily todo files and rollover unchecked tasks from the nearest previous day.
-- **Daily Journals:** Quickly generate a markdown journal entry for the current date.
-- **Note Picker:** Search or grep your notes across all categories using `vim.ui.select` or one of the `snacks.nvim` or `fzf-lua` or `telescope.nvim` or `mini.pick` picker.
-- **Inbox:** Quick dump zone for thoughts, tasks, and references.
-- **Smart Navigation:** Move to the nearest previous/next `todos` or `journals` entry automagically.
-- **Fully Configurable:** Customize directories, templates, and behavior.
+  --------------------------------------------------------------------------
+  Feature                             Description
+  ----------------------------------- --------------------------------------
+  Effortless Organization             Auto-structured directories for
+                                      notes/, todos/, journals/ + inbox
 
+  Smart File Creation                 Templates that adapt to your needs
+
+  Todo Time Machine                   Unfinished tasks automatically roll
+                                      over to today’s list
+
+  GPS for Notes                       Jump between todo/journal entries
+                                      easily
+
+  Universal Search                    Find anything instantly with
+                                      integrated pickers
+                                      (Telescope/fzf-lua/snacks/mini.pick)
+
+  Inbox Zero                          Single-file brain dump with inbox.md
+
+  Fully Configurable                  Change directories, templates,
+                                      splits - make it yours
+  --------------------------------------------------------------------------
 
 INSTALLATION                              *dotmd.nvim-dotmd.nvim-installation*
 
@@ -374,17 +387,20 @@ DIRECTORY STRUCTURE ~
 
 >bash
     dotmd/
-    ├── inbox.md
+    ├── inbox.md # single file for brain dump
     ├── notes/
     │   └── project-idea.md
+    │   └── meetings
+    │       └── 2025-04-08.md
     ├── todos/
-    │   └── 2025-04-09.md
+    │   └── 2025-04-08.md # yesterday
+    │   └── 2025-04-09.md # today (auto-created when called)
     └── journals/
-        └── 2025-04-09.md
+        └── 2025-04-09.md # today's reflections
 <
 
 
-FILE CREATION ~
+NOTE CREATION ~
 
 When you create a new note, **dotmd.nvim**
 
@@ -454,7 +470,7 @@ OPEN ~
 2. Can filter by file type (notes, todo, journal, or all).
 
 
-TEMPLATE EXAMPLE                      *dotmd.nvim-dotmd.nvim-template-example*
+CUSTOM TEMPLATE EXAMPLE        *dotmd.nvim-dotmd.nvim-custom-template-example*
 
 To create a template, just concatenate the template strings into a function
 that returns a list of strings.
