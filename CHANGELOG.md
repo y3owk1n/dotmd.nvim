@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.4.0](https://github.com/y3owk1n/dotmd.nvim/compare/v1.3.0...v1.4.0) (2025-04-13)
+
+
+### Features
+
+* **commands.pick:** add mini.pick support ([#51](https://github.com/y3owk1n/dotmd.nvim/issues/51)) ([c9bfd99](https://github.com/y3owk1n/dotmd.nvim/commit/c9bfd9913709f034d78f79f1f45399ada43cd046))
+* **config:** disable `rollover` by default and add configurable `rollover.heading` ([#54](https://github.com/y3owk1n/dotmd.nvim/issues/54)) ([a687f2d](https://github.com/y3owk1n/dotmd.nvim/commit/a687f2d678ab4cd89fed65fc1e9c6b0f4a493a90))
+
+
+### Bug Fixes
+
+* **health:** better healthcheck for detecting pickers dependency ([#56](https://github.com/y3owk1n/dotmd.nvim/issues/56)) ([7568622](https://github.com/y3owk1n/dotmd.nvim/commit/7568622d33f9c708d8d90e33e47941ac44793664))
+
 ## [1.3.0](https://github.com/y3owk1n/dotmd.nvim/compare/v1.2.0...v1.3.0) (2025-04-12)
 
 
