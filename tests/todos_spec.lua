@@ -40,7 +40,8 @@ describe("dotmd.todos module", function()
 				local today = "2025-04-20"
 				local unchecked, path = todos.rollover_previous_todo_to_today(
 					config.config.root_dir,
-					today
+					today,
+					"Tasks"
 				)
 				assert.is_nil(unchecked)
 				assert.is_nil(path)
@@ -76,7 +77,8 @@ describe("dotmd.todos module", function()
 				local today = "2025-04-20"
 				local unchecked, path = todos.rollover_previous_todo_to_today(
 					config.config.root_dir,
-					today
+					today,
+					"Tasks"
 				)
 
 				-- Expect unchecked tasks to be those that match the pattern inside the tasks section.
@@ -113,10 +115,64 @@ describe("dotmd.todos module", function()
 				local today = "2025-04-18"
 				local unchecked, path = todos.rollover_previous_todo_to_today(
 					config.config.root_dir,
-					today
+					today,
+					"Tasks"
 				)
 				assert.is_nil(unchecked)
 				assert.is_nil(path)
+			end
+		)
+	end)
+
+	describe("apply_rollover_todo", function()
+		local original_notify
+
+		before_each(function()
+			original_notify = vim.notify
+			vim.notify = function(msg, level)
+				_G.last_notify = msg
+			end
+		end)
+
+		after_each(function()
+			vim.notify = original_notify
+			_G.last_notify = nil
+		end)
+		it(
+			"should insert a blank line after the header before the new tasks",
+			function()
+				local todo_path = config.config.root_dir .. "2025-04-20.md"
+				local header_text = "Tasks"
+				local initial_lines = {
+					"# Todo for 2025-04-20",
+					"## " .. header_text,
+					"- [ ] Existing task",
+				}
+				vim.fn.writefile(initial_lines, todo_path)
+				local unchecked_tasks = { "- [ ] New task" }
+				-- The source_path is arbitrary for this test.
+				todos.apply_rollover_todo(
+					todo_path,
+					unchecked_tasks,
+					"source.md",
+					header_text
+				)
+				local updated_lines = vim.fn.readfile(todo_path)
+				-- Find the index of the header line.
+				local header_index = nil
+				for i, line in ipairs(updated_lines) do
+					if line == "## " .. header_text then
+						header_index = i
+						break
+					end
+				end
+				assert.not_nil(header_index, "Header not found in updated file")
+				-- Check that a blank line exists immediately after the header.
+				assert.are.equal("", updated_lines[header_index + 1])
+				-- Check that the new task is inserted after the blank line.
+				assert.is_true(
+					vim.tbl_contains(updated_lines, "- [ ] New task")
+				)
 			end
 		)
 	end)
