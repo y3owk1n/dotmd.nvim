@@ -1,7 +1,7 @@
 ---@alias DotMd.Config.DirNameKeys "notes" | "todos" | "journals"
 ---@alias DotMd.Split "vertical" | "horizontal" | "none" Split direction
 ---@alias DotMd.PickType "notes" | "todos" | "journals" | "all" Pick type
----@alias DotMd.PickerType "telescope" | "fzf" | "snacks" Picker type
+---@alias DotMd.PickerType "telescope" | "fzf" | "snacks" | "mini" Picker type
 
 ---@class DotMd.Config
 ---@field root_dir? string Root directory of dotmd, default is `~/dotmd`
