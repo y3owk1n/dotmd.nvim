@@ -1,33 +1,43 @@
 # 📓 dotmd.nvim
 
-An opinionated, and fast Neovim plugin for managing markdown notes, todos, and journal entries — powered by Lua.
+Organize. Navigate. Create. Markdown. All without leaving your keyboard.
 
 <!-- panvimdoc-ignore-start -->
 
 <https://github.com/user-attachments/assets/509f19d9-4172-4708-ad48-6a31735e6a6b>
 
-## A little bit about why
+## Why **dotmd.nvim**?
 
-I’ve been using Apple Notes for a while — mostly because of how effortlessly it syncs across devices. But over time, I started to get frustrated with how mouse-dependent it is. I prefer staying in the keyboard as much as possible, especially when I'm just jotting down thoughts or todos.
+> "I just want to write Markdown files... **fast**."
 
-I tried [Obsidian](https://obsidian.md/) too. It’s a solid tool, no doubt — but I noticed I wasn’t really using most of its features. What stuck with me was just the simplicity of editing Markdown files.
+As a Neovim user, we spent most of our time in the editor. Yet everytime when we need to:
 
-What about [Neorg](https://github.com/nvim-neorg/neorg)? In my opinion, it’s a bit too complex for my taste and need another learning curve to actually use it properly.
+- Jot a quick thought
+- Write a note
+- Create a daily journal
+- Track todos
 
-So I started building **dotmd.nvim** — something small and focused. I wanted a way to work with Markdown notes directly inside Neovim, where I already spend most of my time. Nothing fancy. Just fast navigation, basic organization, and plain files I can sync easily across devices. On iOS, I can still open them with any Markdown viewer if I need to. That’s enough for me.
+...we end up reaching for external underused but overpowered apps or fighting complex plugins.
+
+**dotmd.nvim** fixes this with:
+
+- ⚡ **Zero context-switching** - Manage everything in Neovim
+- 🎯 **Dead-simple workflow** - No databases, no proprietary formats, just Markdown that we loved
+- 🔋 **Batteries included** - Smart templates, navigation, and cross-device sync ready (It's just Markdown files and folders)
 
 <!-- panvimdoc-ignore-end -->
 
 ## ✨ Features
 
-- 📁 **Structured Note Directories:** Organize your notes into `notes/`, `todos/`, `journals/`, and an `inbox.md` file — all configurable.
-- 📄 **Smart File Creation:** Easily create files with optional templates and unique file naming.
-- 📝 **Daily Todos:** Auto-generate daily todo files and rollover unchecked tasks from the nearest previous day.
-- 📅 **Daily Journals:** Quickly generate a markdown journal entry for the current date.
-- 🔍 **Note Picker:** Search or grep your notes across all categories using `vim.ui.select` or one of the `snacks.nvim` or `fzf-lua` or `telescope.nvim` or `mini.pick` picker.
-- 📌 **Inbox:** Quick dump zone for thoughts, tasks, and references.
-- 🧭 **Smart Navigation:** Move to the nearest previous/next `todos` or `journals` entry automagically.
-- 🔧 **Fully Configurable:** Customize directories, templates, and behavior.
+| Feature   | Description    |
+|--------------- | --------------- |
+| **🗂️ Effortless Organization**   | Auto-structured directories for `notes/`, `todos/`, `journals/` + `inbox`    |
+| **🎩 Smart File Creation**   | Templates that adapt to your needs   |
+| **🔄 Todo Time Machine**   | Unfinished tasks automatically roll over to today's list   |
+| **🧭 GPS for Notes**   | Jump between todo/journal entries easily   |
+| **🔍 Universal Search**   | Find anything instantly with integrated pickers (Telescope/fzf-lua/snacks/mini.pick)   |
+| **📦 Inbox Zero**   | Single-file brain dump with `inbox.md`   |
+| **⚙️ Fully Configurable**   | Change directories, templates, splits - make it yours   |
 
 <!-- panvimdoc-ignore-start -->
 
@@ -376,16 +386,19 @@ See the example below for how to configure **dotmd.nvim**.
 
 ```bash
 dotmd/
-├── inbox.md
+├── inbox.md # single file for brain dump
 ├── notes/
 │   └── project-idea.md
+│   └── meetings
+│       └── 2025-04-08.md
 ├── todos/
-│   └── 2025-04-09.md
+│   └── 2025-04-08.md # yesterday
+│   └── 2025-04-09.md # today (auto-created when called)
 └── journals/
-    └── 2025-04-09.md
+    └── 2025-04-09.md # today's reflections
 ```
 
-### File Creation
+### Note Creation
 
 When you create a new note, **dotmd.nvim**:
 
@@ -447,7 +460,7 @@ When you create a new journal file, **dotmd.nvim**:
 1. Smart fuzzy-match query and open if single match or prompt `vim.ui.select` for multiple matches.
 2. Can filter by file type (notes, todo, journal, or all).
 
-## 🧠 Template Example
+## 🧠 Custom Template Example
 
 To create a template, just concatenate the template strings into a function that returns a list of strings.
 
