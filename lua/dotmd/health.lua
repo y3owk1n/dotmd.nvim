@@ -29,7 +29,6 @@ end
 
 function M.check()
 	separator("dotmd - Dependencies Check")
-	-- Check for required shell commands
 	if vim.fn.executable("find") == 1 then
 		report_status("ok", "'find' command found.")
 	else
@@ -45,40 +44,7 @@ function M.check()
 		report_status("error", "'grep' command not found. Please install grep.")
 	end
 
-	separator("dotmd - Optional Dependencies")
-
-	if pcall(require, "snacks") then
-		report_status("ok", "snacks.nvim is installed (optional dependency).")
-	else
-		report_status(
-			"warn",
-			"snacks.nvim not found. It's optional, but recommended for enhanced fuzzy finding."
-		)
-	end
-
-	if pcall(require, "fzf-lua") then
-		report_status("ok", "fzf-lua is installed (optional dependency).")
-	else
-		report_status(
-			"warn",
-			"fzf-lua not found. It's optional, but recommended for enhanced fuzzy finding."
-		)
-	end
-
-	if pcall(require, "telescope") then
-		report_status(
-			"ok",
-			"telescope.nvim is installed (optional dependency)."
-		)
-	else
-		report_status(
-			"warn",
-			"telescope.nvim not found. It's optional, but recommended for enhanced fuzzy finding."
-		)
-	end
-
 	separator("dotmd - Root Directory Check")
-	-- Check the configured root directory
 	local ok, config = pcall(require, "dotmd.config")
 	local root_dir = (
 		ok
@@ -96,6 +62,39 @@ function M.check()
 				.. root_dir
 				.. ". It will be created on demand."
 		)
+	end
+
+	separator("dotmd - Picker Check")
+
+	if config.config.picker == nil then
+		report_status(
+			"warn",
+			"No picker configured. It will fallback to builtin vim.ui.select. It's recommended to install one of the following plugins: fzf-lua, telescope.nvim, mini.pick, snacks."
+		)
+	else
+		report_status("ok", "Picker configured: " .. config.config.picker)
+
+		local picker_map = {
+			fzf = "fzf-lua",
+			telescope = "telescope.builtin",
+			snacks = "snacks",
+			mini = "mini.pick",
+		}
+
+		local picker = config.config.picker
+		if picker_map[picker] then
+			local picker_ok = pcall(require, picker_map[picker])
+			if picker_ok then
+				report_status("ok", picker_map[picker] .. " is installed.")
+			else
+				report_status("warn", picker .. " is not installed.")
+			end
+		else
+			report_status(
+				"warn",
+				"Picker configured: " .. picker .. " is not supported."
+			)
+		end
 	end
 end
 
