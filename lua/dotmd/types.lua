@@ -12,8 +12,8 @@
 ---@field templates? Dotmd.Config.Templates
 
 ---@class DotMd.Config.RolloverTodo
----@field enabled? boolean Rollover the nearest previous unchecked todos to today's date, default is `true`
----@field heading? string Heading to search for in your todos template, default is "Tasks"
+---@field enabled? boolean Rollover the nearest previous unchecked todos to today's date, default is `false`
+---@field heading? string Heading to search for in your todos template to rollover, default is "Tasks"
 
 ---@class DotMd.Config.DirNames
 ---@field notes? string Directory name for notes, default is "notes"
