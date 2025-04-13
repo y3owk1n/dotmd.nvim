@@ -24,7 +24,7 @@ So I started building **dotmd.nvim** — something small and focused. I wanted a
 - 📄 **Smart File Creation:** Easily create files with optional templates and unique file naming.
 - 📝 **Daily Todos:** Auto-generate daily todo files and rollover unchecked tasks from the nearest previous day.
 - 📅 **Daily Journals:** Quickly generate a markdown journal entry for the current date.
-- 🔍 **Note Picker:** Search or grep your notes across all categories using `vim.ui.select` or the `snacks.nvim` or `fzf-lua` or `telescope.nvim` picker.
+- 🔍 **Note Picker:** Search or grep your notes across all categories using `vim.ui.select` or one of the `snacks.nvim` or `fzf-lua` or `telescope.nvim` or `mini.pick` picker.
 - 📌 **Inbox:** Quick dump zone for thoughts, tasks, and references.
 - 🧭 **Smart Navigation:** Move to the nearest previous/next `todos` or `journals` entry automagically.
 - 🔧 **Fully Configurable:** Customize directories, templates, and behavior.
@@ -75,10 +75,11 @@ require("dotmd").setup({
 - The following CLI tools must be available in your $PATH:
   - `find`: for listing files across note directories
   - `grep`: for searching files across note directories
-- Optional but recommended:
-  - [snacks.nvim](https://github.com/folke/snacks.nvim): For better note picking and grepping
-  - [fzf-lua](https://github.com/ibhagwan/fzf-lua): For better note picking and grepping
-  - [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim): For better note picking and grepping
+- (Optional but recommended) One of the following picker for better picking files and grepping:
+  - [snacks.nvim](https://github.com/folke/snacks.nvim)
+  - [fzf-lua](https://github.com/ibhagwan/fzf-lua)
+  - [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim)
+  - [mini.pick](https://github.com/echasnovski/mini.nvim/blob/main/readmes/mini-pick.md)
 
 ## ⚙️ Configuration
 
@@ -91,7 +92,7 @@ require("dotmd").setup({
 
 ```lua
 ---@alias DotMd.Split "vertical" | "horizontal" | "none" Split direction
----@alias DotMd.PickerType "telescope" | "fzf" | "snacks" Picker type
+---@alias DotMd.PickerType "telescope" | "fzf" | "snacks" | "mini" Picker type
 
 ---@class DotMd.Config
 ---@field root_dir? string Root directory of dotmd, default is `~/dotmd`
@@ -203,7 +204,7 @@ See the example below for how to configure **dotmd.nvim**.
  ---@type DotMd.Config
  opts = {
   root_dir = "~/dotmd" -- set it to your desired directory or remain at it is
-  picker = "snacks" -- or "fzf" or "telescope" based on your preference
+  picker = "snacks" -- or "fzf" or "telescope" or "mini" based on your preference
   default_split = "none" -- or "vertical" or "horizontal" based on your preference
  },
  keys = {
@@ -559,7 +560,7 @@ Pick or search files in **dotmd.nvim** directories by `type`.
 
 ```lua
 ---@alias DotMd.PickType "notes" | "todos" | "journals" | "all" Pick type
----@alias DotMd.PickerType "telescope" | "fzf" | "snacks" Picker type
+---@alias DotMd.PickerType "telescope" | "fzf" | "snacks" | "mini" Picker type
 
 ---@class DotMd.PickOpts
 ---@field picker? DotMd.PickerType Picker type, default is based on `picker` in config

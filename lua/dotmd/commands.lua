@@ -199,6 +199,7 @@ function M.pick(opts)
 		fzf = true,
 		telescope = true,
 		snacks = true,
+		mini = true,
 	}
 
 	if opts.picker then

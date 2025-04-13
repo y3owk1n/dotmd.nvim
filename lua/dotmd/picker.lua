@@ -108,4 +108,43 @@ function M.fzf(opts, dirs, prompt)
 	return true
 end
 
+---@param opts DotMd.PickOpts Options for picking the file
+---@param dirs string[] The directories to pick from
+---@param prompt string The prompt to show
+---@return boolean status true if successful, false if not
+function M.mini(opts, dirs, prompt)
+	local minipick_ok, minipick = pcall(require, "mini.pick")
+
+	if not (minipick_ok and minipick) then
+		vim.notify(
+			"mini.pick not found, fallback to native vim.ui.select",
+			vim.log.levels.WARN
+		)
+		return false
+	end
+
+	local cwd = (#dirs == 1) and dirs[1] or vim.fn.getcwd()
+	local original_cwd = vim.fn.getcwd()
+
+	-- Temporarily set the local working directory.
+	if cwd ~= original_cwd then
+		vim.cmd("lcd " .. cwd)
+	end
+
+	local local_opts = {}
+
+	if opts.grep then
+		minipick.builtin.grep_live(local_opts, opts)
+	else
+		minipick.builtin.files(local_opts, opts)
+	end
+
+	-- Restore the original working directory if it was changed.
+	if cwd ~= original_cwd then
+		vim.cmd("lcd " .. original_cwd)
+	end
+
+	return true
+end
+
 return M
