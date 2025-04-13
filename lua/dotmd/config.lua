@@ -8,7 +8,7 @@ local defaults = {
 	default_split = "none",
 	rollover_todo = {
 		enabled = false,
-		heading = "Tasks",
+		headings = { "Tasks" },
 	},
 	picker = nil,
 	dir_names = {

@@ -84,23 +84,27 @@ function M.create_todo_today(opts)
 				config.templates.todos
 			)
 
-			if config.rollover_todo.enabled == true then
-				local unchecked_tasks, source_path =
-					todos.rollover_previous_todo_to_today(todo_dir, today)
-				if unchecked_tasks and source_path then
-					local today_lines = vim.fn.readfile(todo_path)
-					if #today_lines > 0 and today_lines[#today_lines] ~= "" then
-						table.insert(today_lines, "")
-					end
-					vim.list_extend(today_lines, unchecked_tasks)
-					utils.safe_writefile(today_lines, todo_path)
-					vim.notify(
-						string.format(
-							"Rolled over %d unchecked todo(s) from %s",
-							#unchecked_tasks,
-							vim.fn.fnamemodify(source_path, ":t")
+			if
+				config.rollover_todo.enabled == true
+				and config.rollover_todo.headings ~= nil
+				and #config.rollover_todo.headings > 0
+			then
+				for _, heading in ipairs(config.rollover_todo.headings) do
+					local unchecked_tasks, source_path =
+						todos.rollover_previous_todo_to_today(
+							todo_dir,
+							today,
+							heading
 						)
-					)
+
+					if unchecked_tasks and source_path then
+						todos.apply_rollover_todo(
+							todo_path,
+							unchecked_tasks,
+							source_path,
+							heading
+						)
+					end
 				end
 			end
 
