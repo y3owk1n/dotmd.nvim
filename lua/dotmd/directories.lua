@@ -174,6 +174,12 @@ end
 ---@return string[] files
 function M.get_files_recursive(directory)
 	local files = {}
+
+	-- Just ignore non-existent directories
+	if vim.fn.isdirectory(directory) ~= 1 then
+		return files
+	end
+
 	local scan = vim.fn.readdir(directory)
 	for _, entry in ipairs(scan) do
 		local full_path = directory .. entry
