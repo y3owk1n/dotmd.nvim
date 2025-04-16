@@ -94,10 +94,80 @@ function M.get_unique_filepath(base_path, formatted_name)
 	return note_path
 end
 
+---@param note_path string The path to the file
+function M.open_float(note_path)
+	if vim.fn.filereadable(note_path) == 0 then
+		vim.notify("File not found: " .. note_path, vim.log.levels.WARN)
+		return
+	end
+
+	local snacks_ok, snacks = pcall(require, "snacks")
+
+	local winborder = vim.api.nvim_get_option_value(
+		"winborder",
+		{ scope = "local" }
+	) or "none"
+
+	---@type vim.api.keyset.win_config
+	local win_opts = {
+		relative = "editor",
+		width = 0.8,
+		height = 0.8,
+		border = winborder,
+		footer = "Press q to close",
+		footer_pos = "center",
+	}
+
+	if not (snacks_ok and snacks and snacks.win) then
+		vim.cmd("badd " .. vim.fn.fnameescape(note_path))
+		local buf = vim.fn.bufnr(note_path)
+
+		vim.api.nvim_set_option_value(
+			"filetype",
+			"markdown",
+			{ scope = "local", buf = buf }
+		)
+
+		win_opts.width = math.floor(vim.o.columns * win_opts.width)
+		win_opts.height = math.floor(vim.o.lines * win_opts.height)
+		win_opts.row = math.floor((vim.o.lines - win_opts.height) / 2)
+		win_opts.col = math.floor((vim.o.columns - win_opts.width) / 2)
+
+		vim.api.nvim_open_win(buf, true, win_opts)
+
+		vim.api.nvim_buf_set_keymap(
+			buf,
+			"n",
+			"q",
+			":close<CR>",
+			{ noremap = true, silent = true }
+		)
+	else
+		local snacks_win_opts = vim.tbl_deep_extend("force", win_opts, {
+			minimal = false,
+			file = note_path,
+			bo = {
+				readonly = false,
+				modifiable = true,
+			},
+			keys = {
+				q = "close",
+			},
+		})
+
+		snacks.win(snacks_win_opts)
+	end
+end
+
 --- Open a file
 ---@param note_path string The path to the file
 ---@param split? DotMd.Split Split direction for new or existing files, default is based on `default_split` in config
 function M.open_file(note_path, split)
+	if split == "float" then
+		M.open_float(note_path)
+		return
+	end
+
 	local cmd = ({
 		vertical = "vsplit",
 		horizontal = "split",
