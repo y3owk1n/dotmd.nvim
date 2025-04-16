@@ -204,7 +204,7 @@ See the example below for how to configure **dotmd.nvim**.
      ---@type DotMd.Config
      opts = {
       root_dir = "~/dotmd" -- set it to your desired directory or remain at it is
-      default_split = "none" -- or "vertical" or "horizontal" or "float" based on your preference
+      default_split = "float" -- or "vertical" or "horizontal" or "none" based on your preference
       rollover_todo = {
        enabled = true, -- enable rollover
       },
