@@ -11,6 +11,8 @@ local shared_win_opts = {
 	height = 0.8,
 	border = winborder,
 	title_pos = "center",
+	footer = "Remember to :wq to save and exit",
+	footer_pos = "center",
 }
 
 --- Create a floating window for snacks
