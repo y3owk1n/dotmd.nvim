@@ -1,5 +1,5 @@
 ---@alias DotMd.Config.DirNameKeys "notes" | "todos" | "journals"
----@alias DotMd.Split "vertical" | "horizontal" | "none" Split direction
+---@alias DotMd.Split "vertical" | "horizontal" | "float" | "none" Split direction
 ---@alias DotMd.PickType "notes" | "todos" | "journals" | "all" Pick type
 ---@alias DotMd.PickerType "telescope" | "fzf" | "snacks" | "mini" Picker type
 
