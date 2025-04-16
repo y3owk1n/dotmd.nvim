@@ -179,4 +179,51 @@ function M.prepare_user_command_args(args)
 	return file_args
 end
 
+--- Provides completion suggestions for key=value.
+---@param arglead string Current argument being typed
+---@param candidates table<string, string[]> Table of key -> list of valid values
+---@param skip_values string[]? -- keys that shouldn't trigger value completion
+---@return string[] List of completions
+function M.completion_kv_arg(arglead, candidates, skip_values)
+	local completions = {}
+
+	local skip = {}
+	if skip_values then
+		for _, key in ipairs(skip_values) do
+			skip[key] = true
+		end
+	end
+
+	local key, partial = arglead:match("^(.-)=(.*)$")
+
+	if key then
+		if skip[key] then
+			return { key .. "=" }
+		end
+
+		local values = candidates[key]
+		if values then
+			for _, val in ipairs(values) do
+				if val:find("^" .. vim.pesc(partial)) then
+					table.insert(completions, key .. "=" .. val)
+				end
+			end
+		end
+	else
+		for k in pairs(candidates) do
+			if k:find("^" .. vim.pesc(arglead)) then
+				table.insert(completions, k .. "=")
+			end
+		end
+
+		for _, k in ipairs(skip_values or {}) do
+			if k:find("^" .. vim.pesc(arglead)) then
+				table.insert(completions, k .. "=")
+			end
+		end
+	end
+
+	return completions
+end
+
 return M

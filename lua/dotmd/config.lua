@@ -77,6 +77,13 @@ local defaults = {
 	},
 }
 
+local constants = {
+	split = { "vertical", "horizontal", "float", "none" },
+	picker_type = { "telescope", "fzf", "snacks", "mini" },
+	pick_type = { "notes", "todos", "journals", "all" },
+	boolean = { "true", "false" },
+}
+
 --- Setup the plugin
 ---@param user_config? DotMd.Config
 function M.setup(user_config)
@@ -95,6 +102,11 @@ function M.setup_user_commands()
 		commands.create_note(opts)
 	end, {
 		nargs = "?",
+		complete = function(arglead)
+			return utils.completion_kv_arg(arglead, {
+				split = constants.split,
+			})
+		end,
 		desc = "Create a new note",
 	})
 
@@ -104,6 +116,11 @@ function M.setup_user_commands()
 		commands.create_todo_today(opts)
 	end, {
 		nargs = "?",
+		complete = function(arglead)
+			return utils.completion_kv_arg(arglead, {
+				split = constants.split,
+			})
+		end,
 		desc = "Create a new todo for today",
 	})
 
@@ -113,6 +130,11 @@ function M.setup_user_commands()
 		commands.create_journal(opts)
 	end, {
 		nargs = "?",
+		complete = function(arglead)
+			return utils.completion_kv_arg(arglead, {
+				split = constants.split,
+			})
+		end,
 		desc = "Create a new journal entry",
 	})
 
@@ -122,6 +144,11 @@ function M.setup_user_commands()
 		commands.inbox(opts)
 	end, {
 		nargs = "?",
+		complete = function(arglead)
+			return utils.completion_kv_arg(arglead, {
+				split = constants.split,
+			})
+		end,
 		desc = "Create or open the inbox",
 	})
 
@@ -131,6 +158,13 @@ function M.setup_user_commands()
 		commands.pick(opts)
 	end, {
 		nargs = "?",
+		complete = function(arglead)
+			return utils.completion_kv_arg(arglead, {
+				picker = constants.picker_type,
+				type = constants.pick_type,
+				grep = constants.boolean,
+			})
+		end,
 		desc = "Pick a file from a list of directories",
 	})
 
@@ -140,6 +174,13 @@ function M.setup_user_commands()
 		commands.open(opts)
 	end, {
 		nargs = "?",
+		complete = function(arglead)
+			return utils.completion_kv_arg(arglead, {
+				type = constants.pick_type,
+				split = constants.split,
+				pluralise_query = constants.boolean,
+			}, { "query" })
+		end,
 		desc = "Open a file from a list of directories",
 	})
 
