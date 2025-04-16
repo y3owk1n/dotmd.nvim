@@ -51,11 +51,11 @@ function M.ensure_directory(dir)
 end
 
 --- Write a file safely
----@param path string The path to the file
+---@param file_path string The path to the file
 ---@param content string[] The content to write
 ---@return boolean True if the file was written successfully, false otherwise
-function M.safe_writefile(content, path)
-	local ok, err = pcall(vim.fn.writefile, content, path)
+function M.safe_writefile(content, file_path)
+	local ok, err = pcall(vim.fn.writefile, content, file_path)
 	if not ok then
 		vim.notify("Error writing file: " .. err, vim.log.levels.ERROR)
 		return false
@@ -94,10 +94,10 @@ function M.get_unique_filepath(base_path, formatted_name)
 	return note_path
 end
 
----@param note_path string The path to the file
-function M.open_float(note_path)
-	if vim.fn.filereadable(note_path) == 0 then
-		vim.notify("File not found: " .. note_path, vim.log.levels.WARN)
+---@param file_path string The path to the file
+function M.open_float(file_path)
+	if vim.fn.filereadable(file_path) == 0 then
+		vim.notify("File not found: " .. file_path, vim.log.levels.WARN)
 		return
 	end
 
@@ -119,8 +119,8 @@ function M.open_float(note_path)
 	}
 
 	if not (snacks_ok and snacks and snacks.win) then
-		vim.cmd("badd " .. vim.fn.fnameescape(note_path))
-		local buf = vim.fn.bufnr(note_path)
+		vim.cmd("badd " .. vim.fn.fnameescape(file_path))
+		local buf = vim.fn.bufnr(file_path)
 
 		vim.api.nvim_set_option_value(
 			"filetype",
@@ -145,7 +145,7 @@ function M.open_float(note_path)
 	else
 		local snacks_win_opts = vim.tbl_deep_extend("force", win_opts, {
 			minimal = false,
-			file = note_path,
+			file = file_path,
 			bo = {
 				readonly = false,
 				modifiable = true,
@@ -160,11 +160,11 @@ function M.open_float(note_path)
 end
 
 --- Open a file
----@param note_path string The path to the file
+---@param file_path string The path to the file
 ---@param split? DotMd.Split Split direction for new or existing files, default is based on `default_split` in config
-function M.open_file(note_path, split)
+function M.open_file(file_path, split)
 	if split == "float" then
-		M.open_float(note_path)
+		M.open_float(file_path)
 		return
 	end
 
@@ -174,20 +174,20 @@ function M.open_file(note_path, split)
 		none = "edit",
 	})[split] or "edit"
 
-	vim.cmd(string.format("%s %s", cmd, vim.fn.fnameescape(note_path)))
+	vim.cmd(string.format("%s %s", cmd, vim.fn.fnameescape(file_path)))
 end
 
 --- Write a file
----@param note_path string The path to the file
+---@param file_path string The path to the file
 ---@param header string The header of the file
 ---@param template_func? fun(header: string): string[] The template function
-function M.write_file(note_path, header, template_func)
-	local dir_path = vim.fn.fnamemodify(note_path, ":p:h")
+function M.write_file(file_path, header, template_func)
+	local dir_path = vim.fn.fnamemodify(file_path, ":p:h")
 	M.ensure_directory(dir_path)
 
 	local content = template_func and template_func(header)
 		or { "# " .. header }
-	M.safe_writefile(content, note_path)
+	M.safe_writefile(content, file_path)
 end
 
 --- Function to check if a given array contains a string
