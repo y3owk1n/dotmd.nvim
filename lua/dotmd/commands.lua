@@ -233,6 +233,7 @@ end
 function M.navigate(direction)
 	local directories = require("dotmd.directories")
 	local utils = require("dotmd.utils")
+	local config = require("dotmd.config").config
 
 	local current_file = vim.fn.expand("%:t")
 
@@ -278,7 +279,11 @@ function M.navigate(direction)
 	end
 
 	if to_navigate_path and vim.fn.filereadable(to_navigate_path) == 1 then
-		vim.cmd("edit " .. vim.fn.fnameescape(to_navigate_path))
+		-- NOTE: Force to be either "float" or "none". Normally `navigation` should be called
+		-- within a buffer already, and it should be navigating within the buffer.
+		local normalised_split = config.default_split == "float" and "float"
+			or "none"
+		require("dotmd.utils").open_file(to_navigate_path, normalised_split)
 	else
 		vim.notify(
 			string.format("No %s %s found", direction, current_folder_name),
