@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.4.2](https://github.com/y3owk1n/dotmd.nvim/compare/v1.4.1...v1.4.2) (2025-04-16)
+
+
+### Bug Fixes
+
+* **commands.navigate:** respect `default_split` settings when using `navigate` ([#64](https://github.com/y3owk1n/dotmd.nvim/issues/64)) ([f51e4e2](https://github.com/y3owk1n/dotmd.nvim/commit/f51e4e2be6b10f5e5702c4427a8ee2ecbba8e23e))
+* **config:** add completions for all user commands ([#67](https://github.com/y3owk1n/dotmd.nvim/issues/67)) ([0979255](https://github.com/y3owk1n/dotmd.nvim/commit/0979255d8561534aa7c2fac2fe580e0a5157c94e))
+* **floating-win:** add reminder to `:wq` for floating footer ([#66](https://github.com/y3owk1n/dotmd.nvim/issues/66)) ([4a7583b](https://github.com/y3owk1n/dotmd.nvim/commit/4a7583b39c54b50eb35ff66d7e7a4eaf0181e803))
+* **utils.get_files_recursive:** ignore if the directory does not exists instead of error-ing out ([#68](https://github.com/y3owk1n/dotmd.nvim/issues/68)) ([570ed8e](https://github.com/y3owk1n/dotmd.nvim/commit/570ed8e300611985bc7742f2cb44a13e67d5d796))
+* **utils.open_file:** add `float` split with `snacks.win` detection ([#60](https://github.com/y3owk1n/dotmd.nvim/issues/60)) ([a2b6e59](https://github.com/y3owk1n/dotmd.nvim/commit/a2b6e59a312681e45962b5fdad5427efa6694d9f))
+* **utils.open_file:** improve `float` behaviour to not opening float on top of each other ([#63](https://github.com/y3owk1n/dotmd.nvim/issues/63)) ([6572f6c](https://github.com/y3owk1n/dotmd.nvim/commit/6572f6cfc5add0dcbe13f592fc139a929d568371))
+
 ## [1.4.1](https://github.com/y3owk1n/dotmd.nvim/compare/v1.4.0...v1.4.1) (2025-04-13)
 
 
