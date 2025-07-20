@@ -1,5 +1,9 @@
 doc:
-	panvimdoc --project-name dotmd.nvim --input-file ./README.md --demojify true --vim-version "Neovim >= 0.10.0"
+    vimcats -t -f -c -a \
+    lua/dotmd/init.lua \
+    lua/dotmd/config.lua \
+    lua/dotmd/types.lua \
+    > doc/dotmd.nvim.txt
 
 set shell := ["bash", "-cu"]
 

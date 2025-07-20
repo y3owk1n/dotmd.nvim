@@ -1,10 +1,20 @@
 ---@module "dotmd"
 
+---@brief [[
+---*dotmd.nvim.txt*
+---
+---Keep all your notes, todos, and journals inside Neovim without ever leaving the editor.
+---@brief ]]
+
+---@toc dotmd.nvim.toc
+
+---@mod dotmd.nvim.api API
+
 local M = {}
 
+---Entry point to setup the plugin
+---@type fun(user_config?: DotMd.Config)
 M.setup = require("dotmd.config").setup
-
-------- Public API -------
 
 --- Create a new note
 ---@param opts? DotMd.CreateFileOpts

@@ -1,7 +1,27 @@
----@alias DotMd.Config.DirNameKeys "notes" | "todos" | "journals"
----@alias DotMd.Split "vertical" | "horizontal" | "float" | "none" Split direction
----@alias DotMd.PickType "notes" | "todos" | "journals" | "all" Pick type
----@alias DotMd.PickerType "telescope" | "fzf" | "snacks" | "mini" Picker type
+---@mod dotmd.nvim.types Types
+---
+
+local M = {}
+
+---@alias DotMd.Config.DirNameKeys
+---| '"notes"'
+---| '"todos"'
+---| '"journals"'
+---@alias DotMd.Split
+---| '"vertical"'
+---| '"horizontal"'
+---| '"float"' |
+---| '"none"'
+---@alias DotMd.PickType
+---| '"notes"'
+---| '"todos"'
+---| '"journals"'
+---| '"all"'
+---@alias DotMd.PickerType
+---| '"telescope"'
+---| '"fzf"'
+---| '"snacks"'
+---| '"mini"'
 
 ---@class DotMd.Config
 ---@field root_dir? string Root directory of dotmd, default is `~/dotmd`
@@ -39,3 +59,5 @@
 ---@field query? string Query to filter the files
 ---@field split? DotMd.Split Split direction for new or existing files, default is based on `default_split` in config
 ---@field pluralise_query? boolean Pluralise the query, default is `false`
+
+return M
