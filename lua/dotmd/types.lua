@@ -1,5 +1,4 @@
 ---@mod dotmd.nvim.types Types
----
 
 local M = {}
 
