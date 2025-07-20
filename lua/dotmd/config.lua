@@ -1,7 +1,92 @@
+---@mod dotmd.nvim.config Configurations
+---@brief [[
+---
+---Example Configuration:
+---
+--->
+---{
+---	root_dir = "~/dotmd",
+---	default_split = "none",
+---	rollover_todo = {
+---		enabled = false,
+---		headings = { "Tasks" },
+---	},
+---	picker = nil,
+---	dir_names = {
+---		notes = "notes",
+---		todos = "todos",
+---		journals = "journals",
+---	},
+---	templates = {
+---		notes = function(title)
+---			return {
+---				"---",
+---				"title: " .. title,
+---				"created: " .. os.date("%Y-%m-%d %H:%M"),
+---				"---",
+---				"",
+---				"# " .. title,
+---				"",
+---			}
+---		end,
+---		todos = function(date)
+---			return {
+---				"---",
+---				"type: todo",
+---				"date: " .. date,
+---				"---",
+---				"",
+---				"# Todo for " .. date,
+---				"",
+---				"## Tasks",
+---				"",
+---			}
+---		end,
+---		journals = function(date)
+---			return {
+---				"---",
+---				"type: journal",
+---				"date: " .. date,
+---				"---",
+---				"",
+---				"# Journal Entry for " .. date,
+---				"",
+---				"## Highlights",
+---				"",
+---				"## Thoughts",
+---				"",
+---				"## Tasks",
+---				"",
+---			}
+---		end,
+---		inbox = function()
+---			return {
+---				"---",
+---				"type: inbox",
+---				"---",
+---				"",
+---				"# Inbox",
+---				"",
+---				"## Quick Notes",
+---				"",
+---				"## Tasks",
+---				"",
+---				"## References",
+---				"",
+---			}
+---		end,
+---	},
+---}
+---<
+---
+---@brief ]]
+
 local M = {}
 
+---@type DotMd.Config
 M.config = {}
 
+---@private
 ---@type DotMd.Config
 local defaults = {
 	root_dir = "~/dotmd",
@@ -84,6 +169,7 @@ local constants = {
 	boolean = { "true", "false" },
 }
 
+---@private
 --- Setup the plugin
 ---@param user_config? DotMd.Config
 function M.setup(user_config)
@@ -92,6 +178,7 @@ function M.setup(user_config)
 	M.setup_user_commands()
 end
 
+---@private
 function M.setup_user_commands()
 	local commands = require("dotmd.commands")
 	local utils = require("dotmd.utils")
