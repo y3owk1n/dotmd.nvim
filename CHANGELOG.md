@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.4.3](https://github.com/y3owk1n/dotmd.nvim/compare/v1.4.2...v1.4.3) (2025-07-20)
+
+
+### Bug Fixes
+
+* **docs:** switch doc gen from `pandocvim` to `vimcats` ([#69](https://github.com/y3owk1n/dotmd.nvim/issues/69)) ([c9cbdcb](https://github.com/y3owk1n/dotmd.nvim/commit/c9cbdcba1916a19c3ebce1e13ecf02d271766d52))
+* remove whitespaces ([#71](https://github.com/y3owk1n/dotmd.nvim/issues/71)) ([5f9c84f](https://github.com/y3owk1n/dotmd.nvim/commit/5f9c84f1abfdf47024ccedc9c497762d811a25b1))
+
 ## [1.4.2](https://github.com/y3owk1n/dotmd.nvim/compare/v1.4.1...v1.4.2) (2025-04-16)
 
 
