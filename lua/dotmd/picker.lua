@@ -1,5 +1,7 @@
 local M = {}
 
+local config = require("dotmd.config").config
+
 ---@param opts DotMd.PickOpts Options for picking the file
 ---@param dirs string[] The directories to pick from
 ---@param prompt string The prompt to show
@@ -54,7 +56,7 @@ function M.telescope(opts, dirs, prompt)
 			telescope.find_files({
 				prompt_title = prompt,
 				-- Fallback: use the current working directory if multiple dirs exist.
-				cwd = vim.fn.getcwd(),
+				cwd = vim.fn.expand(config.root_dir),
 			})
 		end
 	end
@@ -123,7 +125,7 @@ function M.mini(opts, dirs, prompt)
 		return false
 	end
 
-	local cwd = (#dirs == 1) and dirs[1] or vim.fn.getcwd()
+	local cwd = (#dirs == 1) and dirs[1] or vim.fn.expand(config.root_dir)
 	local original_cwd = vim.fn.getcwd()
 
 	-- Temporarily set the local working directory.
