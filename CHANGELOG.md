@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.4](https://github.com/y3owk1n/dotmd.nvim/compare/v1.4.3...v1.4.4) (2025-07-23)
+
+
+### Bug Fixes
+
+* **picker:** ensure config root dir for pickers ([#73](https://github.com/y3owk1n/dotmd.nvim/issues/73)) ([5018b81](https://github.com/y3owk1n/dotmd.nvim/commit/5018b81933cdeb24f75460295e4cc9d831af6285))
+
 ## [1.4.3](https://github.com/y3owk1n/dotmd.nvim/compare/v1.4.2...v1.4.3) (2025-07-20)
 
 
