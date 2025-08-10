@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.4.4](https://github.com/y3owk1n/dotmd.nvim/compare/v1.4.3...v1.4.4) (2025-08-10)
+
+
+### Bug Fixes
+
+* **ci:** move docs to its own workflow ([#75](https://github.com/y3owk1n/dotmd.nvim/issues/75)) ([b0f6fed](https://github.com/y3owk1n/dotmd.nvim/commit/b0f6fed4b43ab3dacdc30a0333a01c474b10869a))
+* **picker:** ensure config root dir for pickers ([#73](https://github.com/y3owk1n/dotmd.nvim/issues/73)) ([5018b81](https://github.com/y3owk1n/dotmd.nvim/commit/5018b81933cdeb24f75460295e4cc9d831af6285))
+
 ## [1.4.3](https://github.com/y3owk1n/dotmd.nvim/compare/v1.4.2...v1.4.3) (2025-07-20)
 
 
