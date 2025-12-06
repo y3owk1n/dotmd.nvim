@@ -176,8 +176,7 @@ M.config                                              *dotmd.nvim.config.config*
 ==============================================================================
 Types                                                         *dotmd.nvim.types*
 
-                                     *dotmd.nvim.types.DotMd.Config.DirNameKeys*
-DotMd.Config.DirNameKeys
+DotMd.Config.DirNameKeys             *dotmd.nvim.types.DotMd.Config.DirNameKeys*
 
     Variants: ~
         ("notes")
@@ -222,8 +221,7 @@ DotMd.Config                                     *dotmd.nvim.types.DotMd.Config*
         {templates?}      (Dotmd.Config.Templates)
 
 
-                                    *dotmd.nvim.types.DotMd.Config.RolloverTodo*
-DotMd.Config.RolloverTodo
+DotMd.Config.RolloverTodo           *dotmd.nvim.types.DotMd.Config.RolloverTodo*
 
     Fields: ~
         {enabled?}   (boolean)   Rollover the nearest previous unchecked todos to today's date, default is `false`
