@@ -1,8 +1,8 @@
 ---@module 'luassert'
 
 local utils = require("dotmd.utils")
-local config = require("dotmd.config")
 local test_utils = require("dotmd.test-utils")
+local config = require("dotmd.config")
 
 local test_config = {
 	root_dir = test_utils.tmp_dir() .. "/",
@@ -120,6 +120,7 @@ describe("dotmd.utils module", function()
 
 		before_each(function()
 			original_notify = vim.notify
+			---@diagnostic disable-next-line:duplicate-set-field
 			vim.notify = function(msg, level)
 				_G.last_notify = msg
 			end

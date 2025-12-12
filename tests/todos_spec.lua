@@ -129,6 +129,7 @@ describe("dotmd.todos module", function()
 
 		before_each(function()
 			original_notify = vim.notify
+			---@diagnostic disable-next-line:duplicate-set-field
 			vim.notify = function(msg, level)
 				_G.last_notify = msg
 			end
