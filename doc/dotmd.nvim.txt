@@ -245,6 +245,13 @@ Dotmd.Config.Templates                 *dotmd.nvim.types.Dotmd.Config.Templates*
         {inbox?}     (fun(date:string):string[])
 
 
+snacks.win                                         *dotmd.nvim.types.snacks.win*
+
+    Fields: ~
+        {show}     (fun(self:any):nil)
+        {set_buf}  (fun(self:any,buf:integer):nil)
+
+
 DotMd.CreateFileOpts                     *dotmd.nvim.types.DotMd.CreateFileOpts*
 
     Fields: ~
