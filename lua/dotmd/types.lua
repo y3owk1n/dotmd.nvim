@@ -45,6 +45,10 @@ local M = {}
 ---@field journals? fun(date: string): string[]
 ---@field inbox? fun(date: string): string[]
 
+---@class snacks.win
+---@field show fun(self): nil
+---@field set_buf fun(self, buf: integer): nil
+
 ---@class DotMd.CreateFileOpts
 ---@field split? DotMd.Split Split direction for new or existing files, default is based on `default_split` in config
 
